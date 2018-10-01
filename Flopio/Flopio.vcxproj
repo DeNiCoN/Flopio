@@ -18,9 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\Engine.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\IApp.h" />
+    <ClInclude Include="src\core\Engine.h" />
+    <ClInclude Include="src\core\IProcess.h" />
+    <ClInclude Include="src\game\App.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{267E9DF8-54B1-4952-B1D0-BBDAC1D74E06}</ProjectGuid>
+    <ProjectGuid>{544BB8BE-53B1-41FE-BB66-10008607776A}</ProjectGuid>
     <RootNamespace>Flopio</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -114,8 +124,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
