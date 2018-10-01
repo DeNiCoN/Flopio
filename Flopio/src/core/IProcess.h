@@ -5,17 +5,27 @@ namespace engine {
 	class Process
 	{
 	public:
+		Process* next;
+
 		virtual void VOnInit() = 0;
 		virtual void VProcess(int delta) = 0;
-		virtual void VOnKill() = 0;
-		virtual Process* VNext() = 0;
-	private:
+		virtual void VOnEND() = 0;
+		virtual void VOnFAIL() = 0;
+		virtual void VOnABORT() = 0;
 
+		ProcessState getState() { return state; }
+	private:
+		ProcessState state;
 	};
 
 	enum ProcessState
 	{
-		RUNNING, INIT, PAUSED, DEAD
+		UNINITIALIZED,
+		RUNNING, 
+		PAUSED, 
+		ENDED,
+		FAILED,
+		ABORTED
 	};
 
 }

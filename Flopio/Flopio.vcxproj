@@ -26,6 +26,7 @@
     <ClInclude Include="src\core\IApp.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\IProcess.h" />
+    <ClInclude Include="src\core\ProcessManager.h" />
     <ClInclude Include="src\game\App.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

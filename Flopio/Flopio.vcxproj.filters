@@ -35,5 +35,8 @@
     <ClInclude Include="src\core\IProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\ProcessManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
