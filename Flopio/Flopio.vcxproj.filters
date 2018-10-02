@@ -21,6 +21,9 @@
     <ClCompile Include="src\core\Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\ProcessManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Engine.h">
@@ -32,10 +35,10 @@
     <ClInclude Include="src\core\IApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\IProcess.h">
+    <ClInclude Include="src\core\ProcessManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\ProcessManager.h">
+    <ClInclude Include="src\core\Process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

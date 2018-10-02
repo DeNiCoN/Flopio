@@ -20,12 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Engine.cpp" />
+    <ClCompile Include="src\core\ProcessManager.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\IApp.h" />
     <ClInclude Include="src\core\Engine.h" />
-    <ClInclude Include="src\core\IProcess.h" />
+    <ClInclude Include="src\core\Process.h" />
     <ClInclude Include="src\core\ProcessManager.h" />
     <ClInclude Include="src\game\App.h" />
   </ItemGroup>
