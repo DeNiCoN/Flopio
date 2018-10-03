@@ -6,11 +6,12 @@
 namespace engine {
 	class ProcessManager {
 	public:
+		~ProcessManager() { processList.clear(); }
 		unsigned int updateProcesses(unsigned long delta);
-		void atachProcess(std::shared_ptr<Process> process);
+		WeakProcessPtr attachProcess(SharedProcessPtr process);
 
-		unsigned int getProcessCount() { return processList.size(); };
+		unsigned int getProcessCount() { return processList.size(); }
 	private:
-		std::list<std::shared_ptr<Process>> processList;
+		std::list<SharedProcessPtr> processList;
 	};
 }

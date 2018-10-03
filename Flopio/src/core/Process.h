@@ -1,6 +1,11 @@
 #pragma once
+#include <memory>
 
 namespace engine {
+
+	class Process;
+	typedef std::shared_ptr<Process> SharedProcessPtr;
+	typedef std::weak_ptr<Process> WeakProcessPtr;
 
 	enum ProcessState
 	{
@@ -14,21 +19,32 @@ namespace engine {
 
 	class Process
 	{
+		friend class ProcessManager;
+
 	private:
 		ProcessState state;
+		SharedProcessPtr next;
 	public:
-		Process* next;
-		void inline pause() { state == PAUSED; };
-		void inline unpause() { state == RUNNING; };
+		void inline pause() { state == PAUSED; }
+		void inline unpause() { state == RUNNING; }
 
 		ProcessState getState() { return state; }
-		bool isDead() { return state == ENDED || state == FAILED || state == ABORTED; };
-		bool isRunning() { return state == RUNNING; };
-		bool isPaused() { return state == PAUSED; };
+		SharedProcessPtr removeNext()
+		{
+			SharedProcessPtr r = next;
+			next == nullptr;
+			return r;
+		}
+		SharedProcessPtr getNext() { return next; }
+		void setNext(SharedProcessPtr next) { this->next = next; }
+
+		bool isDead() { return state == ENDED || state == FAILED || state == ABORTED; }
+		bool isRunning() { return state == RUNNING; }
+		bool isPaused() { return state == PAUSED; }
 		virtual ~Process() {};
 	protected:
-		virtual void VOnInit() { state = RUNNING; };
-		virtual void VOnUpdate(int delta) = 0;
+		virtual void VOnInit() { state = RUNNING; }
+		virtual void VOnUpdate(unsigned long delta) = 0;
 		virtual void VOnEnd() {};
 		virtual void VOnFail() {};
 		virtual void VOnAbort() {};
