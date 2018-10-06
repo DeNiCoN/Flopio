@@ -1,10 +1,12 @@
 #include"core/Engine.h"
 #include <iostream>
 #include <list>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 int main() {
-	while (true) {
 
-	}
+
+
 	return 0;
 }
