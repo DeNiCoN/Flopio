@@ -25,8 +25,8 @@ namespace engine {
 		ProcessState state;
 		SharedProcessPtr next;
 	public:
-		void inline pause() { state == PAUSED; }
-		void inline unpause() { state == RUNNING; }
+		void inline pause() { state = PAUSED; }
+		void inline unpause() { state = RUNNING; }
 
 		ProcessState getState() { return state; }
 		SharedProcessPtr removeNext()

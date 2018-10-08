@@ -10,7 +10,7 @@ namespace engine {
 		unsigned int success = 0;
 		unsigned int fail = 0;
 		std::list<SharedProcessPtr>::iterator i = processList.begin();
-		while (i != processList.end) {
+		while (i != processList.end()) {
 			SharedProcessPtr process = *i;
 			std::list<SharedProcessPtr>::iterator thisIt = i;
 			i++;
@@ -24,7 +24,7 @@ namespace engine {
 				process->VOnUpdate(delta);
 			}
 
-			if (process->isDead)
+			if (process->isDead())
 			{
 				switch (process->state)
 				{
