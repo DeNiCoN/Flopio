@@ -7,7 +7,7 @@ namespace engine {
 	class ProcessManager {
 	public:
 		~ProcessManager() { processList.clear(); }
-		unsigned int updateProcesses(unsigned long delta);
+		unsigned int updateProcesses(double delta);
 		WeakProcessPtr attachProcess(SharedProcessPtr process);
 
 		unsigned int getProcessCount() { return processList.size(); }

@@ -26,6 +26,7 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\DelayProcess.h" />
     <ClInclude Include="src\core\IApp.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\Logger.h" />

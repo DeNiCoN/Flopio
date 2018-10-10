@@ -27,6 +27,9 @@ namespace engine {
 	public:
 		void inline pause() { state = PAUSED; }
 		void inline unpause() { state = RUNNING; }
+		void inline end() { state = ENDED; }
+		void inline fail() { state = FAILED; }
+		void inline abort() { state = ABORTED; }
 
 		ProcessState getState() { return state; }
 		SharedProcessPtr removeNext()
@@ -44,7 +47,7 @@ namespace engine {
 		virtual ~Process() {};
 	protected:
 		virtual void VOnInit() { state = RUNNING; }
-		virtual void VOnUpdate(unsigned long delta) = 0;
+		virtual void VOnUpdate(double delta) = 0;
 		virtual void VOnEnd() {};
 		virtual void VOnFail() {};
 		virtual void VOnAbort() {};

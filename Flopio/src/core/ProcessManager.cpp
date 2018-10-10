@@ -1,4 +1,5 @@
 #include "ProcessManager.h"
+#include <iostream>
 
 namespace engine {
 	WeakProcessPtr ProcessManager::attachProcess(SharedProcessPtr process) {
@@ -6,7 +7,7 @@ namespace engine {
 		return WeakProcessPtr(process);
 	}
 
-	unsigned int ProcessManager::updateProcesses(unsigned long delta) {
+	unsigned int ProcessManager::updateProcesses(double delta) {
 		unsigned int success = 0;
 		unsigned int fail = 0;
 		std::list<SharedProcessPtr>::iterator i = processList.begin();
