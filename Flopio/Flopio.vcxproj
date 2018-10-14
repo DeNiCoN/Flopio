@@ -27,12 +27,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\DelayProcess.h" />
-    <ClInclude Include="src\core\IApp.h" />
+    <ClInclude Include="src\core\App.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\Logger.h" />
     <ClInclude Include="src\core\Process.h" />
     <ClInclude Include="src\core\ProcessManager.h" />
-    <ClInclude Include="src\game\App.h" />
+    <ClInclude Include="src\game\Flopio.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

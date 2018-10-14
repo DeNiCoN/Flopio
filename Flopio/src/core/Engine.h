@@ -1,6 +1,8 @@
 #pragma once
-#include "IApp.h"
+#include "App.h"
 
 namespace engine {
-	void init(IApp &app);
+
+	Logger log;
+	bool AppInit(App &app, AppConfig &config);
 }
