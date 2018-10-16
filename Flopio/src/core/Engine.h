@@ -1,8 +1,10 @@
 #pragma once
 #include "App.h"
+#include "Logger.h"
 
 namespace engine {
 
-	Logger log;
-	bool AppInit(App &app, AppConfig &config);
+	extern App *currentApp;
+	extern Logger log;
+	bool appInit(App &app, AppConfig &config);
 }

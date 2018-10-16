@@ -5,7 +5,7 @@ namespace game {
 	class Flopio : public App
 	{
 	public:
-		
+		void VOnUpdate(double delta) { std::cout << "inside\n"; }
 
 	private:
 
