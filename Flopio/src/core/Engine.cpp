@@ -62,6 +62,7 @@ namespace engine {
 			currentTime = glfwGetTime();
 			delta = currentTime - lastTime;
 
+
 			app.VOnUpdate(delta);
 
 			lastTime = currentTime;

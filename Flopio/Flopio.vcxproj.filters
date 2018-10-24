@@ -47,10 +47,13 @@
     <ClInclude Include="src\core\DelayProcess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\App.h">
+    <ClInclude Include="src\game\Flopio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\Flopio.h">
+    <ClInclude Include="src\core\gamebasis\App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gamebasis\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

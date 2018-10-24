@@ -1,6 +1,7 @@
 #include "Logger.h"
 namespace engine {
 	Logger::~Logger() {
+
 		outputVector.clear();
 	}
 	Logger::Logger(std::ostream* stream) {

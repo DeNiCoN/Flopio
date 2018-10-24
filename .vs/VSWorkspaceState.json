@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Flopio"
+    "\\Flopio",
+    "\\Flopio\\src",
+    "\\Flopio\\src\\core",
+    "\\Flopio\\src\\game"
   ],
-  "SelectedNode": "\\Flopio\\src",
+  "SelectedNode": "\\Flopio\\src\\game\\Flopio.h",
   "PreviewInSolutionExplorer": false
 }
