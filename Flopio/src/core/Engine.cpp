@@ -55,15 +55,19 @@ namespace engine {
 
 		double currentTime;
 		double delta;
+		double delay = 0.0;
 		double lastTime = glfwGetTime();
 
 		while (!glfwWindowShouldClose(window))
 		{
 			currentTime = glfwGetTime();
 			delta = currentTime - lastTime;
-
-
-			app.VOnUpdate(delta);
+			delay += delta;
+			while (delay >= app.secondsPerUpdate)
+			{
+				delay -= app.secondsPerUpdate;
+				app.VOnUpdate(delta);
+			}
 
 			lastTime = currentTime;
 			glfwPollEvents();

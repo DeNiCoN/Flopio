@@ -33,6 +33,9 @@
     <ClInclude Include="src\core\Process.h" />
     <ClInclude Include="src\core\ProcessManager.h" />
     <ClInclude Include="src\core\gamebasis\Scene.h" />
+    <ClInclude Include="src\core\resourse\ResourceCache.h" />
+    <ClInclude Include="src\core\resourse\ResourceHandle.h" />
+    <ClInclude Include="src\core\resourse\ResourceLoader.h" />
     <ClInclude Include="src\game\Flopio.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

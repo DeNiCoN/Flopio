@@ -29,6 +29,7 @@ namespace engine {
 	protected:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
 		GLFWwindow *glfwWindowHandle;
+		double secondsPerUpdate = 1 / 60;
 	};
 
 }
