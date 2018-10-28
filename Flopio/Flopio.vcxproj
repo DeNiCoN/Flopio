@@ -23,6 +23,7 @@
     <ClCompile Include="src\core\glad.c" />
     <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\core\ProcessManager.cpp" />
+    <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +34,7 @@
     <ClInclude Include="src\core\Process.h" />
     <ClInclude Include="src\core\ProcessManager.h" />
     <ClInclude Include="src\core\gamebasis\Scene.h" />
+    <ClInclude Include="src\core\resourse\Resource.h" />
     <ClInclude Include="src\core\resourse\ResourceCache.h" />
     <ClInclude Include="src\core\resourse\ResourceHandle.h" />
     <ClInclude Include="src\core\resourse\ResourceLoader.h" />
