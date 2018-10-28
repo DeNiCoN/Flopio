@@ -71,5 +71,8 @@
     <ClInclude Include="src\core\resourse\Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\resourse\ResourceFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

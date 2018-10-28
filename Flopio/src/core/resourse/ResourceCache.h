@@ -25,7 +25,6 @@ namespace engine
 		ResourceHandlesMap handlesMap;
 		ResourceLoadersVector loaders;
 
-
 		char* allocate(unsigned int size);
 		void makeRoom(unsigned int size);
 		void update(std::shared_ptr<ResourceHandle> resHandle);
@@ -33,6 +32,8 @@ namespace engine
 
 	public:
 		ResourceCache(unsigned int sizeInMB);
+		~ResourceCache();
+		bool init();
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);
 
 	};
