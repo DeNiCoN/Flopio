@@ -22,7 +22,7 @@ namespace engine {
 		currentApp->VOnResize(window, width, height);
 	}
 
-	bool appInit(App &app, AppConfig &config) 
+	bool appInit(App &app, const AppConfig &config) 
 	{
 		currentApp = &app;
 		std::ofstream out(config.logFileName);

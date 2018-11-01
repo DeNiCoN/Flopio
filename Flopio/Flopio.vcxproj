@@ -22,6 +22,10 @@
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\glad.c" />
     <ClCompile Include="src\core\Logger.cpp" />
+    <ClCompile Include="src\core\math\prng.c" />
+    <ClCompile Include="src\core\memory\linearAlloc.c" />
+    <ClCompile Include="src\core\memory\poolAlloc.c" />
+    <ClCompile Include="src\core\memory\stackAlloc.c" />
     <ClCompile Include="src\core\ProcessManager.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
@@ -32,6 +36,12 @@
     <ClInclude Include="src\core\gamebasis\App.h" />
     <ClInclude Include="src\core\Engine.h" />
     <ClInclude Include="src\core\Logger.h" />
+    <ClInclude Include="src\core\math\linearmath.h" />
+    <ClInclude Include="src\core\math\prng.h" />
+    <ClInclude Include="src\core\memory\linearAlloc.h" />
+    <ClInclude Include="src\core\memory\memutils.h" />
+    <ClInclude Include="src\core\memory\poolAlloc.h" />
+    <ClInclude Include="src\core\memory\stackAlloc.h" />
     <ClInclude Include="src\core\Process.h" />
     <ClInclude Include="src\core\ProcessManager.h" />
     <ClInclude Include="src\core\gamebasis\Scene.h" />

@@ -39,4 +39,9 @@ namespace engine {
 		LRUList.push_front(resHandle);
 	}
 
+	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
+	{
+		return std::shared_ptr<ResourceHandle>();
+	}
+
 }

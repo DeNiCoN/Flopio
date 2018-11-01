@@ -22,10 +22,12 @@ namespace engine {
 	{
 		friend void VOnResizeWrapper(GLFWwindow* window, int width, int height);
 		friend bool appInit(App &app, const AppConfig &config);
+
 	public:
 		virtual void VOnInit() {}
 		virtual void VOnUpdate(const double delta) = 0;
 		ProcessManager processManager;
+
 	protected:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
 		GLFWwindow *glfwWindowHandle;
