@@ -13,6 +13,7 @@ namespace engine
 	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
 	typedef std::map<std::string, std::shared_ptr<ResourceHandle>> ResourceHandlesMap;
 	typedef std::vector<std::shared_ptr<ResourceLoader>> ResourceLoadersVector;
+	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
 
 	class ResourceCache 
 	{
@@ -27,11 +28,14 @@ namespace engine
 
 		char* allocate(unsigned int size);
 		void makeRoom(unsigned int size);
+		std::shared_ptr<ResourceHandle> load(Resource * resource);
 		void update(std::shared_ptr<ResourceHandle> resHandle);
 		void free(std::shared_ptr<ResourceHandle> resHandle);
+		void freeOneResource();
+		std::shared_ptr<ResourceHandle> find(Resource * resource);
 
 	public:
-		ResourceCache(unsigned int sizeInMB);
+		ResourceCache(unsigned int sizeInMB) : cacheBufferSize(sizeInMB * 1024 * 1024), allocatedSize(0) {}
 		~ResourceCache();
 		bool init();
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);

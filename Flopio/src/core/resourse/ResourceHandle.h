@@ -13,7 +13,7 @@ namespace engine
 		unsigned int size;
 		ResourceCache* resCache;
 	public:
-		ResourceHandle(Resource res, char* buffer, unsigned int size, ResourceCache resCache);
+		ResourceHandle(Resource & res, char* buffer, unsigned int size, ResourceCache resCache);
 		char* getBuffer() const { return buffer; }
 		unsigned int getSize() const { return size; }
 

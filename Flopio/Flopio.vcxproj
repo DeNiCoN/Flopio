@@ -24,6 +24,7 @@
     <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\core\ProcessManager.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
+    <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
