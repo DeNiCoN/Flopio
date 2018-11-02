@@ -1,3 +1,2 @@
-﻿  ResourceCache.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  poolAlloc.c
   Flopio.vcxproj -> E:\Dropbox\Dropbox\Cworkplace\Repos\Flopio\Flopio\Debug\Flopio.exe

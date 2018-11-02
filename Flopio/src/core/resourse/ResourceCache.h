@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "../memory/poolAlloc.h"
 
 namespace engine 
 {
@@ -18,6 +19,9 @@ namespace engine
 	class ResourceCache 
 	{
 	protected:
+		PoolAllocator handlePool;
+		unsigned int maxHandleCount;
+
 		char* cacheBuffer;
 		unsigned int cacheBufferSize;
 		unsigned int allocatedSize;
@@ -35,8 +39,9 @@ namespace engine
 		std::shared_ptr<ResourceHandle> find(Resource * resource);
 
 	public:
-		ResourceCache(unsigned int sizeInMB) : cacheBufferSize(sizeInMB * 1024 * 1024), allocatedSize(0) {}
-		~ResourceCache();
+		//setting default maxHandleCount to sizeInMB * 256 means that we 'have' 4 KB for each handle
+		ResourceCache(unsigned int sizeInMB) : cacheBufferSize(sizeInMB * 1024 * 1024), allocatedSize(0), maxHandleCount(sizeInMB * 256) {}
+		virtual ~ResourceCache();
 		bool init();
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);
 

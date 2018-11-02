@@ -4,15 +4,25 @@ namespace engine {
 
 	ResourceCache::~ResourceCache() 
 	{
-		delete cacheBuffer;
+		if (cacheBuffer)
+			delete cacheBuffer;
 	}
 
 	bool ResourceCache::init()
 	{
 		cacheBuffer = new char[cacheBufferSize];
-		if (cacheBuffer)
-			return true;
-		return false;
+
+		if (!cacheBuffer)
+			return false;
+
+		char* poolBuf = new char[cacheBufferSize];
+		if (!poolBuf)
+			return false;
+		if (!poolInit(&handlePool, poolBuf, sizeof(ResourceHandle), maxHandleCount))
+			return false;
+
+
+		return true;
 	}
 
 	std::shared_ptr<ResourceHandle> ResourceCache::getHandle(Resource * resource)
@@ -43,5 +53,4 @@ namespace engine {
 	{
 		return std::shared_ptr<ResourceHandle>();
 	}
-
 }
