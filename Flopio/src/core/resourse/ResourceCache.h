@@ -18,6 +18,8 @@ namespace engine
 
 	class ResourceCache 
 	{
+		friend ResourceHandle;
+
 	protected:
 		PoolAllocator handlePool;
 		unsigned int maxHandleCount;

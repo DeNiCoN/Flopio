@@ -26,7 +26,7 @@
     <ClCompile Include="src\core\memory\linearAlloc.c" />
     <ClCompile Include="src\core\memory\poolAlloc.c" />
     <ClCompile Include="src\core\memory\stackAlloc.c" />
-    <ClCompile Include="src\core\ProcessManager.cpp" />
+    <ClCompile Include="src\core\gamebasis\ProcessManager.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -42,8 +42,8 @@
     <ClInclude Include="src\core\memory\memutils.h" />
     <ClInclude Include="src\core\memory\poolAlloc.h" />
     <ClInclude Include="src\core\memory\stackAlloc.h" />
-    <ClInclude Include="src\core\Process.h" />
-    <ClInclude Include="src\core\ProcessManager.h" />
+    <ClInclude Include="src\core\gamebasis\Process.h" />
+    <ClInclude Include="src\core\gamebasis\ProcessManager.h" />
     <ClInclude Include="src\core\gamebasis\Scene.h" />
     <ClInclude Include="src\core\resourse\Resource.h" />
     <ClInclude Include="src\core\resourse\ResourceCache.h" />
