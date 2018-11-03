@@ -6,5 +6,5 @@ namespace engine {
 
 	extern App *currentApp;
 	extern Logger log;
-	bool appInit(App &app, AppConfig &config);
+	extern bool appInit(App &app, AppConfig &config);
 }

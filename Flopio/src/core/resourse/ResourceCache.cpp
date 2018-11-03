@@ -1,4 +1,6 @@
 #include "ResourceCache.h"
+#include "../utils.h"
+#include "../Engine.h"
 
 namespace engine {
 
@@ -15,12 +17,11 @@ namespace engine {
 		if (!cacheBuffer)
 			return false;
 
-		char* poolBuf = new char[cacheBufferSize];
+		char* poolBuf = new char[maxHandleCount*sizeof(ResourceHandle)];
 		if (!poolBuf)
 			return false;
 		if (!poolInit(&handlePool, poolBuf, sizeof(ResourceHandle), maxHandleCount))
 			return false;
-
 
 		return true;
 	}
@@ -52,5 +53,24 @@ namespace engine {
 	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
 	{
 		std::shared_ptr<ResourceHandle> handle;
+		std::shared_ptr<ResourceLoader> loader;
+
+		for (std::shared_ptr<ResourceLoader> l : loaders) 
+		{
+			if (wildcardMath(l->VGetWildcardPattern().c_str, resource->name.c_str))
+			{
+				loader = l;
+				break;
+			}
+		}
+
+		if (!loader)
+		{
+			log << "Resource loader for " << resource->name << "not found\n";
+			return handle;
+		}
+
+
+
 	}
 }
