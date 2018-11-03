@@ -51,6 +51,6 @@ namespace engine {
 
 	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
 	{
-		return std::shared_ptr<ResourceHandle>();
+		std::shared_ptr<ResourceHandle>();
 	}
 }

@@ -31,6 +31,7 @@ namespace engine
 		ResourceLoadersVector loaders;
 
 		char* allocate(unsigned int size);
+		void deallocate(char* buffer);
 		void makeRoom(unsigned int size);
 		std::shared_ptr<ResourceHandle> load(Resource * resource);
 		void update(std::shared_ptr<ResourceHandle> resHandle);
