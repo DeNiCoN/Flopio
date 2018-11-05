@@ -1,6 +1,0 @@
-﻿  Main.cpp
-  ResourceCache.cpp
-  ResourceHandle.cpp
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Flopio.vcxproj -> E:\Dropbox\Dropbox\Cworkplace\Repos\Flopio\Flopio\Debug\Flopio.exe
