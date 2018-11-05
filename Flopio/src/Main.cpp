@@ -9,13 +9,7 @@ using namespace game;
 int main() 
 {
 	std::cout << sizeof(ResourceHandle);
-
-	PoolAllocator pool;
-	poolInit(&pool, new char[sizeof(ResourceHandle) * 4], sizeof(ResourceHandle), 4);
-
-	for (int i = 0; i < 5; i++) {
-		poolAlloc(&pool);
-	}
+	while (true) {}
 	/*Flopio app;
 	AppConfig config;
 	return appInit(app, config);*/

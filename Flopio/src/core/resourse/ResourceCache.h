@@ -19,7 +19,7 @@ namespace engine
 
 	class ResourceCache 
 	{
-		friend ResourceHandle;
+		friend class ResourceHandle;
 
 	protected:
 		PoolAllocator handlePool;
@@ -44,7 +44,7 @@ namespace engine
 		std::shared_ptr<ResourceHandle> find(Resource * resource);
 
 	public:
-		//setting default maxHandleCount to sizeInMB * 256 means that we 'have' 4 KB for each handle
+		//setting default maxHandleCount to sizeInMB * 256 means that we 'have' 4 KB of buffer for each handle
 		ResourceCache(unsigned int sizeInMB) : cacheBufferSize(sizeInMB * 1024 * 1024), allocatedSize(0), maxHandleCount(sizeInMB * 256) {}
 		virtual ~ResourceCache();
 		bool init();
@@ -52,6 +52,8 @@ namespace engine
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);
 		void addLoader(std::shared_ptr<ResourceLoader> loader) { loaders.push_back(loader); }
 		void addFile(std::shared_ptr<ResourceFile> file) { files.push_back(file); }
+
+		static bool resourceFileNameMath(Resource& resource, std::shared_ptr<ResourceFile> file);
 
 	};
 }

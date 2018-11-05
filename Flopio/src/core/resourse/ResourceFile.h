@@ -9,11 +9,11 @@ namespace engine
 		std::string name;
 	public:
 		virtual ~ResourceFile() {};
-		virtual bool VOpen();
-		virtual int VGetRawResourceSize(const Resource &r);
-		virtual int VGetRawResource(const Resource &r, char *buffer);
-		virtual int VGetNumResources() const;
-		virtual std::string VGetResourceName(int num) const;
+		virtual bool VOpen() = 0;
+		virtual int VGetRawResourceSize(const Resource &r) = 0;
+		virtual int VGetRawResource(const Resource &r, char *buffer) = 0;
+		virtual int VGetNumResources() const = 0;
+		virtual std::string VGetResourceName(int num) const = 0;
 
 		std::string getName() const { return name; };
 	};

@@ -29,6 +29,7 @@
     <ClCompile Include="src\core\gamebasis\ProcessManager.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
+    <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
     <ClCompile Include="src\core\utils.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
