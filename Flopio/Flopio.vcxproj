@@ -32,6 +32,10 @@
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
     <ClCompile Include="src\core\utils.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\core\math\prng.c" />
+    <ClCompile Include="src\core\memory\linearAlloc.c" />
+    <ClCompile Include="src\core\memory\poolAlloc.c" />
+    <ClCompile Include="src\core\memory\stackAlloc.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\DelayProcess.h" />
@@ -54,6 +58,12 @@
     <ClInclude Include="src\core\resourse\ResourceLoader.h" />
     <ClInclude Include="src\core\utils.h" />
     <ClInclude Include="src\game\Flopio.h" />
+    <ClInclude Include="src\core\math\linearmath.h" />
+    <ClInclude Include="src\core\math\prng.h" />
+    <ClInclude Include="src\core\memory\linearAlloc.h" />
+    <ClInclude Include="src\core\memory\memutils.h" />
+    <ClInclude Include="src\core\memory\poolAlloc.h" />
+    <ClInclude Include="src\core\memory\stackAlloc.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
