@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\libs\lib\glad.c" />
     <ClCompile Include="src\core\Engine.cpp" />
-    <ClCompile Include="src\core\glad.c" />
     <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\core\math\prng.c" />
     <ClCompile Include="src\core\memory\linearAlloc.c" />
@@ -107,8 +107,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)/libs/include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Dropbox\Dropbox\Cworkplace\Repos\Flopio\Flopio\libs\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)../libs/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)../libs/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
