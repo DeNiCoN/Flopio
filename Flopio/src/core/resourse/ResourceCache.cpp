@@ -23,6 +23,11 @@ namespace engine {
 		if (!poolInit(&handlePool, poolBuf, sizeof(ResourceHandle), maxHandleCount))
 			return false;
 
+		//first data of cacheBuffer this is a pointer that points to first free location
+		uintptr_t* ptrToUintptr = reinterpret_cast<uintptr_t*>(cacheBuffer) + 1;
+		*reinterpret_cast<uintptr_t*>(cacheBuffer) = reinterpret_cast<uintptr_t>(ptrToUintptr);
+		*ptrToUintptr = cacheBufferSize - sizeof(uintptr_t); // each free block contains it size
+
 		return true;
 	}
 
@@ -50,7 +55,32 @@ namespace engine {
 		LRUList.push_front(resHandle);
 	}
 
-	char* ResourceCache::allocate(unsigned int size) { return 0; }
+	char* ResourceCache::allocate(unsigned int size) 
+	{ 
+		char* ptr;
+		unsigned int fullSize = size + sizeof(void*) * 2;
+		uintptr_t* pastPtr = reinterpret_cast<uintptr_t*>(cacheBuffer);
+		uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(*pastPtr);
+		while (true)
+		{
+			unsigned int nextFreeSize = *nextPtr;
+			if (fullSize <= nextFreeSize)
+			{
+				//enough space
+				ptr = reinterpret_cast<char*>(nextPtr + 2);
+				*nextPtr = fullSize;
+				nextPtr += fullSize;
+				*pastPtr = reinterpret_cast<uintptr_t>(nextPtr);
+				*nextPtr = nextFreeSize - fullSize;
+				return ptr;
+			}
+			pastPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize);
+			if (reinterpret_cast<char*>(pastPtr) == (cacheBuffer + cacheBufferSize)) // out of buffer;
+				break;
+			uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(*pastPtr);
+		}
+		return nullptr; 
+	}
 	void ResourceCache::deallocate(char* buffer) {};
 
 	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 

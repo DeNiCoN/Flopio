@@ -52,8 +52,5 @@ namespace engine
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);
 		void addLoader(std::shared_ptr<ResourceLoader> loader) { loaders.push_back(loader); }
 		void addFile(std::shared_ptr<ResourceFile> file) { files.push_back(file); }
-
-		static bool resourceFileNameMath(Resource& resource, std::shared_ptr<ResourceFile> file);
-
 	};
 }

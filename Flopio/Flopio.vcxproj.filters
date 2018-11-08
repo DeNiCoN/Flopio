@@ -30,18 +30,6 @@
     <ClCompile Include="src\core\resourse\ResourceCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\math\prng.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\memory\linearAlloc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\memory\poolAlloc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\memory\stackAlloc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\gamebasis\ProcessManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +40,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libs\lib\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\math\prng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\memory\linearAlloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\memory\poolAlloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\memory\stackAlloc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\math\prng.c">
@@ -101,6 +101,15 @@
     <ClInclude Include="src\core\resourse\ResourceFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\gamebasis\Process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gamebasis\ProcessManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\core\math\linearmath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,15 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\memory\stackAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\gamebasis\Process.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\gamebasis\ProcessManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\math\linearmath.h">
