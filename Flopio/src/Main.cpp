@@ -6,9 +6,8 @@
 using namespace engine;
 using namespace game;
 
-int main() 
+int main()
 {
-	std::cout << sizeof(ResourceHandle);
 	while (true) {}
 	/*Flopio app;
 	AppConfig config;

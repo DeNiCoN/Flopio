@@ -1,6 +1,7 @@
 #include "ResourceCache.h"
 #include "../utils.h"
 #include "../Engine.h"
+#include <iostream>
 
 namespace engine {
 
@@ -26,7 +27,7 @@ namespace engine {
 		//first data of cacheBuffer this is a pointer that points to first free location
 		uintptr_t* ptrToUintptr = reinterpret_cast<uintptr_t*>(cacheBuffer) + 1;
 		*reinterpret_cast<uintptr_t*>(cacheBuffer) = reinterpret_cast<uintptr_t>(ptrToUintptr);
-		*ptrToUintptr = cacheBufferSize - sizeof(uintptr_t); // each free block contains it size
+		*ptrToUintptr = cacheBufferSize - sizeof(void*) * 2; // each free block contains it size
 
 		return true;
 	}
@@ -66,16 +67,18 @@ namespace engine {
 			unsigned int nextFreeSize = *nextPtr;
 			if (fullSize <= nextFreeSize)
 			{
+				std::cout << fullSize << "::" << nextFreeSize << "\n";
 				//enough space
 				ptr = reinterpret_cast<char*>(nextPtr + 2);
 				*nextPtr = fullSize;
-				nextPtr += fullSize;
+				nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
 				*pastPtr = reinterpret_cast<uintptr_t>(nextPtr);
+				std::cout << (unsigned int)nextPtr << "::" << (unsigned int)(cacheBuffer + cacheBufferSize) << "::" << (unsigned int)(cacheBuffer + cacheBufferSize) -(unsigned int)nextPtr << "\n";
 				*nextPtr = nextFreeSize - fullSize;
 				return ptr;
 			}
 			pastPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize);
-			if (reinterpret_cast<char*>(pastPtr) == (cacheBuffer + cacheBufferSize)) // out of buffer;
+			if (reinterpret_cast<char*>(pastPtr) == (cacheBuffer + cacheBufferSize - sizeof(void*))) // out of buffer;
 				break;
 			uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(*pastPtr);
 		}

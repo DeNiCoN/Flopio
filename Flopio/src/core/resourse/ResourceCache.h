@@ -10,6 +10,8 @@
 #include <vector>
 #include "../memory/poolAlloc.h"
 
+extern void foo();
+
 namespace engine 
 {
 	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
@@ -20,6 +22,7 @@ namespace engine
 	class ResourceCache 
 	{
 		friend class ResourceHandle;
+		friend void ::foo();
 
 	protected:
 		PoolAllocator handlePool;
