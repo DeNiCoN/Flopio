@@ -10,8 +10,6 @@
 #include <vector>
 #include "../memory/poolAlloc.h"
 
-extern void foo();
-
 namespace engine 
 {
 	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
@@ -19,10 +17,23 @@ namespace engine
 	typedef std::vector<std::shared_ptr<ResourceLoader>> ResourceLoadersVector;
 	typedef std::vector<std::shared_ptr<ResourceFile>> ResourceFileVector;
 
+	struct ResCacheResourceHeader
+	{
+		void* startOfBlock;
+		size_t buffSize;
+		ResourceHandle* handle;
+	};
+
+	struct ResCacheBlockHeader
+	{
+		ResCacheBlockHeader* prevBlockHeader;
+		void* nextFreeSpaceStart;
+	};
+
+
 	class ResourceCache 
 	{
 		friend class ResourceHandle;
-		friend void ::foo();
 
 	protected:
 		PoolAllocator handlePool;

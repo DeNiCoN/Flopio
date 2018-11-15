@@ -25,9 +25,10 @@ namespace engine {
 			return false;
 
 		//first data of cacheBuffer this is a pointer that points to first free location
-		uintptr_t* ptrToUintptr = reinterpret_cast<uintptr_t*>(cacheBuffer) + 1;
-		*reinterpret_cast<uintptr_t*>(cacheBuffer) = reinterpret_cast<uintptr_t>(ptrToUintptr);
-		*ptrToUintptr = cacheBufferSize - sizeof(void*) * 2; // each free block contains it size
+		ResCacheBlockHeader* firstHeader = reinterpret_cast<ResCacheBlockHeader*>(cacheBuffer);
+		firstHeader->prevBlockHeader = nullptr;
+		firstHeader->nextFreeSpaceStart = cacheBuffer + sizeof(ResCacheBlockHeader);
+		*static_cast<uintptr_t*>(firstHeader->nextFreeSpaceStart) = cacheBufferSize - sizeof(ResCacheBlockHeader); // each free block contains it size
 
 		return true;
 	}
@@ -58,33 +59,79 @@ namespace engine {
 
 	char* ResourceCache::allocate(unsigned int size) 
 	{ 
+		ResCacheBlockHeader* blockHeader;
+		ResCacheResourceHeader * resHeader;
+		unsigned int nextFreeSize;
+		unsigned int diff;
 		char* ptr;
-		unsigned int fullSize = size + sizeof(void*) * 2;
-		uintptr_t* pastPtr = reinterpret_cast<uintptr_t*>(cacheBuffer);
-		uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(*pastPtr);
+		unsigned int fullSize = size + sizeof(ResCacheResourceHeader);
+		blockHeader = reinterpret_cast<ResCacheBlockHeader*>(cacheBuffer);
+		uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
 		while (true)
 		{
-			unsigned int nextFreeSize = *nextPtr;
+			nextFreeSize = *nextPtr;
 			if (fullSize <= nextFreeSize)
 			{
-				std::cout << fullSize << "::" << nextFreeSize << "\n";
 				//enough space
-				ptr = reinterpret_cast<char*>(nextPtr + 2);
-				*nextPtr = fullSize;
+				resHeader = reinterpret_cast<ResCacheResourceHeader*>(nextPtr);
+				ptr = reinterpret_cast<char*>(nextPtr) + sizeof(ResCacheResourceHeader);
+				diff = nextFreeSize - fullSize;
+				resHeader->startOfBlock = blockHeader;
+				resHeader->buffSize = size;
+				resHeader->handle = nullptr;
+				if (diff <= sizeof(ResCacheBlockHeader) + 1)
+				{
+					//TODO merge two blocks
+					log << "ResourceCache data corrupting\n";
+				}
 				nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
-				*pastPtr = reinterpret_cast<uintptr_t>(nextPtr);
-				std::cout << (unsigned int)nextPtr << "::" << (unsigned int)(cacheBuffer + cacheBufferSize) << "::" << (unsigned int)(cacheBuffer + cacheBufferSize) -(unsigned int)nextPtr << "\n";
-				*nextPtr = nextFreeSize - fullSize;
+				blockHeader->nextFreeSpaceStart = nextPtr;
+				*nextPtr = diff;
 				return ptr;
 			}
-			pastPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize);
-			if (reinterpret_cast<char*>(pastPtr) == (cacheBuffer + cacheBufferSize - sizeof(void*))) // out of buffer;
+			blockHeader = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));
+			if (reinterpret_cast<char*>(blockHeader) == (cacheBuffer + cacheBufferSize - sizeof(ResCacheBlockHeader) * 2)) // out of buffer;
 				break;
-			uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(*pastPtr);
+			uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
 		}
 		return nullptr; 
 	}
-	void ResourceCache::deallocate(char* buffer) {};
+
+
+	void ResourceCache::deallocate(char* buffer) 
+	{
+		ResCacheResourceHeader* header;
+		ResCacheBlockHeader* block;
+		ResCacheBlockHeader* previous;
+
+		header = reinterpret_cast<ResCacheResourceHeader*>(buffer[-sizeof(ResCacheResourceHeader)]);
+		block = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock);
+
+		bool first = reinterpret_cast<char*>(header) - reinterpret_cast<char*>(header->startOfBlock) <= sizeof(ResCacheResourceHeader);
+		bool last = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock)->nextFreeSpaceStart == reinterpret_cast<char*>(header + 1) + header->buffSize;
+
+		if (first && last)
+		{
+			//Resource is alone in block
+			previous = block->prevBlockHeader;
+			*reinterpret_cast<uintptr_t*>(previous->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(previous->nextFreeSpaceStart) - reinterpret_cast<uintptr_t>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart);
+			reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart))->prevBlockHeader = previous;
+		}
+		else if(first)
+		{
+			//Resource lay first after block header
+
+
+		}
+		else if (last)
+		{
+			//Resource lay last in block
+		} 
+		else
+		{
+			//Resource lay im the middle of block
+		}
+	};
 
 	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
 	{

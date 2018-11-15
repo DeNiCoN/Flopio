@@ -8,6 +8,7 @@ using namespace game;
 
 int main()
 {
+	std::cout << sizeof(ResCacheResourceHeader);
 	while (true) {}
 	/*Flopio app;
 	AppConfig config;
