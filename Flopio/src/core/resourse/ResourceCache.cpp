@@ -102,10 +102,14 @@ namespace engine {
 	{
 		ResCacheResourceHeader* header;
 		ResCacheBlockHeader* block;
-		ResCacheBlockHeader* previous;
+		ResCacheBlockHeader* previous; 
+		ResCacheBlockHeader* next;
 
 		header = reinterpret_cast<ResCacheResourceHeader*>(buffer[-sizeof(ResCacheResourceHeader)]);
 		block = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock);
+		previous = block->prevBlockHeader;
+		void* pNextFreeSpaceStart = previous == nullptr ? cacheBuffer + sizeof(ResCacheBlockHeader) : previous->nextFreeSpaceStart;
+		next = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) - sizeof(ResCacheBlockHeader));
 
 		bool first = reinterpret_cast<char*>(header) - reinterpret_cast<char*>(header->startOfBlock) <= sizeof(ResCacheResourceHeader);
 		bool last = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock)->nextFreeSpaceStart == reinterpret_cast<char*>(header + 1) + header->buffSize;
@@ -113,23 +117,38 @@ namespace engine {
 		if (first && last)
 		{
 			//Resource is alone in block
-			previous = block->prevBlockHeader;
-			*reinterpret_cast<uintptr_t*>(previous->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(previous->nextFreeSpaceStart) - reinterpret_cast<uintptr_t>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart);
-			reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart))->prevBlockHeader = previous;
+			
+			//set size of previous free space 
+			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = reinterpret_cast<uintptr_t>(block->nextFreeSpaceStart) - reinterpret_cast<uintptr_t>(pNextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart);
+			next->prevBlockHeader = previous;
 		}
 		else if(first)
 		{
 			//Resource lay first after block header
 
+			uintptr_t nextFSize = reinterpret_cast<uintptr_t>(header) - reinterpret_cast<uintptr_t>(pNextFreeSpaceStart) + header->buffSize + sizeof(ResCacheResourceHeader);
+			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = nextFSize;
+			ResCacheBlockHeader* newBlock = reinterpret_cast<ResCacheBlockHeader*>(nextFSize - sizeof(ResCacheBlockHeader));
+			*newBlock = *block;
+			next->prevBlockHeader = newBlock;
 
 		}
 		else if (last)
 		{
 			//Resource lay last in block
+			block->nextFreeSpaceStart = header;
+			*reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(next) - reinterpret_cast<uintptr_t>(header) + sizeof(ResCacheBlockHeader);
 		} 
 		else
 		{
-			//Resource lay im the middle of block
+			//Resource lay in the middle of block
+			ResCacheBlockHeader* nextBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(header) + header->buffSize);
+			void* oldNextFSS = block->nextFreeSpaceStart;
+			block->nextFreeSpaceStart = header;
+			char* endOfResBuff = reinterpret_cast<char*>(nextBlock) + sizeof(ResCacheResourceHeader);
+			*reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(endOfResBuff) - reinterpret_cast<uintptr_t>(header);
+			nextBlock->nextFreeSpaceStart = oldNextFSS;
+			nextBlock->prevBlockHeader = block;
 		}
 	};
 
