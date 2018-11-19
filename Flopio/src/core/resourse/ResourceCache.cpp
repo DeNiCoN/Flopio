@@ -160,7 +160,7 @@ namespace engine {
 		
 		for (std::shared_ptr<ResourceLoader> l : loaders) 
 		{
-			if (wildcardMath(l->VGetWildcardPattern().c_str(), resource->getName().c_str()))
+			if (wildcardMath(l->VGetWildcardPattern().c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
 			{
 				loader = l;
 				break;

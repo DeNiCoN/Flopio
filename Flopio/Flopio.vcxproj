@@ -27,6 +27,7 @@
     <ClCompile Include="src\core\memory\linearAlloc.c" />
     <ClCompile Include="src\core\memory\poolAlloc.c" />
     <ClCompile Include="src\core\memory\stackAlloc.c" />
+    <ClCompile Include="src\core\resourse\files\DirectoryResourceFile.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="src\core\memory\memutils.h" />
     <ClInclude Include="src\core\memory\poolAlloc.h" />
     <ClInclude Include="src\core\memory\stackAlloc.h" />
+    <ClInclude Include="src\core\resourse\files\DirectoryResourceFile.h" />
     <ClInclude Include="src\core\resourse\Resource.h" />
     <ClInclude Include="src\core\resourse\ResourceCache.h" />
     <ClInclude Include="src\core\resourse\ResourceFile.h" />
@@ -116,6 +118,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
