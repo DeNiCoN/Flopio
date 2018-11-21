@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include "../../utils.h"
+#include <fstream>
 
 namespace engine
 {
@@ -29,7 +30,12 @@ namespace engine
 
 	int DirectoryResourceFile::VGetRawResource(const Resource &r, char *buffer)
 	{
-		
+		std::fstream file;
+		file.open(name + r.getName().substr(r.getColonPos + 1), std::fstream::in);
+		if (file.fail())
+			return -1;
+		file.read(buffer, filesMap[r.getName()]);
+		return 0;
 	}
 
 	std::string DirectoryResourceFile::VGetResourceName(int num) const

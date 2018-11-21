@@ -59,6 +59,9 @@ namespace engine {
 
 	char* ResourceCache::allocate(unsigned int size) 
 	{ 
+		if (size == 0)
+			return nullptr;
+
 		ResCacheBlockHeader* blockHeader;
 		ResCacheResourceHeader * resHeader;
 		unsigned int nextFreeSize;
@@ -100,6 +103,9 @@ namespace engine {
 
 	void ResourceCache::deallocate(char* buffer) 
 	{
+		if (buffer == nullptr)
+			return;
+
 		ResCacheResourceHeader* header;
 		ResCacheBlockHeader* block;
 		ResCacheBlockHeader* previous; 
@@ -189,9 +195,9 @@ namespace engine {
 		}
 
 		int rawSize = file->VGetRawResourceSize(*resource);
-		if (rawSize < 0)
+		if (rawSize == 0)
 		{
-			log << "Resource size returned -1 - Resource " << resource->getName() << " not found";
+			log << "Resource size returned 0 - Resource " << resource->getName() << " not found";
 			return std::shared_ptr<ResourceHandle>();
 		}
 		char *rawBuffer = allocate(rawSize);
