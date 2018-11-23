@@ -5,7 +5,7 @@
 namespace engine
 {
 
-	class ResourceExtraData;
+	
 
 	class ResourceHandle
 	{

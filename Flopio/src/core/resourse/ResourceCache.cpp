@@ -222,7 +222,7 @@ namespace engine {
 		{
 			size = loader->VGetLoadedSize(rawBuffer, rawSize) + loader->VGetExtraDataSize();
 			buffer = allocate(size);
-			if (rawBuffer == NULL || buffer == NULL)
+			if ((rawBuffer == NULL || buffer == NULL) && size != 0)
 			{
 				log << "ResourceCache out of memory while loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
@@ -239,7 +239,7 @@ namespace engine {
 
 			if (!success)
 			{
-				log << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+				log << "Something went wrong when loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
 		}

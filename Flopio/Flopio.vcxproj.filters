@@ -69,7 +69,7 @@
     <ClCompile Include="src\core\resourse\files\DirectoryResourceFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\resourse\loaders\DefaultResourceLoader.cpp">
+    <ClCompile Include="src\core\resourse\loaders\TextureResourceLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -28,7 +28,7 @@
     <ClCompile Include="src\core\memory\poolAlloc.c" />
     <ClCompile Include="src\core\memory\stackAlloc.c" />
     <ClCompile Include="src\core\resourse\files\DirectoryResourceFile.cpp" />
-    <ClCompile Include="src\core\resourse\loaders\DefaultResourceLoader.cpp" />
+    <ClCompile Include="src\core\resourse\loaders\TextureResourceLoader.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
