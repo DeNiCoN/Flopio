@@ -166,10 +166,15 @@ namespace engine {
 		
 		for (std::shared_ptr<ResourceLoader> l : loaders) 
 		{
-			if (wildcardMath(l->VGetWildcardPattern().c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
+			int size;
+			const std::string* wilds = l->VGetWildcardPattern(&size);
+			for (int i = 0; i < size; i++)
 			{
-				loader = l;
-				break;
+				if (wildcardMath(wilds[i].c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
+				{
+					loader = l;
+					break;
+				}
 			}
 		}
 
