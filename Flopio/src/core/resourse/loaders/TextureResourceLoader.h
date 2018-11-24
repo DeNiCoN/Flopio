@@ -3,14 +3,18 @@
 
 namespace engine
 {
-	class TextureExtraData : ResourceExtraData 
+	class TextureExtraData : public ResourceExtraData 
 	{
+		friend class TextureResourceLoader;
 		std::string getName() { return "textureExtraData"; }
+	private:
+		unsigned int textureId;
+	public:
+		~TextureExtraData();
 	};
 
-	class TextureResourceLoader : ResourceLoader
+	class TextureResourceLoader : public ResourceLoader
 	{
-		// Inherited via ResourceLoader
 		virtual bool VUseRawFile() override { return false; }
 		virtual bool VDiscardRawBufferAfterLoad() override { return true; }
 		virtual const std::string* VGetWildcardPattern(int* size) override
@@ -19,5 +23,8 @@ namespace engine
 		virtual unsigned int VGetLoadedSize(char * rawBuffer, unsigned int rawBufSize) override { return 0; }
 		virtual unsigned int VGetExtraDataSize() override { return sizeof(TextureExtraData); }
 		virtual bool VLoad(char * rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle) override;
+
+	public:
+		bool generateMipmaps = false;
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "ProcessManager.h"
+#include "../resourse/ResourceCache.h"
 #include <string>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -26,7 +27,9 @@ namespace engine {
 	public:
 		virtual void VOnInit() {}
 		virtual void VOnUpdate(const double delta) = 0;
+		virtual void VOnRender(const double lengthBetweenUpdatesNormalized) = 0;
 		ProcessManager processManager;
+		ResourceCache resourceCache;
 
 	protected:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}

@@ -85,7 +85,7 @@ namespace engine {
 				if (diff <= sizeof(ResCacheBlockHeader) + 1)
 				{
 					//TODO merge two blocks
-					log << "ResourceCache data corrupting\n";
+					logger << "ResourceCache data corrupting\n";
 				}
 				nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
 				blockHeader->nextFreeSpaceStart = nextPtr;
@@ -180,7 +180,7 @@ namespace engine {
 
 		if (!loader)
 		{
-			log << "Resource loader for " << resource->getName() << " not found\n";
+			logger << "Resource loader for " << resource->getName() << " not found\n";
 			return handle;
 		}
 
@@ -195,21 +195,21 @@ namespace engine {
 
 		if (!file)
 		{
-			log << "ResourceFile for " << resource->getName() << " not found\n";
+			logger << "ResourceFile for " << resource->getName() << " not found\n";
 			return handle;
 		}
 
 		int rawSize = file->VGetRawResourceSize(*resource);
 		if (rawSize == 0)
 		{
-			log << "Resource size returned 0 - Resource " << resource->getName() << " not found";
+			logger << "Resource size returned 0 - Resource " << resource->getName() << " not found";
 			return std::shared_ptr<ResourceHandle>();
 		}
 		char *rawBuffer = allocate(rawSize);
 
 		if (rawBuffer == NULL || file->VGetRawResource(*resource, rawBuffer) == 0)
 		{
-			log << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+			logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 
@@ -229,7 +229,7 @@ namespace engine {
 			buffer = allocate(size);
 			if ((rawBuffer == NULL || buffer == NULL) && size != 0)
 			{
-				log << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+				logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
 			ResourceHandle * handl = reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool));
@@ -244,7 +244,7 @@ namespace engine {
 
 			if (!success)
 			{
-				log << "Something went wrong when loading " << resource->getName() << "\n";
+				logger << "Something went wrong when loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
 		}

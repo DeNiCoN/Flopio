@@ -22,6 +22,7 @@ namespace engine
 		~ResourceHandle();
 		char* getBuffer() const { return buffer; }
 		unsigned int getSize() const { return size; }
+		Resource getResource() const { return resource; }
 		std::shared_ptr<ResourceExtraData> getExtra() const { return extra; }
 		void setExtra(std::shared_ptr<ResourceExtraData> extra) { this->extra = extra; }
 	};

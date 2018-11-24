@@ -1,19 +1,18 @@
 #pragma once
 #include "Engine.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "Logger.h"
 #include <iostream>
 #include <fstream>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 namespace engine {
 
 	App *currentApp;
-	Logger log;
+	Logger logger;
 
 	void glfwErrorCallback(int error, const char* description) 
 	{
-		log << description << "\n";
+		logger << description << "\n";
 	}
 
 	void VOnResizeWrapper(GLFWwindow* window, int width, int height) 
@@ -26,7 +25,9 @@ namespace engine {
 	{
 		currentApp = &app;
 		std::ofstream out(config.logFileName);
-		log.addStream(&out);
+		logger.addStream(&out);
+
+		stbi_set_flip_vertically_on_load(true);
 		
 		glfwSetErrorCallback(glfwErrorCallback);
 
@@ -45,7 +46,7 @@ namespace engine {
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			log << "Failed to initialize GLAD" << "\n";
+			logger << "Failed to initialize GLAD" << "\n";
 			return false;
 		}
 		glViewport(0, 0, config.width, config.height);
@@ -68,6 +69,8 @@ namespace engine {
 				delay -= app.secondsPerUpdate;
 				app.VOnUpdate(delta);
 			}
+
+			app.VOnRender(delay / app.secondsPerUpdate);
 
 			lastTime = currentTime;
 			glfwPollEvents();

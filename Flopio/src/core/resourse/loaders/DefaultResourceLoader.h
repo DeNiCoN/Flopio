@@ -3,9 +3,8 @@
 
 namespace engine
 {
-	class DefaultResourceLoader : ResourceLoader
+	class DefaultResourceLoader : public ResourceLoader
 	{
-		// Inherited via ResourceLoader
 		virtual bool VUseRawFile() override { return true; }
 		virtual bool VDiscardRawBufferAfterLoad() override { return false; }
 		virtual const std::string* VGetWildcardPattern(int* size) override 

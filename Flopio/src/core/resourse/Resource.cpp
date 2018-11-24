@@ -14,7 +14,7 @@ namespace engine
 		size_t pos = name.find(':', 0);
 		if (pos == std::string::npos)
 		{
-			log << "Resource " << name << " don't contains ':'\n";
+			logger << "Resource " << name << " don't contains ':'\n";
 			colonPos = 0;
 		}
 		else
