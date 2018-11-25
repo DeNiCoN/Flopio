@@ -34,6 +34,7 @@
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
     <ClCompile Include="src\core\utils.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\core\resourse\loaders\VertexShaderResourceLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\DelayProcess.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="src\core\resourse\ResourceLoader.h" />
     <ClInclude Include="src\core\utils.h" />
     <ClInclude Include="src\game\Flopio.h" />
+    <ClInclude Include="src\core\resourse\loaders\VertexShaderResourceLoader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
