@@ -14,4 +14,9 @@ namespace engine
 
 		return shaderLoadHelperFunc(GL_VERTEX_SHADER, rawBuffer, rawBufSize, &extra->vertexShaderID);
 	}
+
+	VertexShaderData::~VertexShaderData()
+	{
+		glDeleteShader(vertexShaderID);
+	}
 }

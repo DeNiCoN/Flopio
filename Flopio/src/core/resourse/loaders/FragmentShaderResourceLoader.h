@@ -4,25 +4,26 @@
 namespace engine
 {
 
-	class VertexShaderData : public ResourceExtraData
+	class FragmentShaderData : public ResourceExtraData
 	{
-		friend class VertexShaderResourceLoader;
+		friend class FragmentShaderResourceLoader;
 		virtual std::string getName() override { return "vertexShaderData"; }
 	public:
-		~VertexShaderData();
+		~FragmentShaderData();
 	private:
-		unsigned int vertexShaderID;
+		unsigned int fragmentShaderID;
 	};
 
-	class VertexShaderResourceLoader : public ResourceLoader
+	class FragmentShaderResourceLoader : public ResourceLoader
 	{
+	public:
+
 		virtual bool VUseRawFile() override { return false; }
 		virtual bool VDiscardRawBufferAfterLoad() override { return true; };
 		virtual const std::string * VGetWildcardPattern(int * size) override
-		{ std::string r[] = { "*.vs" }; *size = sizeof(r) / sizeof(r[0]); return r;}
+		{ std::string r[] = { "*.vs" }; *size = sizeof(r) / sizeof(r[0]); return r; }
 		virtual unsigned int VGetLoadedSize(char * rawBuffer, unsigned int rawBufSize) override { return 0; }
-		virtual unsigned int VGetExtraDataSize() override { return sizeof(VertexShaderData); }
+		virtual unsigned int VGetExtraDataSize() override { return sizeof(FragmentShaderData); }
 		virtual bool VLoad(char * rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle) override;
 	};
 }
-
