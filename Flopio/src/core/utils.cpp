@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "Engine.h"
 
 
 bool wildcardMath(const char *pat, const char *str) {
@@ -31,6 +32,30 @@ test_match:
 	if (!star) return 0;
 	str++;
 	goto test_match;
+}
+
+bool shaderLoadHelperFunc(int shaderType, char* rawBuffer, int rawBufSize, unsigned int *ID)
+{
+	static char infoLog[512];
+	int success, id;
+	ID = glCreateShader(GL_VERTEX_SHADER);
+	if (!ID)
+	{
+		engine::logger << "Shader creation failed, bad enum value: " << shaderType << "\n";
+		return false;
+	}
+	glShaderSource(ID, 1, &rawBuffer, &rawBufSize);
+	glCompileShader(ID);
+	// print compile errors if any
+	glGetShaderiv(ID, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(ID, 512, NULL, infoLog);
+		engine::logger << "SHADER COMPILATION FAILED\n" << infoLog << "\n";
+		return false;
+	};
+
+	return true;
 }
 
 std::vector<std::string> splitpath(const std::string& str, const std::set<char> delimiters)
