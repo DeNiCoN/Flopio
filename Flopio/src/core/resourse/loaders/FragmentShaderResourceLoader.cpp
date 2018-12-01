@@ -11,7 +11,7 @@ namespace engine
 		std::shared_ptr<FragmentShaderData> extra = std::shared_ptr<FragmentShaderData>(reinterpret_cast<FragmentShaderData*>(extraData);
 		resHandle->setExtra(extra);
 
-		return shaderLoadHelperFunc(GL_VERTEX_SHADER, rawBuffer, rawBufSize, &extra->fragmentShaderID);
+		return shaderLoadHelperFunc(GL_FRAGMENT_SHADER, rawBuffer, rawBufSize, &extra->fragmentShaderID);
 	}
 
 	FragmentShaderData::~FragmentShaderData()

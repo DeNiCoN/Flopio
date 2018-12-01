@@ -173,5 +173,11 @@
     <ClInclude Include="src\core\resourse\loaders\FragmentShaderResourceLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\gamebasis\Actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gamebasis\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
