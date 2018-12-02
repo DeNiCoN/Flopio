@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\libs\lib\glad.c" />
+    <ClCompile Include="src\core\gamebasis\RectangleRenderComponent.cpp" />
     <ClCompile Include="src\core\resourse\loaders\FragmentShaderResourceLoader.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />
@@ -34,12 +35,15 @@
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
     <ClCompile Include="src\core\utils.cpp" />
+    <ClCompile Include="src\game\Flopio.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\core\resourse\loaders\VertexShaderResourceLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\gamebasis\Actor.h" />
     <ClInclude Include="src\core\gamebasis\Component.h" />
+    <ClInclude Include="src\core\gamebasis\RectangleRenderComponent.h" />
+    <ClInclude Include="src\core\gamebasis\RenderComponent.h" />
     <ClInclude Include="src\core\resourse\loaders\FragmentShaderResourceLoader.h" />
     <ClInclude Include="src\core\DelayProcess.h" />
     <ClInclude Include="src\core\gamebasis\App.h" />

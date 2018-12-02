@@ -6,7 +6,10 @@ namespace engine
 {
 	class Scene
 	{
+	public:
+		void onRender(const double ndelay);
+		void addActor(SharedActor actor);
 	private:
-		std::vector<Actor> actors;
+		std::vector<SharedActor> actors;
 	};
 }

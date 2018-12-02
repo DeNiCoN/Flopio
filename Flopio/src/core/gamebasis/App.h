@@ -4,6 +4,7 @@
 #include <string>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Scene.h"
 
 namespace engine {
 
@@ -27,13 +28,14 @@ namespace engine {
 	public:
 		virtual void VOnInit() {}
 		virtual void VOnUpdate(const double delta) = 0;
-		virtual void VOnRender(const double lengthBetweenUpdatesNormalized) = 0;
+		virtual void VOnRender(const double ndelta) = 0;
 		ProcessManager processManager;
 		ResourceCache resourceCache;
 
 	protected:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
 		GLFWwindow *glfwWindowHandle;
+		Scene root;
 		double secondsPerUpdate = 1 / 60;
 	};
 

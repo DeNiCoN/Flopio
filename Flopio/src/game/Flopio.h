@@ -5,9 +5,10 @@ namespace game {
 	class Flopio : public App
 	{
 	public:
-		void VOnUpdate(double delta) { std::cout << "inside\n"; }
-
+		virtual void VOnUpdate(const double delta) override;
+		virtual void VOnRender(const double ndelay) override;
+		virtual void VOnInit() override;
 	private:
-
+		Actor ship;
 	};
 }
