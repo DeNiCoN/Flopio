@@ -2,12 +2,18 @@
 #include <vector>
 #include "Component.h"
 #include <memory>
+#include "RenderComponent.h"
 
 namespace engine
 {
 	typedef std::shared_ptr<Actor> SharedActor;
 	class Actor
 	{
-		std::vector<Component> components;
+	private:
+		std::vector<SharedComponent> components;
+	public:
+		std::shared_ptr<RenderComponent> renderer;
+		std::vector<SharedComponent> getComponents() const { return components; }
+
 	};
 }

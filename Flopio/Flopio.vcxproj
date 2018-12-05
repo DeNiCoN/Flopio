@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\libs\lib\glad.c" />
     <ClCompile Include="src\core\gamebasis\RectangleRenderComponent.cpp" />
+    <ClCompile Include="src\core\gamebasis\Scene.cpp" />
     <ClCompile Include="src\core\resourse\loaders\FragmentShaderResourceLoader.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />

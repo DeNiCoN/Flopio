@@ -1,11 +1,12 @@
 #pragma once
 #include "Actor.h"
 #include "..\utils.h"
-
+#include <memory>
 
 
 namespace engine
 {
+	typedef std::shared_ptr<Component> SharedComponent;
 	class Component
 	{
 	public:

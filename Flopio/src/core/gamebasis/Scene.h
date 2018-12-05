@@ -7,8 +7,8 @@ namespace engine
 	class Scene
 	{
 	public:
-		void onRender(const double ndelay);
-		void addActor(SharedActor actor);
+		void render(const double ndelay);
+		void addActor(SharedActor actor) { actors.push_back(actor); }
 	private:
 		std::vector<SharedActor> actors;
 	};

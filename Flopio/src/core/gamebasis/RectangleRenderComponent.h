@@ -4,12 +4,13 @@
 
 namespace engine
 {
-	class RectangleRenderComponent : RenderComponent
+	class RectangleRenderComponent : public RenderComponent
 	{
 
 	public:
 		RectangleRenderComponent();
 		RectangleRenderComponent(Resource texture);
 		virtual void VRender(const double ndelay) override;
+		virtual const char* getName() const override { return "RectangleRenderComponent"; }
 	};
 }
