@@ -17,6 +17,7 @@ namespace game
 	void Flopio::VOnInit()
 	{
 		RectangleRenderComponent render;
+		Scene::registerRenderer(render.getId(),[]);
 		std::shared_ptr<RenderComponent> renderPtr { &render };
 		ship.renderer = renderPtr;
 		std::shared_ptr<Actor> actorPtr { &ship };

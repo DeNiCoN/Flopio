@@ -15,5 +15,6 @@ namespace engine
 		std::shared_ptr<RenderComponent> renderer;
 		std::vector<SharedComponent> getComponents() const { return components; }
 
+		std::shared_ptr<RenderComponent> getRenderer() const { return renderer; }
 	};
 }

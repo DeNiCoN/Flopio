@@ -2,4 +2,5 @@
 
 void engine::RectangleRenderComponent::VRender(const double ndelay)
 {
+
 }
