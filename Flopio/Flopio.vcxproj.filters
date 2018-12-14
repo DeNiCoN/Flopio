@@ -87,6 +87,9 @@
     <ClCompile Include="src\core\gamebasis\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\gamebasis\RenderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Engine.h">
@@ -194,5 +197,10 @@
     <ClInclude Include="src\core\gamebasis\RenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\ship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

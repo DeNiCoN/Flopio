@@ -10,6 +10,7 @@ namespace engine
 		virtual std::string getName() override { return "vertexShaderData"; }
 	public:
 		~FragmentShaderData();
+		unsigned int getId() const { return fragmentShaderID; }
 	private:
 		unsigned int fragmentShaderID;
 	};

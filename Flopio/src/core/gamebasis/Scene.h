@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Actor.h"
-#include <map>
+#include <unordered_map>
 
 namespace engine
 {
@@ -13,7 +13,7 @@ namespace engine
 		static void registerRenderer(unsigned int componentId, void(*renderFunction)(std::vector<SharedActor>&, const double));
 	private:
 		std::vector<SharedActor> actors;
-		static std::map<unsigned int, std::vector<SharedActor>> tempActorsMap;
-		static std::map<unsigned int, void(*)(std::vector<SharedActor>&, const double)> renderFunctionsMap;
+		static std::unordered_map<unsigned int, std::vector<SharedActor>> tempActorsMap;
+		static std::unordered_map<unsigned int, void(*)(std::vector<SharedActor>&, const double)> renderFunctionsMap;
 	};
 }

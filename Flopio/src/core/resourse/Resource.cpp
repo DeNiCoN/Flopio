@@ -3,6 +3,7 @@
 #include "../Engine.h"
 #include <cctype>
 #include <algorithm>
+#include "../utils.h"
 
 namespace engine
 {
@@ -10,7 +11,7 @@ namespace engine
 	{
 		name = resName;
 		std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
-
+		hashed = hash(resName.c_str(), resName.length());
 		size_t pos = name.find(':', 0);
 		if (pos == std::string::npos)
 		{

@@ -10,6 +10,7 @@ namespace engine
 		virtual std::string getName() override { return "vertexShaderData"; }
 	public:
 		~VertexShaderData();
+		unsigned int getId() const { return vertexShaderID; }
 	private:
 		unsigned int vertexShaderID;
 	};

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\libs\lib\glad.c" />
     <ClCompile Include="src\core\gamebasis\RectangleRenderComponent.cpp" />
+    <ClCompile Include="src\core\gamebasis\RenderComponent.cpp" />
     <ClCompile Include="src\core\gamebasis\Scene.cpp" />
     <ClCompile Include="src\core\resourse\loaders\FragmentShaderResourceLoader.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
@@ -70,6 +71,9 @@
     <ClInclude Include="src\core\utils.h" />
     <ClInclude Include="src\game\Flopio.h" />
     <ClInclude Include="src\core\resourse\loaders\VertexShaderResourceLoader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\ship.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -5,7 +5,7 @@
 #include "ResourceHandle.h"
 #include "ResourceLoader.h"
 #include "ResourceFile.h"
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include "../memory/poolAlloc.h"
@@ -13,7 +13,7 @@
 namespace engine 
 {
 	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
-	typedef std::map<std::string, std::shared_ptr<ResourceHandle>> ResourceHandlesMap;
+	typedef std::unordered_map<std::string, std::shared_ptr<ResourceHandle>> ResourceHandlesMap;
 	typedef std::vector<std::shared_ptr<ResourceLoader>> ResourceLoadersVector;
 	typedef std::vector<std::shared_ptr<ResourceFile>> ResourceFileVector;
 
