@@ -21,7 +21,10 @@ namespace game
 		Scene::registerRenderer(render.getId(), 
 		[](std::vector<SharedActor>& actors, const double ndelay)
 		{
+			for (auto actor : actors)
+			{
 
+			}
 		});
 
 		std::shared_ptr<RenderComponent> renderPtr { &render };

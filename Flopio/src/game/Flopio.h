@@ -8,6 +8,7 @@ namespace game {
 		virtual void VOnUpdate(const double delta) override;
 		virtual void VOnRender(const double ndelay) override;
 		virtual void VOnInit() override;
+		Flopio() : App(1) {}
 	private:
 		Actor ship;
 	};

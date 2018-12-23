@@ -8,6 +8,9 @@ namespace engine
 {
 	bool RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
 	{
+		char tmplog[512];
+		int success;
+
 		auto tuple = std::tuple(*vertex, *geometry, *fragment);
 		if (shaderPrograms.find(tuple) == shaderPrograms.end())
 		{
@@ -39,7 +42,14 @@ namespace engine
 			}
 
 			glLinkProgram(shaderProgramId);
-
+			glGetShaderiv(shaderProgramId, GL_LINK_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(shaderProgramId, 512, NULL, tmplog);
+				engine::logger << "SHADER PROGRAM LINK FAILED\n" << tmplog << "\n";
+				return false;
+			};
+			shaderPrograms[tuple] = shaderProgramId;
 		}
 		else 
 		{

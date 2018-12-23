@@ -27,6 +27,12 @@ namespace engine {
 		std::ofstream out(config.logFileName);
 		logger.addStream(&out);
 
+		if (!currentApp->resourceCache.init())
+		{
+			logger << "Failed to initialize resource cache\n";
+			return false;
+		}
+
 		stbi_set_flip_vertically_on_load(true);
 		
 		glfwSetErrorCallback(glfwErrorCallback);

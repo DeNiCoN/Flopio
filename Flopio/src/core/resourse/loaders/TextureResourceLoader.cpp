@@ -16,7 +16,7 @@ namespace engine
 	{
 		char* extraData = resHandle->getBuffer();
 		*reinterpret_cast<TextureExtraData*>(extraData) = TextureExtraData();
-		std::shared_ptr<TextureExtraData> extra = std::shared_ptr<TextureExtraData>(reinterpret_cast<TextureExtraData*>(extraData);
+		std::shared_ptr<TextureExtraData> extra = std::shared_ptr<TextureExtraData>(reinterpret_cast<TextureExtraData*>(extraData));
 		resHandle->setExtra(extra);
 
 		glBindTexture(GL_TEXTURE_2D, extra->textureId);

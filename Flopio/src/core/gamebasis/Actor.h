@@ -3,6 +3,7 @@
 #include "Component.h"
 #include <memory>
 #include "RenderComponent.h"
+#include "../math/linearmath.h"
 
 namespace engine
 {
@@ -11,6 +12,8 @@ namespace engine
 	{
 	private:
 		std::vector<SharedComponent> components;
+		vec3 position;
+		vec3 speed;
 	public:
 		std::shared_ptr<RenderComponent> renderer;
 		std::vector<SharedComponent> getComponents() const { return components; }
