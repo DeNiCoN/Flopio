@@ -19,7 +19,7 @@ namespace engine
 			if (vertex != nullptr)
 			{
 				auto handle = currentApp->resourceCache.getHandle(vertex);
-				glAttachShader(shaderProgramId, static_cast<std::shared_ptr<VertexShaderData>>(handle->getExtra())->getId());
+				glAttachShader(shaderProgramId, static_cast<VertexShaderData>(*handle->getExtra())->getId());
 			}
 			else {
 				logger << "RenderComponent::shaderInit error: vertex is null\n";
@@ -29,7 +29,7 @@ namespace engine
 			if (fragment != nullptr)
 			{
 				auto handle = currentApp->resourceCache.getHandle(fragment);
-				glAttachShader(shaderProgramId, static_cast<std::shared_ptr<FragmentShaderData>>(handle->getExtra())->getId());
+				glAttachShader(shaderProgramId, static_cast<FragmentShaderData>(*handle->getExtra())->getId());
 			}
 			else {
 				logger << "RenderComponent::shaderInit error: fragment is null\n";

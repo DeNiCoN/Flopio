@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "Actor.h"
 #include <unordered_map>
 #include <tuple>
 #include "../resourse/ResourceCache.h"

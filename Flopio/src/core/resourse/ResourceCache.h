@@ -30,12 +30,6 @@ namespace engine
 		void* nextFreeSpaceStart;
 	};
 
-	class ResourceExtraData 
-	{
-	public:
-		virtual std::string getName() = 0;
-	};
-
 	class ResourceCache 
 	{
 		friend class ResourceHandle;

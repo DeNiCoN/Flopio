@@ -32,7 +32,7 @@ namespace engine
 		glBindVertexArray(VAO);
 		for (auto actor : actors)
 		{
-			glBindTexture(GL_TEXTURE_2D, ((std::shared_ptr<TextureExtraData>) currentApp->resourceCache.getHandle(component.texture)->getExtra())->getTextureId());
+			glBindTexture(GL_TEXTURE_2D, static_cast<TextureExtraData>(*currentApp->resourceCache.getHandle(component.texture)->getExtra()).getTextureId());
 			component = static_cast<RectangleRenderComponent>(*actor->renderer);
 			glUseProgram(component.getShaderProgramId());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

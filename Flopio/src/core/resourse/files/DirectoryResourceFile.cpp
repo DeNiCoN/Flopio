@@ -45,6 +45,11 @@ namespace engine
 		return 0;
 	}
 
+	int DirectoryResourceFile::VGetNumResources() const
+	{
+		return filesMap.size();
+	}
+
 	std::string DirectoryResourceFile::VGetResourceName(int num) const
 	{
 		int i = 0;

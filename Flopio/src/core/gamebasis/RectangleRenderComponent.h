@@ -19,9 +19,9 @@ namespace engine
 		0, 1, 3,
 		0, 3, 2 };
 
-		Resource * texture;
-
 	public:
+
+		Resource * texture;
 		static void render(std::vector<SharedActor>& actors, const double ndelay);
 		static void init();
 		RectangleRenderComponent() {}

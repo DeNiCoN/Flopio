@@ -6,7 +6,7 @@
 
 namespace engine
 {
-	class DirectoryResourceFile : ResourceFile
+	class DirectoryResourceFile : public ResourceFile
 	{
 	private:
 		std::map<std::string, unsigned int> filesMap;
@@ -15,7 +15,7 @@ namespace engine
 		virtual bool VOpen();
 		virtual int VGetRawResourceSize(const Resource &r);
 		virtual int VGetRawResource(const Resource &r, char *buffer);
-		virtual int VGetNumResources() const = 0;
+		virtual int VGetNumResources() const;
 		virtual std::string VGetResourceName(int num) const;
 	};
 }

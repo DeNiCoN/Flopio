@@ -188,9 +188,6 @@
     <ClInclude Include="src\core\gamebasis\Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\gamebasis\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\gamebasis\RectangleRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>

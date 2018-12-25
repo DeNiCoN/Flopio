@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\gamebasis\Actor.h" />
-    <ClInclude Include="src\core\gamebasis\Component.h" />
     <ClInclude Include="src\core\gamebasis\RectangleRenderComponent.h" />
     <ClInclude Include="src\core\gamebasis\RenderComponent.h" />
     <ClInclude Include="src\core\resourse\loaders\FragmentShaderResourceLoader.h" />

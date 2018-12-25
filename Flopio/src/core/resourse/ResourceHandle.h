@@ -5,7 +5,11 @@
 namespace engine
 {
 
-	
+	class ResourceExtraData
+	{
+	public:
+		virtual std::string getName() = 0;
+	};
 
 	class ResourceHandle
 	{

@@ -9,7 +9,7 @@ namespace engine
 	{
 		char* extraData = resHandle->getBuffer();
 		*reinterpret_cast<VertexShaderData*>(extraData) = VertexShaderData();
-		std::shared_ptr<VertexShaderData> extra = std::shared_ptr<VertexShaderData>(reinterpret_cast<VertexShaderData*>(extraData);
+		std::shared_ptr<VertexShaderData> extra = std::shared_ptr<VertexShaderData>(reinterpret_cast<VertexShaderData*>(extraData));
 		resHandle->setExtra(extra);
 
 		return shaderLoadHelperFunc(GL_VERTEX_SHADER, rawBuffer, rawBufSize, &extra->vertexShaderID);

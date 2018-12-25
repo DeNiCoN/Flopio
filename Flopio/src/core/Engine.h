@@ -1,4 +1,6 @@
 #pragma once
+#include "gamebasis/ProcessManager.h"
+#include "resourse/ResourceCache.h"
 #include "gamebasis/App.h"
 #include "Logger.h"
 #include <glad/glad.h>
