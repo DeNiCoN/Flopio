@@ -13,6 +13,7 @@ namespace engine
 		unsigned int shaderProgramId;
 		static std::unordered_map<ThreeResourceTuple, unsigned int> shaderPrograms;
 	public:
+		unsigned int getShaderProgramId() { return shaderProgramId; }
 		static std::unordered_map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
 		bool shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
 	};

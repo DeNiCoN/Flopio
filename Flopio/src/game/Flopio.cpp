@@ -18,14 +18,8 @@ namespace game
 	{
 		RectangleRenderComponent render;
 
-		Scene::registerRenderer(render.getId(), 
-		[](std::vector<SharedActor>& actors, const double ndelay)
-		{
-			for (auto actor : actors)
-			{
-
-			}
-		});
+		Scene::registerRenderer(render.getId(), &RectangleRenderComponent::render);
+		RectangleRenderComponent::init();
 
 		std::shared_ptr<RenderComponent> renderPtr { &render };
 		ship.renderer = renderPtr;

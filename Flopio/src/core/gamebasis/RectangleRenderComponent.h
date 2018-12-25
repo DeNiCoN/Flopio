@@ -19,11 +19,13 @@ namespace engine
 		0, 1, 3,
 		0, 3, 2 };
 
-		Resource texture;
+		Resource * texture;
 
 	public:
-		RectangleRenderComponent();
-		RectangleRenderComponent(Resource texture) : texture{ texture } { RectangleRenderComponent(); }
+		static void render(std::vector<SharedActor>& actors, const double ndelay);
+		static void init();
+		RectangleRenderComponent() {}
+		RectangleRenderComponent(Resource * texture) : texture{ texture } { RectangleRenderComponent(); }
 		virtual const char* getName() const override { return "RectangleRenderComponent"; }
 	};
 }

@@ -13,14 +13,21 @@ namespace engine
 
 	bool DirectoryResourceFile::VOpen()
 	{
-		int i = 0;
-		for (auto p : std::filesystem::directory_iterator(name))
+		if (std::filesystem::exists(name))
 		{
-			if (!p.is_directory())
+			if (!std::filesystem::is_directory(name))
+				return false;
+			int i = 0;
+			for (auto p : std::filesystem::directory_iterator(name))
 			{
-				filesMap[splitpath(p.path, { '/' }).back()] = p.file_size();
+				if (!p.is_directory())
+				{
+					filesMap[splitpath(p.path, { '/' }).back()] = p.file_size();
+				}
 			}
+			return true;
 		}
+		return false;
 	}
 
 	int DirectoryResourceFile::VGetRawResourceSize(const Resource &r) 

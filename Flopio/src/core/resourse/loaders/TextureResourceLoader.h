@@ -10,6 +10,7 @@ namespace engine
 	private:
 		unsigned int textureId;
 	public:
+		unsigned int getTextureId() const { return textureId; }
 		~TextureExtraData();
 	};
 

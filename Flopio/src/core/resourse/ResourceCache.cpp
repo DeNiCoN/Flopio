@@ -70,32 +70,38 @@ namespace engine {
 		unsigned int fullSize = size + sizeof(ResCacheResourceHeader);
 		blockHeader = reinterpret_cast<ResCacheBlockHeader*>(cacheBuffer);
 		uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
-		while (true)
+		for (int i = 0; i < 2; i++) // do two times
 		{
-			nextFreeSize = *nextPtr;
-			if (fullSize <= nextFreeSize)
+			while (true)
 			{
-				//enough space
-				resHeader = reinterpret_cast<ResCacheResourceHeader*>(nextPtr);
-				ptr = reinterpret_cast<char*>(nextPtr) + sizeof(ResCacheResourceHeader);
-				diff = nextFreeSize - fullSize;
-				resHeader->startOfBlock = blockHeader;
-				resHeader->buffSize = size;
-				resHeader->handle = nullptr;
-				if (diff <= sizeof(ResCacheBlockHeader) + 1)
+				nextFreeSize = *nextPtr;
+				if (fullSize <= nextFreeSize)
 				{
-					//TODO merge two blocks
-					logger << "ResourceCache data corrupting\n";
+					//enough space
+					resHeader = reinterpret_cast<ResCacheResourceHeader*>(nextPtr);
+					ptr = reinterpret_cast<char*>(nextPtr) + sizeof(ResCacheResourceHeader);
+					diff = nextFreeSize - fullSize;
+					resHeader->startOfBlock = blockHeader;
+					resHeader->buffSize = size;
+					resHeader->handle = nullptr;
+					if (diff <= sizeof(ResCacheBlockHeader) + 1)
+					{
+						//TODO merge two blocks
+						logger << "ResourceCache data corrupting\n";
+					}
+					nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
+					blockHeader->nextFreeSpaceStart = nextPtr;
+					*nextPtr = diff;
+					return ptr;
 				}
-				nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
-				blockHeader->nextFreeSpaceStart = nextPtr;
-				*nextPtr = diff;
-				return ptr;
+				blockHeader = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));
+				if (reinterpret_cast<char*>(blockHeader) == (cacheBuffer + cacheBufferSize - sizeof(ResCacheBlockHeader) * 2)) // out of buffer;
+				{
+					makeRoom(size);
+					break;
+				}
+				uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
 			}
-			blockHeader = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));
-			if (reinterpret_cast<char*>(blockHeader) == (cacheBuffer + cacheBufferSize - sizeof(ResCacheBlockHeader) * 2)) // out of buffer;
-				break;
-			uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
 		}
 		return nullptr; 
 	}
@@ -157,6 +163,11 @@ namespace engine {
 			nextBlock->prevBlockHeader = block;
 		}
 	};
+
+	void ResourceCache::makeRoom(unsigned int size)
+	{
+		//lol
+	}
 
 	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
 	{
@@ -257,5 +268,13 @@ namespace engine {
 
 		return handle;
 
+	}
+
+	void ResourceCache::addFile(std::shared_ptr<ResourceFile> file) 
+	{
+		if (file->VOpen())
+			files.push_back(file);
+		else
+			logger << "failed to open file" << file->getName() << "\n";
 	}
 }

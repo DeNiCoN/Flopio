@@ -70,6 +70,6 @@ namespace engine
 		bool init(unsigned int maxHandleCount) { this->maxHandleCount = maxHandleCount; return init(); }
 		std::shared_ptr<ResourceHandle> getHandle(Resource * resource);
 		void addLoader(std::shared_ptr<ResourceLoader> loader) { loaders.push_back(loader); }
-		void addFile(std::shared_ptr<ResourceFile> file) { files.push_back(file); }
+		void addFile(std::shared_ptr<ResourceFile> file);
 	};
 }

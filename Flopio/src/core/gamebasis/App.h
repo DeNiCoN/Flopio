@@ -30,13 +30,12 @@ namespace engine {
 		friend bool appInit(App &app, const AppConfig &config);
 	public:
 		App(unsigned int resourceCacheSizeInMB) : resourceCache(resourceCacheSizeInMB) {}
-
+		ProcessManager processManager;
+		ResourceCache resourceCache;
 	protected:
 		virtual void VOnInit() {}
 		virtual void VOnUpdate(const double delta) = 0;
 		virtual void VOnRender(const double ndelta) = 0;
-		ProcessManager processManager;
-		ResourceCache resourceCache;
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
 		GLFWwindow *glfwWindowHandle;
 		Scene root;

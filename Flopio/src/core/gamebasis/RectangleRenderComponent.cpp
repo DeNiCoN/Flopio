@@ -1,9 +1,10 @@
 #include "RectangleRenderComponent.h"
 #include "../Engine.h"
+#include "../resourse/loaders/TextureResourceLoader.h"
 
 namespace engine
 {
-	RectangleRenderComponent::RectangleRenderComponent()
+	void RectangleRenderComponent::init()
 	{
 		if (!initialized)
 		{
@@ -23,5 +24,19 @@ namespace engine
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(rect[0]), (void*)0);
 			glEnableVertexAttribArray(0);
 		}
+	}
+
+	void RectangleRenderComponent::render(std::vector<SharedActor>& actors, const double ndelay)
+	{
+		RectangleRenderComponent component;
+		glBindVertexArray(VAO);
+		for (auto actor : actors)
+		{
+			glBindTexture(GL_TEXTURE_2D, ((std::shared_ptr<TextureExtraData>) currentApp->resourceCache.getHandle(component.texture)->getExtra())->getTextureId());
+			component = static_cast<RectangleRenderComponent>(*actor->renderer);
+			glUseProgram(component.getShaderProgramId());
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
+		glBindVertexArray(0);
 	}
 }
