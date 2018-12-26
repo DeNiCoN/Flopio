@@ -6,6 +6,8 @@
 
 namespace engine
 {
+	std::map<ThreeResourceTuple, unsigned int> RenderComponent::shaderPrograms;
+
 	bool RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
 	{
 		char tmplog[512];

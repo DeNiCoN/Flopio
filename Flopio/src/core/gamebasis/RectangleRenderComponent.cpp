@@ -4,6 +4,11 @@
 
 namespace engine
 {
+	bool RectangleRenderComponent::initialized;
+	unsigned int RectangleRenderComponent::VBO, 
+		RectangleRenderComponent::VAO, 
+		RectangleRenderComponent::EBO;
+
 	void RectangleRenderComponent::init()
 	{
 		if (!initialized)

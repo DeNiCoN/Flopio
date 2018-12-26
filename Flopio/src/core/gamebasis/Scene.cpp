@@ -3,6 +3,9 @@
 namespace engine
 {
 
+	std::unordered_map<unsigned int, std::vector<SharedActor>> Scene::tempActorsMap;
+	std::unordered_map<unsigned int, void(*)(std::vector<SharedActor>&, const double)> Scene::renderFunctionsMap;
+
 	void Scene::render(const double ndelay)
 	{
 		//sort by renderer component id
