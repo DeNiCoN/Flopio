@@ -1,10 +1,9 @@
 #pragma once
-#include "ResourceCache.h"
 #include "Resource.h"
 
 namespace engine
 {
-
+	class ResourceCache;
 	class ResourceExtraData
 	{
 	public:

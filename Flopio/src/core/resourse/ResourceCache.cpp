@@ -117,7 +117,7 @@ namespace engine {
 		ResCacheBlockHeader* previous; 
 		ResCacheBlockHeader* next;
 
-		header = reinterpret_cast<ResCacheResourceHeader*>(buffer[-sizeof(ResCacheResourceHeader)]);
+		header = reinterpret_cast<ResCacheResourceHeader*>(buffer[-static_cast<int>(sizeof(ResCacheResourceHeader))]);
 		block = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock);
 		previous = block->prevBlockHeader;
 		void* pNextFreeSpaceStart = previous == nullptr ? cacheBuffer + sizeof(ResCacheBlockHeader) : previous->nextFreeSpaceStart;

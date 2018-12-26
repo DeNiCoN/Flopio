@@ -22,7 +22,7 @@ namespace engine
 			{
 				if (!p.is_directory())
 				{
-					filesMap[splitpath(p.path, { '/' }).back()] = p.file_size();
+					filesMap[splitpath(p.path().string(), { '/' }).back()] = p.file_size();
 				}
 			}
 			return true;
@@ -38,7 +38,7 @@ namespace engine
 	int DirectoryResourceFile::VGetRawResource(const Resource &r, char *buffer)
 	{
 		std::fstream file;
-		file.open(name + r.getName().substr(r.getColonPos + 1), std::fstream::in);
+		file.open(name + r.getName().substr(r.getColonPos() + 1), std::fstream::in);
 		if (file.fail())
 			return -1;
 		file.read(buffer, filesMap[r.getName()]);

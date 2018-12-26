@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Actor.h"
+#include "RenderComponent.h"
 #include <unordered_map>
 
 namespace engine

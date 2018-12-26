@@ -8,7 +8,7 @@ namespace engine
 		//sort by renderer component id
 		for (SharedActor actor : actors)
 		{
-			tempActorsMap[actor->getRenderer().getId()].push_back(actor);
+			tempActorsMap[actor->getRenderer()->getId()].push_back(actor);
 		}
 
 		//render

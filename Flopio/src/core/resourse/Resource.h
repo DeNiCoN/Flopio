@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
+#include <algorithm>
 
 namespace engine
 {
+
 	class Resource
 	{
 	private:
@@ -10,9 +12,14 @@ namespace engine
 		unsigned int hashed;
 		unsigned char colonPos;
 	public:
+		Resource() {};
 		Resource(const std::string& resName);
 		std::string getName() const { return name; };
 		unsigned char getColonPos() const { return colonPos; };
 		bool operator==(Resource a) { return hashed == a.hashed; }
+		unsigned int getHashed() const { return hashed; }
 	};
+
+	inline bool operator< (const Resource& lhs, const Resource& rhs) { return lhs.getHashed() < rhs.getHashed(); }
+
 }

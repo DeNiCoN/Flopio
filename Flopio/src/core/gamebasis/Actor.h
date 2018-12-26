@@ -2,16 +2,11 @@
 #include <vector>
 #include "../utils.h"
 #include <memory>
-#include "RenderComponent.h"
 #include "../math/linearmath.h"
 
 namespace engine
 {
 
-	class Component;
-	class RenderComponent;
-
-	using SharedComponent = std::shared_ptr<Component>;
 	class Component
 	{
 	public:
@@ -21,8 +16,9 @@ namespace engine
 
 	};
 
-	class Actor;
-	typedef std::shared_ptr<Actor> SharedActor;
+	using SharedComponent = std::shared_ptr<Component>;
+	class RenderComponent;
+
 	class Actor
 	{
 	private:
@@ -35,4 +31,5 @@ namespace engine
 
 		std::shared_ptr<RenderComponent> getRenderer() const { return renderer; }
 	};
+	typedef std::shared_ptr<Actor> SharedActor;
 }

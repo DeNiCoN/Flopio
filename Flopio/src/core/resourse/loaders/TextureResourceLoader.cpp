@@ -46,7 +46,7 @@ namespace engine
 		}
 		else
 		{
-			logger << "Failed to load texture " << resHandle->getResource() << "\n";
+			logger << "Failed to load texture " << resHandle->getResource().getName() << "\n";
 			ret = false;
 		}
 		stbi_image_free(data);
