@@ -13,7 +13,13 @@ namespace engine
 		char tmplog[512];
 		int success;
 
-		auto tuple = std::tuple(*vertex, *geometry, *fragment);
+		ThreeResourceTuple tuple;
+
+		if (geometry == nullptr)
+			tuple = std::make_tuple(*vertex, std::nullopt, *fragment);
+		else
+			tuple = std::make_tuple(*vertex, *geometry, *fragment);
+
 		if (shaderPrograms.find(tuple) == shaderPrograms.end())
 		{
 
@@ -36,11 +42,6 @@ namespace engine
 			else {
 				logger << "RenderComponent::shaderInit error: fragment is null\n";
 				return false;
-			}
-
-			if (geometry != nullptr)
-			{
-
 			}
 
 			glLinkProgram(shaderProgramId);

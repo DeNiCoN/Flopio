@@ -26,6 +26,7 @@ namespace engine {
 		currentApp = &app;
 		std::ofstream out(config.logFileName);
 		logger.addStream(&out);
+		logger.addStream(&std::cout);
 
 		if (!currentApp->resourceCache.init())
 		{

@@ -2,11 +2,12 @@
 #include "Actor.h"
 #include <map>
 #include <tuple>
+#include <optional>
 #include "../resourse/ResourceCache.h"
 
 namespace engine
 {
-	using ThreeResourceTuple = std::tuple<Resource, Resource, Resource>;
+	using ThreeResourceTuple = std::tuple<Resource, std::optional<Resource>, Resource>;
 	class RenderComponent : public Component
 	{
 	private:

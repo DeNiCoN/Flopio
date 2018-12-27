@@ -10,5 +10,5 @@ namespace engine {
 
 	extern App *currentApp;
 	extern Logger logger;
-	extern bool appInit(App &app, AppConfig &config);
+	extern bool appInit(App &app, const AppConfig &config);
 }
