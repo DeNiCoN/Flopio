@@ -12,16 +12,20 @@ namespace engine {
 	{
 	public:
 		AppConfig(int width = 800, int height = 600,
+			double secondsPerUpdate = 1.0/60.0,
 			bool fullscreen = false,
 			std::string appTitle = "App", 
 			std::string logFileName = "lastestLog.txt")
-			: width(width), height(height), fullscreen(fullscreen), 
+			: width(width), height(height), 
+			secondsPerUpdate(secondsPerUpdate),
+			fullscreen(fullscreen), 
 			appTitle(appTitle), logFileName(logFileName) {}
 		std::string logFileName;
 		std::string appTitle;
 		unsigned int height;
 		unsigned int width;
 		bool fullscreen;
+		double secondsPerUpdate;
 	};
 
 	class App
@@ -39,7 +43,7 @@ namespace engine {
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
 		GLFWwindow *glfwWindowHandle;
 		Scene root;
-		double secondsPerUpdate = 1 / 60;
+		double secondsPerUpdate;
 	};
 
 }

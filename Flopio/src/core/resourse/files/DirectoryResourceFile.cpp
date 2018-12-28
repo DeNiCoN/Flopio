@@ -3,13 +3,11 @@
 #include <stdio.h>
 #include "../../utils.h"
 #include <fstream>
+#include <algorithm>
+#include <cctype>
 
 namespace engine
 {
-	DirectoryResourceFile::DirectoryResourceFile(std::string path)
-	{
-		name = path;
-	}
 
 	bool DirectoryResourceFile::VOpen()
 	{
@@ -22,7 +20,9 @@ namespace engine
 			{
 				if (!p.is_directory())
 				{
-					filesMap[splitpath(p.path().string(), { '/' }).back()] = p.file_size();
+					std::string path = p.path().filename().string();
+					std::transform(path.begin(), path.end(), path.begin(), (int(*)(int)) std::tolower);
+					filesMap[path] = p.file_size();
 				}
 			}
 			return true;

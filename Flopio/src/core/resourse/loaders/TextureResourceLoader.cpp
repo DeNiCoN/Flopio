@@ -7,6 +7,7 @@
 
 namespace engine
 {
+
 	TextureExtraData::~TextureExtraData()
 	{
 		glDeleteTextures(1, &textureId);

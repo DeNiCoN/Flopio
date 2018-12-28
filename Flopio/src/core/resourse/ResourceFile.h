@@ -1,5 +1,7 @@
 #pragma once
 #include "Resource.h"
+#include <algorithm>
+#include <cctype>
 
 namespace engine
 {
@@ -8,6 +10,11 @@ namespace engine
 	protected:
 		std::string name;
 	public:
+		ResourceFile(std::string fileName) 
+		{
+			name = fileName;
+			std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
+		}
 		virtual ~ResourceFile() {};
 		virtual bool VOpen() = 0;
 		virtual int VGetRawResourceSize(const Resource &r) = 0;

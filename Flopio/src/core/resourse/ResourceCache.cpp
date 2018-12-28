@@ -184,10 +184,11 @@ namespace engine {
 				if (wildcardMath(wilds[i].c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
 				{
 					loader = l;
-					break;
+					goto out;
 				}
 			}
 		}
+out:
 
 		if (!loader)
 		{
@@ -213,7 +214,7 @@ namespace engine {
 		int rawSize = file->VGetRawResourceSize(*resource);
 		if (rawSize == 0)
 		{
-			logger << "Resource size returned 0 - Resource " << resource->getName() << " not found";
+			logger << "Resource size returned 0 - Resource " << resource->getName() << " not found\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 		char *rawBuffer = allocate(rawSize);
