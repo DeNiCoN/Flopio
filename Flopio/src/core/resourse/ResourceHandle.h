@@ -21,7 +21,7 @@ namespace engine
 		ResourceCache* resCache;
 	public:
 		ResourceHandle(Resource & res, char* buffer, unsigned int size, ResourceCache * resCache)
-			: resource(res), buffer(buffer), size(size), resCache(resCache), extra(NULL) {}
+			: resource(res), buffer{ buffer }, size(size), resCache { resCache }, extra(NULL) {}
 		~ResourceHandle();
 		char* getBuffer() const { return buffer; }
 		unsigned int getSize() const { return size; }

@@ -117,14 +117,16 @@ namespace engine {
 		ResCacheBlockHeader* previous; 
 		ResCacheBlockHeader* next;
 
-		header = reinterpret_cast<ResCacheResourceHeader*>(buffer[-static_cast<int>(sizeof(ResCacheResourceHeader))]);
+		header = reinterpret_cast<ResCacheResourceHeader*>(buffer - sizeof(ResCacheResourceHeader));
 		block = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock);
 		previous = block->prevBlockHeader;
 		void* pNextFreeSpaceStart = previous == nullptr ? cacheBuffer + sizeof(ResCacheBlockHeader) : previous->nextFreeSpaceStart;
 		next = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(block->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) - sizeof(ResCacheBlockHeader));
 
-		bool first = reinterpret_cast<char*>(header) - reinterpret_cast<char*>(header->startOfBlock) <= sizeof(ResCacheResourceHeader);
-		bool last = reinterpret_cast<ResCacheBlockHeader*>(header->startOfBlock)->nextFreeSpaceStart == reinterpret_cast<char*>(header + 1) + header->buffSize;
+		//Check: does length between start of block and header equals to size of block header
+		bool first = reinterpret_cast<char*>(header) - reinterpret_cast<char*>(header->startOfBlock) <= sizeof(ResCacheBlockHeader);
+		//Check: does address of next free area equals to end of header buffer 
+		bool last = block->nextFreeSpaceStart == buffer + header->buffSize;
 
 		if (first && last)
 		{
@@ -138,11 +140,23 @@ namespace engine {
 		{
 			//Resource lay first after block header
 
+			//get new previous next free space start size and set it
 			uintptr_t nextFSize = reinterpret_cast<uintptr_t>(header) - reinterpret_cast<uintptr_t>(pNextFreeSpaceStart) + header->buffSize + sizeof(ResCacheResourceHeader);
-			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = nextFSize;
-			ResCacheBlockHeader* newBlock = reinterpret_cast<ResCacheBlockHeader*>(nextFSize - sizeof(ResCacheBlockHeader));
+			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = nextFSize; // Note: when resource header lay after first block header, this will corrupt it startOfBlock data
+
+			//create new block 
+			ResCacheBlockHeader* newBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(pNextFreeSpaceStart) + nextFSize - sizeof(ResCacheBlockHeader));
 			*newBlock = *block;
 			next->prevBlockHeader = newBlock;
+
+			//update startOfBlock of each resource header in block;
+			ResCacheResourceHeader* nextHeader = reinterpret_cast<ResCacheResourceHeader*>(newBlock + 1);
+			while (nextHeader != newBlock->nextFreeSpaceStart)
+			{
+				nextHeader->startOfBlock = newBlock;
+
+				nextHeader = reinterpret_cast<ResCacheResourceHeader*>(reinterpret_cast<char*>(nextHeader + 1) + nextHeader->buffSize);
+			}
 
 		}
 		else if (last)
@@ -244,9 +258,7 @@ out:
 				logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
-			ResourceHandle * handl = reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool));
-			*handl = ResourceHandle(*resource, buffer, rawSize, this);
-			handle = std::shared_ptr<ResourceHandle>(handl);
+			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(*resource, buffer, rawSize, this));
 			bool success = loader->VLoad(rawBuffer, rawSize, handle);
 
 			if (loader->VDiscardRawBufferAfterLoad())
