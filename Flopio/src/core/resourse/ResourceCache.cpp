@@ -198,11 +198,12 @@ namespace engine {
 				if (wildcardMath(wilds[i].c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
 				{
 					loader = l;
-					goto out;
+					break;
 				}
 			}
+			if (loader)
+				break;
 		}
-out:
 
 		if (!loader)
 		{
@@ -233,9 +234,15 @@ out:
 		}
 		char *rawBuffer = allocate(rawSize);
 
-		if (rawBuffer == NULL || file->VGetRawResource(*resource, rawBuffer) == 0)
+		if (rawBuffer == NULL)
 		{
 			logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+			return std::shared_ptr<ResourceHandle>();
+		}
+
+		if (file->VGetRawResource(*resource, rawBuffer) == -1)
+		{
+			logger << "Something going wrong when getting " << resource->getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 
@@ -258,7 +265,12 @@ out:
 				logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
-			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(*resource, buffer, rawSize, this));
+			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(*resource, buffer, rawSize, this),
+			[&](ResourceHandle * ptr)
+			{
+				this->deallocate(buffer);
+				poolFree(&this->handlePool, this);
+			});
 			bool success = loader->VLoad(rawBuffer, rawSize, handle);
 
 			if (loader->VDiscardRawBufferAfterLoad())

@@ -25,17 +25,21 @@ namespace game
 	Resource texture("Resources:ship.png");
 	Resource vertex("Resources:vertex.vs");
 	Resource fragment("Resources:fragment.fs");
+	DirectoryResourceFile resFile("Resources");
+	FragmentShaderResourceLoader fragmentLoader;
+	VertexShaderResourceLoader vertexLoader;
+	TextureResourceLoader textureLoader;
+
 	void Flopio::VOnInit()
 	{
 
 		Scene::registerRenderer(render.getId(), &RectangleRenderComponent::render);
 		RectangleRenderComponent::init();
 
-		DirectoryResourceFile resFile("Resources");
 		resourceCache.addFile(std::shared_ptr<DirectoryResourceFile>(&resFile));
-		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&FragmentShaderResourceLoader()));
-		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&VertexShaderResourceLoader()));
-		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&TextureResourceLoader()));
+		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader));
+		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader));
+		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader));
 
 		render.shaderInit(&vertex, nullptr, &fragment);
 		render.texture = &texture;

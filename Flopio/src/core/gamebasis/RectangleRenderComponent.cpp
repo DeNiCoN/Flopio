@@ -38,7 +38,8 @@ namespace engine
 		for (auto actor : actors)
 		{
 			component = *static_cast<RectangleRenderComponent*>(&*actor->renderer);
-			glBindTexture(GL_TEXTURE_2D, static_cast<TextureExtraData *>(&*currentApp->resourceCache.getHandle(component.texture)->getExtra())->getTextureId());
+			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(component.texture)->getExtra());
+			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());
 			glUseProgram(component.getShaderProgramId());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
