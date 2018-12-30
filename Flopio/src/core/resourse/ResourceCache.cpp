@@ -95,12 +95,13 @@ namespace engine {
 					return ptr;
 				}
 				blockHeader = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));
-				if (reinterpret_cast<char*>(blockHeader) == (cacheBuffer + cacheBufferSize - sizeof(ResCacheBlockHeader) * 2)) // out of buffer;
+				if (reinterpret_cast<char*>(blockHeader) >= (cacheBuffer + cacheBufferSize - sizeof(ResCacheBlockHeader) * 2)) // out of buffer;
 				{
+					logger << "Resource cache out of memory, trying to do something\n";
 					makeRoom(size);
 					break;
 				}
-				uintptr_t* nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
+				nextPtr = reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart);
 			}
 		}
 		return nullptr; 
@@ -168,10 +169,10 @@ namespace engine {
 		else
 		{
 			//Resource lay in the middle of block
-			ResCacheBlockHeader* nextBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(header) + header->buffSize);
+			ResCacheBlockHeader* nextBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(header + 1) + header->buffSize - sizeof(ResCacheBlockHeader));
 			void* oldNextFSS = block->nextFreeSpaceStart;
 			block->nextFreeSpaceStart = header;
-			char* endOfResBuff = reinterpret_cast<char*>(nextBlock) + sizeof(ResCacheResourceHeader);
+			char* endOfResBuff = reinterpret_cast<char*>(nextBlock) + sizeof(ResCacheBlockHeader);
 			*reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(endOfResBuff) - reinterpret_cast<uintptr_t>(header);
 			nextBlock->nextFreeSpaceStart = oldNextFSS;
 			nextBlock->prevBlockHeader = block;
@@ -242,7 +243,7 @@ namespace engine {
 
 		if (file->VGetRawResource(*resource, rawBuffer) == -1)
 		{
-			logger << "Something going wrong when getting " << resource->getName() << "\n";
+			logger << "Something went wrong when getting " << resource->getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 

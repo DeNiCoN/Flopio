@@ -75,7 +75,7 @@ namespace engine {
 			while (delay >= app.secondsPerUpdate)
 			{
 				delay -= app.secondsPerUpdate;
-				std::cout << delay << ":" << app.secondsPerUpdate << ":" << delta << "\n";
+				//std::cout << delay << ":" << app.secondsPerUpdate << ":" << delta << "\n";
 				app.VOnUpdate(delta);
 			}
 

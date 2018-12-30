@@ -17,7 +17,7 @@ namespace game
 
 	void Flopio::VOnRender(const double ndelay)
 	{
-		std::cout << "render\n";
+		//std::cout << "render\n";
 		root.render(ndelay);
 	}
 

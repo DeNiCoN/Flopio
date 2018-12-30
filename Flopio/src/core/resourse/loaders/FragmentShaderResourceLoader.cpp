@@ -7,7 +7,7 @@ namespace engine
 	bool FragmentShaderResourceLoader::VLoad(char * rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle)
 	{
 		char* extraData = resHandle->getBuffer();
-		*reinterpret_cast<FragmentShaderData*>(extraData) = FragmentShaderData();
+		new (extraData) FragmentShaderData();
 		std::shared_ptr<FragmentShaderData> extra = std::shared_ptr<FragmentShaderData>(reinterpret_cast<FragmentShaderData*>(extraData));
 		resHandle->setExtra(extra);
 

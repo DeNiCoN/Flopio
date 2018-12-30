@@ -16,9 +16,9 @@ namespace engine
 	bool TextureResourceLoader::VLoad(char * rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle)
 	{
 		char* extraData = resHandle->getBuffer();
-		*reinterpret_cast<TextureExtraData*>(extraData) = TextureExtraData();
-		std::shared_ptr<TextureExtraData> extra = std::shared_ptr<TextureExtraData>(reinterpret_cast<TextureExtraData*>(extraData));
+		auto extra = std::shared_ptr<TextureExtraData>(new (extraData) TextureExtraData());
 		resHandle->setExtra(extra);
+		glGenTextures(1, &extra->textureId);
 
 		glBindTexture(GL_TEXTURE_2D, extra->textureId);
 
@@ -31,7 +31,19 @@ namespace engine
 
 		if (data)
 		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			unsigned int pixelFormat = GL_RGB;
+			switch (fileChanels)
+			{
+			case(3):
+				pixelFormat = GL_RGB;
+				break;
+			case(4):
+				pixelFormat = GL_RGBA;
+			default:
+				logger << "Channels in file less than 3\n";
+				break;
+			}
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
 
 			if (generateMipmaps)
 			{

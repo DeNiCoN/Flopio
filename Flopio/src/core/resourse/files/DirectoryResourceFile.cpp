@@ -22,7 +22,7 @@ namespace engine
 				{
 					std::string path = p.path().filename().string();
 					std::transform(path.begin(), path.end(), path.begin(), (int(*)(int)) std::tolower);
-					filesMap[path] = p.file_size() - 10;
+					filesMap[path] = p.file_size();
 				}
 			}
 			return true;
@@ -38,7 +38,7 @@ namespace engine
 	int DirectoryResourceFile::VGetRawResource(const Resource &r, char *buffer)
 	{
 		std::ifstream file;
-		file.open(name + "/" + r.getName().substr(r.getColonPos() + 1), std::fstream::in);
+		file.open(name + "/" + r.getName().substr(r.getColonPos() + 1), std::ifstream::in | std::ifstream::binary);
 		if (file.fail())
 			return -1;
 		file.read(buffer, filesMap[r.getName().substr(r.getColonPos() + 1)]);
