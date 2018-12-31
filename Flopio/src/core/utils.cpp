@@ -38,7 +38,7 @@ bool shaderLoadHelperFunc(int shaderType, char* rawBuffer, int rawBufSize, unsig
 {
 	static char infoLog[512];
 	int success, id;
-	*ID = glCreateShader(GL_VERTEX_SHADER);
+	*ID = glCreateShader(shaderType);
 	if (!ID)
 	{
 		engine::logger << "Shader creation failed, bad enum value: " << shaderType << "\n";

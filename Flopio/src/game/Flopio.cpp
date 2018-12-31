@@ -36,6 +36,8 @@ namespace game
 		Scene::registerRenderer(render.getId(), &RectangleRenderComponent::render);
 		RectangleRenderComponent::init();
 
+		textureLoader.generateMipmaps = false;
+
 		resourceCache.addFile(std::shared_ptr<DirectoryResourceFile>(&resFile));
 		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader));
 		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader));
