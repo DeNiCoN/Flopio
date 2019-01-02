@@ -17,7 +17,7 @@ namespace engine {
 
 	void VOnResizeWrapper(GLFWwindow* window, int width, int height) 
 	{ 
-		glViewport(0, 0, width, height);
+		glViewport(64, 0, width - 128, height);
 		currentApp->VOnResize(window, width, height);
 	}
 
@@ -57,7 +57,7 @@ namespace engine {
 			logger << "Failed to initialize GLAD" << "\n";
 			return false;
 		}
-		glViewport(0, 0, config.width, config.height);
+		glViewport(64, 0, config.width - 128, config.height);
 		glfwSetWindowSizeCallback(window, VOnResizeWrapper);
 		
 		app.VOnInit();

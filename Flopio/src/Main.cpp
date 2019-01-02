@@ -8,6 +8,7 @@ using namespace game;
 
 int main()
 {
+	std::cout << _CrtCheckMemory();
 	Flopio app;
 	AppConfig config;
 	return appInit(app, config);

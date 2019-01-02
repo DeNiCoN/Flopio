@@ -372,10 +372,22 @@ extern "C" {
 		return c;
 	}
 
+	S_INLINE mat44 mat44Scale(float x, float y, float z)
+	{
+		mat44 c;
+		c.value[0] = vec4Create(x, 0, 0, 0);
+		c.value[1] = vec4Create(0, y, 0, 0);
+		c.value[2] = vec4Create(0, 0, z, 0);
+		c.value[3] = vec4Create(0, 0, 0, 1);
+		return c;
+	}
+
 	S_INLINE mat44 mat44Translate(vec3 a)
 	{
 		mat44 c = mat44Identity(1.0f);
-		c.value[3].xyz = a;
+		c.value[0].w = a.x;
+		c.value[1].w = a.y;
+		c.value[2].w = a.z;
 		return c;
 	}
 
@@ -408,6 +420,8 @@ extern "C" {
 		c.value[1].value[0] = sinf(radians);
 		return c;
 	}
+
+	//S_INLINE mat44 mat44Orto();
 
 	S_INLINE mat44 mat44Add(mat44 a, mat44 b)
 	{

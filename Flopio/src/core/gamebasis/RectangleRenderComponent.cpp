@@ -31,13 +31,43 @@ namespace engine
 		}
 	}
 
+	void RectangleRenderComponent::VOnActorAngleSet(float radians)
+	{
+		updateModel();
+	}
+
+	void RectangleRenderComponent::VOnActorPositionSet(vec3 pos)
+	{
+		updateModel();
+	}
+
+	void RectangleRenderComponent::updateModel()
+	{
+		mat44 rotate, translate;
+		rotate = mat44RotateByZ(parent->getAngle());
+		translate = mat44Translate(parent->getPosition());
+		model = mat44Multiply(translate, mat44Multiply(rotate, mat44Scale(width, height, 1)));
+	}
+
+	void RectangleRenderComponent::setDimensions(float width, float height)
+	{
+		this->width = width;
+		this->height = height;
+		updateModel();
+	}
+
+	std::pair<float, float> RectangleRenderComponent::getDimensions()
+	{
+		return std::make_pair(width, height);
+	}
+
 	void RectangleRenderComponent::render(std::vector<SharedActor>& actors, const double ndelay)
 	{
 		RectangleRenderComponent component;
 		glBindVertexArray(VAO);
 		for (auto actor : actors)
 		{
-			component = *static_cast<RectangleRenderComponent*>(&*actor->renderer);
+			component = *static_cast<RectangleRenderComponent*>(&*actor->getRenderer());
 			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(component.texture)->getExtra());
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());

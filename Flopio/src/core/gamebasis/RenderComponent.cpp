@@ -1,4 +1,4 @@
-#include "RenderComponent.h"
+#include "Actor.h"
 #include "../Engine.h"
 #include "../resourse/loaders/VertexShaderResourceLoader.h"
 #include "../resourse/loaders/FragmentShaderResourceLoader.h"

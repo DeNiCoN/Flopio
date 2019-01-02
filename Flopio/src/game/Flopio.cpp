@@ -32,7 +32,6 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
-
 		Scene::registerRenderer(render.getId(), &RectangleRenderComponent::render);
 		RectangleRenderComponent::init();
 
@@ -47,8 +46,9 @@ namespace game
 		render.texture = &texture;
 
 		std::shared_ptr<RenderComponent> renderPtr { &render };
-		ship.renderer = renderPtr;
+		ship.setRenderer(renderPtr);
 		std::shared_ptr<Actor> actorPtr { &ship };
 		root.addActor(actorPtr);
+		std::cout << _CrtCheckMemory();
 	}
 }

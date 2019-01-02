@@ -8,7 +8,9 @@ namespace engine {
 	ResourceCache::~ResourceCache() 
 	{
 		if (cacheBuffer)
+		{
 			delete cacheBuffer;
+		}
 	}
 
 	bool ResourceCache::init()
@@ -301,6 +303,6 @@ namespace engine {
 		if (file->VOpen())
 			files.push_back(file);
 		else
-			logger << "failed to open file" << file->getName() << "\n";
+			logger << "failed to open file " << file->getName() << "\n";
 	}
 }
