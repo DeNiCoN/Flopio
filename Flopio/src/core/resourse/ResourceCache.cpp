@@ -9,7 +9,9 @@ namespace engine {
 	{
 		if (cacheBuffer)
 		{
-			delete cacheBuffer;
+			LRUList.clear();
+			handlesMap.clear();
+			delete[] cacheBuffer;
 		}
 	}
 
@@ -256,8 +258,17 @@ namespace engine {
 		{
 			buffer = rawBuffer;
 			ResourceHandle * handl = reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool));
-			*handl = ResourceHandle(*resource, buffer, rawSize, this);
-			handle = std::shared_ptr<ResourceHandle>(handl);
+			if (!handl)
+			{
+				logger << "ResourceCache out of ResourceHandles\n";
+			}
+			new (handl) ResourceHandle(*resource, buffer, rawSize, this);
+			handle = std::shared_ptr<ResourceHandle>(handl,
+			[&](ResourceHandle * ptr)
+			{
+				this->deallocate(buffer);
+				poolFree(&this->handlePool, this);
+			});
 		}
 		else
 		{
@@ -271,8 +282,8 @@ namespace engine {
 			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(*resource, buffer, rawSize, this),
 			[&](ResourceHandle * ptr)
 			{
-				this->deallocate(buffer);
-				poolFree(&this->handlePool, this);
+				this->deallocate(ptr->getBuffer());
+				poolFree(&this->handlePool, ptr);
 			});
 			bool success = loader->VLoad(rawBuffer, rawSize, handle);
 

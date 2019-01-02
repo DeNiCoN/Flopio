@@ -37,18 +37,17 @@ namespace game
 
 		textureLoader.generateMipmaps = false;
 
-		resourceCache.addFile(std::shared_ptr<DirectoryResourceFile>(&resFile));
-		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader));
-		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader));
-		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader));
+		resourceCache.addFile(std::shared_ptr<DirectoryResourceFile>(&resFile, [](DirectoryResourceFile*) {}));
+		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader, [](FragmentShaderResourceLoader*) {}));
+		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader, [](VertexShaderResourceLoader*) {}));
+		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader, [](TextureResourceLoader*) {}));
 
 		render.shaderInit(&vertex, nullptr, &fragment);
 		render.texture = &texture;
 
-		std::shared_ptr<RenderComponent> renderPtr { &render };
+		std::shared_ptr<RenderComponent> renderPtr { &render,[](RenderComponent*) {} };
 		ship.setRenderer(renderPtr);
-		std::shared_ptr<Actor> actorPtr { &ship };
+		std::shared_ptr<Actor> actorPtr { &ship ,[](Actor*) {} };
 		root.addActor(actorPtr);
-		std::cout << _CrtCheckMemory();
 	}
 }
