@@ -61,7 +61,7 @@ namespace engine
 		return std::make_pair(width, height);
 	}
 
-	void RectangleRenderComponent::render(std::vector<SharedActor>& actors, const double ndelay)
+	void RectangleRenderComponent::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)
 	{
 		RectangleRenderComponent component;
 		glBindVertexArray(VAO);

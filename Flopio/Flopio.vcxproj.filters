@@ -93,6 +93,9 @@
     <ClCompile Include="src\core\gamebasis\Actor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\gamebasis\viewports\ScreenViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Engine.h">
@@ -194,10 +197,23 @@
     <ClInclude Include="src\core\gamebasis\RectangleRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\gamebasis\viewports\Viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gamebasis\viewports\ScreenViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\ship.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vertex.vs" />
+    <None Include="Resources\fragment.fs" />
   </ItemGroup>
 </Project>

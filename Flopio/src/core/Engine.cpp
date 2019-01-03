@@ -17,7 +17,6 @@ namespace engine {
 
 	void VOnResizeWrapper(GLFWwindow* window, int width, int height) 
 	{ 
-		glViewport(64, 0, width - 128, height);
 		currentApp->VOnResize(window, width, height);
 	}
 
@@ -57,7 +56,9 @@ namespace engine {
 			logger << "Failed to initialize GLAD" << "\n";
 			return false;
 		}
-		glViewport(64, 0, config.width - 128, config.height);
+
+		glEnable(GL_DEPTH_TEST);
+
 		glfwSetWindowSizeCallback(window, VOnResizeWrapper);
 		
 		app.VOnInit();
@@ -80,7 +81,7 @@ namespace engine {
 			}
 
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			app.VOnRender(delay / app.secondsPerUpdate);
 
 			lastTime = currentTime;

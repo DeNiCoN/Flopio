@@ -421,7 +421,10 @@ extern "C" {
 		return c;
 	}
 
-	//S_INLINE mat44 mat44Orto();
+	S_INLINE mat44 mat44Orto(float right, float left, float top, float bottom, float Near, float Far)
+	{
+
+	}
 
 	S_INLINE mat44 mat44Add(mat44 a, mat44 b)
 	{

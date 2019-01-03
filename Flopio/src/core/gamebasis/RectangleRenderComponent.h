@@ -28,7 +28,7 @@ namespace engine
 		Resource * texture;
 		std::pair<float, float> getDimensions();
 		void setDimensions(float width, float height);
-		static void render(std::vector<SharedActor>& actors, const double ndelay);
+		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
 		RectangleRenderComponent() {}
 		RectangleRenderComponent(Resource * texture) : texture{ texture } { RectangleRenderComponent(); }
