@@ -11,6 +11,8 @@ namespace game
 {
 	using namespace engine;
 
+	ScreenViewport viewport;
+
 	void Flopio::VOnResize(GLFWwindow* window, int width, int height) 
 	{
 		viewport.VResize(width, height);
@@ -26,7 +28,6 @@ namespace game
 		root.render(ndelay);
 	}
 
-	ScreenViewport viewport;
 	Actor back;
 	RectangleRenderComponent render;
 	RectangleRenderComponent render1;
@@ -55,21 +56,25 @@ namespace game
 		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader, [](FragmentShaderResourceLoader*) {}));
 		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader, [](VertexShaderResourceLoader*) {}));
 		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader, [](TextureResourceLoader*) {}));
-
-		render.shaderInit(&vertex, nullptr, &fragment);
-		render.texture = &texture;
-
-		render1.shaderInit(&vertex, nullptr, &fragment);
-		render1.texture = &background;
-		render1.setDimensions(128.0f, 128.0f);
-
+		
 		std::shared_ptr<RenderComponent> renderPtr { &render,[](RenderComponent*) {} };
 		ship.setRenderer(renderPtr);
 		std::shared_ptr<Actor> actorPtr { &ship ,[](Actor*) {} };
 
 		std::shared_ptr<RenderComponent> renderPtr1{ &render1,[](RenderComponent*) {} };
-		ship.setRenderer(renderPtr);
+		back.setRenderer(renderPtr1);
 		std::shared_ptr<Actor> actorPtr1{ &back ,[](Actor*) {} };
+
+		render.shaderInit(&vertex, nullptr, &fragment);
+		render.texture = &texture;
+		render.setDimensions(64.0f, 64.0f);
+
+		render1.shaderInit(&vertex, nullptr, &fragment);
+		render1.texture = &background;
+		render1.setDimensions(128.0f, 128.0f);
+
+
+		//actorPtr->setPosition({ 64, 45, 2 });
 
 		root.addActor(actorPtr);
 		root.addActor(actorPtr1);

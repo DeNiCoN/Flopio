@@ -423,7 +423,15 @@ extern "C" {
 
 	S_INLINE mat44 mat44Orto(float right, float left, float top, float bottom, float Near, float Far)
 	{
-
+		mat44 c = mat44Identity(1.0f);
+		c.value[0].value[0] = 2 / (right - left);
+		c.value[0].value[3] = -((right + left) / (right - left));
+		c.value[1].value[1] = 2 / (top - bottom);
+		c.value[1].value[3] = -((top + bottom) / (top - bottom));
+		c.value[2].value[2] = 2 / (Far - Near);
+		c.value[2].value[3] = -((Far + Near) / (Far - Near));
+		c.value[3].value[3] = 1;
+		return c;
 	}
 
 	S_INLINE mat44 mat44Add(mat44 a, mat44 b)

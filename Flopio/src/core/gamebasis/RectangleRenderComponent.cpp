@@ -63,15 +63,23 @@ namespace engine
 
 	void RectangleRenderComponent::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)
 	{
-		RectangleRenderComponent component;
+		RectangleRenderComponent * component;
 		glBindVertexArray(VAO);
+		unsigned int pspid = 0;
 		for (auto actor : actors)
 		{
-			component = *static_cast<RectangleRenderComponent*>(&*actor->getRenderer());
-			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(component.texture)->getExtra());
+			component = static_cast<RectangleRenderComponent*>(&*actor->getRenderer());
+			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(component->texture)->getExtra());
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());
-			glUseProgram(component.getShaderProgramId());
+			unsigned int id = component->getShaderProgramId();
+			glUseProgram(id);
+			if (pspid != id)
+			{
+				pspid = id;
+				glUniformMatrix4fv(glGetUniformLocation(id, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
+			}
+			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 		glBindVertexArray(0);

@@ -6,6 +6,11 @@ namespace engine
 	std::unordered_map<unsigned int, std::vector<SharedActor>> Scene::tempActorsMap;
 	std::unordered_map<unsigned int, RenderFuntion> Scene::renderFunctionsMap;
 
+	Camera::Camera()
+	{
+		view = mat44Identity(1.0);
+	}
+
 	void Camera::set(vec3 position, float angle, float scale)
 	{
 		this->position = position;
@@ -30,10 +35,12 @@ namespace engine
 			tempActorsMap[actor->getRenderer()->getId()].push_back(actor);
 		}
 
+		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());
+
 		//render   
 		for (auto pair : tempActorsMap)
 		{
-			(*renderFunctionsMap[pair.first])(pair.second, this, ndelay);
+			(*renderFunctionsMap[pair.first])(pair.second, *this, ndelay);
 		}
 
 		//clean
