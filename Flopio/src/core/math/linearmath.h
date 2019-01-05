@@ -68,13 +68,11 @@ extern "C" {
 	}  mat44;
 
 	S_INLINE vec2 vec2Create(float x, float y) {
-		vec2 c = { x, y };
-		return c;
+		return { x, y };
 	}
 
 	S_INLINE vec3 vec3Create(float x, float y, float z) {
-		vec3 c = { x, y , z };
-		return c;
+		return { x, y , z };
 	}
 
 	S_INLINE vec4 vec4CreateSse(float x, float y, float z, float w) {
@@ -84,29 +82,31 @@ extern "C" {
 	}
 
 	S_INLINE vec4 vec4Create(float x, float y, float z, float w) {
-		vec4 c = { x, y, z, w };
-		return c;
+		return { x, y, z, w };
 	}
 
 	S_INLINE vec2 vec2Neg(vec2 a)
 	{
-		a.x = -a.x;
-		a.y = -a.y;
-		return a;
+		vec2 c;
+		c.x = -a.x;
+		c.y = -a.y;
+		return c;
 	}
 
 	S_INLINE vec3 vec3Neg(vec3 a)
 	{
-		a.x = -a.x;
-		a.y = -a.y;
-		a.z = -a.z;
-		return a;
+		vec3 c;
+		c.x = -a.x;
+		c.y = -a.y;
+		c.z = -a.z;
+		return c;
 	}
 
 	S_INLINE vec4 vec4Neg(vec4 a)
 	{
-		a.ssevalue = _mm_mul_ps(a.ssevalue, _mm_set1_ps(-1));
-		return a;
+		vec4 c;
+		c.ssevalue = _mm_mul_ps(a.ssevalue, _mm_set1_ps(-1));
+		return c;
 	}
 
 	S_INLINE vec2 vec2Add(vec2 a, vec2 b)
@@ -131,8 +131,34 @@ extern "C" {
 	S_INLINE vec4 vec4Add(vec4 a, vec4 b)
 	{
 		vec4 c;
-
 		c.ssevalue = _mm_add_ps(a.ssevalue, b.ssevalue);
+		return c;
+	}
+
+	S_INLINE vec2 vec2AddScalar(vec2 a, float scalar)
+	{
+		vec2 c;
+
+		c.x = a.x + scalar;
+		c.y = a.y + scalar;
+		return c;
+	}
+
+	S_INLINE vec3 vec3AddScalar(vec3 a, float scalar)
+	{
+		vec3 c;
+
+		c.x = a.x + scalar;
+		c.y = a.y + scalar;
+		c.z = a.z + scalar;
+		return c;
+	}
+
+	S_INLINE vec4 vec4AddScalar(vec4 a, float scalar)
+	{
+		vec4 c;
+
+		c.ssevalue = _mm_add_ps(a.ssevalue, _mm_set_ps1(scalar));
 		return c;
 	}
 
@@ -385,9 +411,14 @@ extern "C" {
 	S_INLINE mat44 mat44Translate(vec3 a)
 	{
 		mat44 c = mat44Identity(1.0f);
-		c.value[0].w = a.x;
-		c.value[1].w = a.y;
-		c.value[2].w = a.z;
+		c.value[3].xyz = a;
+		return c;
+	}
+	S_INLINE mat44 mat44TranslateVec2(vec2 a)
+	{
+		mat44 c = mat44Identity(1.0f);
+		c.value[3].value[0] = a.x;
+		c.value[3].value[1] = a.y;
 		return c;
 	}
 
@@ -418,18 +449,18 @@ extern "C" {
 		c.value[1].value[1] = cosf(radians);
 		c.value[0].value[1] = -sinf(radians);
 		c.value[1].value[0] = sinf(radians);
-		return c;
+		return mat44Transpose(c);
 	}
 
 	S_INLINE mat44 mat44Orto(float right, float left, float top, float bottom, float Near, float Far)
 	{
 		mat44 c = mat44Identity(1.0f);
 		c.value[0].value[0] = 2 / (right - left);
-		c.value[0].value[3] = -((right + left) / (right - left));
+		c.value[3].value[0] = -((right + left) / (right - left));
 		c.value[1].value[1] = 2 / (top - bottom);
-		c.value[1].value[3] = -((top + bottom) / (top - bottom));
+		c.value[3].value[1] = -((top + bottom) / (top - bottom));
 		c.value[2].value[2] = 2 / (Far - Near);
-		c.value[2].value[3] = -((Far + Near) / (Far - Near));
+		c.value[3].value[2] = -((Far + Near) / (Far - Near));
 		c.value[3].value[3] = 1;
 		return c;
 	}
@@ -455,10 +486,10 @@ extern "C" {
 	S_INLINE mat44 mat44Multiply(mat44 a, mat44 b)
 	{
 		mat44 c;
-		c.value[0].ssevalue = sseVecMat44Multiply(a.value[0].ssevalue, b);
-		c.value[1].ssevalue = sseVecMat44Multiply(a.value[1].ssevalue, b);
-		c.value[2].ssevalue = sseVecMat44Multiply(a.value[2].ssevalue, b);
-		c.value[3].ssevalue = sseVecMat44Multiply(a.value[3].ssevalue, b);
+		c.value[0].ssevalue = sseVecMat44Multiply(b.value[0].ssevalue, a);
+		c.value[1].ssevalue = sseVecMat44Multiply(b.value[1].ssevalue, a);
+		c.value[2].ssevalue = sseVecMat44Multiply(b.value[2].ssevalue, a);
+		c.value[3].ssevalue = sseVecMat44Multiply(b.value[3].ssevalue, a);
 		return c;
 	}
 

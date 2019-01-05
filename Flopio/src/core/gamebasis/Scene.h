@@ -11,23 +11,24 @@ namespace engine
 	{
 	private:
 		mat44 view;
-		vec3 position = { 0, 0, 0 };
+		vec2 position = { 0, 0 };
 		float angle = 0;
 		float scale = 1;
 		void updateView();
 	public:
 		Camera();
-		vec3 getPosition() const { return position; }
+		vec2 getPosition() const { return position; }
 		float getAngle() const { return angle; }
 		float getScale() const { return scale; }
 		mat44 getView() const { return view; }
-		void set(vec3 position, float angle, float scale);
+		void set(vec2 position, float angle, float scale);
 	};
 	class Scene;
 	using RenderFuntion = void(*)(std::vector<SharedActor>&, Scene&, const double);
 	class Scene
 	{
 	public:
+		Camera camera;
 		void render(const double ndelay);
 		void addActor(SharedActor actor) { actors.push_back(actor); }
 		static void registerRenderer(unsigned int componentId, RenderFuntion renderFunction);
@@ -36,7 +37,6 @@ namespace engine
 		void setViewport(Viewport* viewport) { this->viewport = viewport; }
 	private:
 		Viewport* viewport;
-		Camera camera;
 		mat44 projectionView;
 		std::vector<SharedActor> actors;
 		static std::unordered_map<unsigned int, std::vector<SharedActor>> tempActorsMap;

@@ -6,7 +6,7 @@ namespace game {
 	{
 	public:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) override;
-		virtual void VOnUpdate(const double delta) override;
+		virtual void VOnUpdate() override;
 		virtual void VOnRender(const double ndelay) override;
 		virtual void VOnInit() override;
 		Flopio() : App(1) {}

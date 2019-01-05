@@ -49,7 +49,7 @@ namespace engine
 			}
 
 			glLinkProgram(shaderProgramId);
-			glGetShaderiv(shaderProgramId, GL_LINK_STATUS, &success);
+			glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &success);
 			if (!success)
 			{
 				glGetShaderInfoLog(shaderProgramId, 512, NULL, tmplog);

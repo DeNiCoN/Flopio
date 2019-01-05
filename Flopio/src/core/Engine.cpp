@@ -23,7 +23,6 @@ namespace engine {
 	bool appInit(App &app, const AppConfig &config) 
 	{
 		currentApp = &app;
-		currentApp->secondsPerUpdate = config.secondsPerUpdate;
 		std::ofstream out(config.logFileName);
 		logger.addStream(&out);
 		logger.addStream(&std::cout);
@@ -80,7 +79,7 @@ namespace engine {
 			{
 				delay -= app.secondsPerUpdate;
 				//std::cout << delay << ":" << app.secondsPerUpdate << ":" << delta << "\n";
-				app.VOnUpdate(delta);
+				app.VOnUpdate();
 			}
 
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

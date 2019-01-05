@@ -11,7 +11,7 @@ namespace engine
 		view = mat44Identity(1.0);
 	}
 
-	void Camera::set(vec3 position, float angle, float scale)
+	void Camera::set(vec2 position, float angle, float scale)
 	{
 		this->position = position;
 		this->angle = angle;
@@ -22,9 +22,9 @@ namespace engine
 	void Camera::updateView()
 	{
 		mat44 rotate, translate;
-		translate = mat44Translate(vec3Neg(position));
+		translate = mat44TranslateVec2(vec2Neg(position));
 		rotate = mat44RotateByZ(-angle);
-		view = mat44Multiply(mat44Multiply(rotate, mat44ScaleUniform(scale)), translate);
+		view = mat44Multiply(mat44Multiply(rotate, mat44Scale(scale, scale, 1.0f)), translate);
 	}
 
 	void Scene::render(const double ndelay)

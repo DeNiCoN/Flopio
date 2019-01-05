@@ -10,5 +10,6 @@ int main()
 {
 	Flopio app;
 	AppConfig config;
+	//config.fullscreen = true;
 	return appInit(app, config);
 }

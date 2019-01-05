@@ -5,7 +5,7 @@
 #include "../core/resourse/loaders/VertexShaderResourceLoader.h"
 #include "../core/resourse/loaders/TextureResourceLoader.h"
 #include "../core/gamebasis/viewports/ScreenViewport.h"
-
+#include "../core/math/linearmath.h"
 
 namespace game
 {
@@ -18,9 +18,10 @@ namespace game
 		viewport.VResize(width, height);
 	}
 
-	void Flopio::VOnUpdate(const double delta)
+	void Flopio::VOnUpdate()
 	{
-
+		root.camera.set(vec2AddScalar(root.camera.getPosition(), 100.0f*secondsPerUpdate), root.camera.getAngle() + 1.1f*secondsPerUpdate, 1.0f);
+		ship.setAngle(ship.getAngle() + 1.0*secondsPerUpdate);
 	}
 
 	void Flopio::VOnRender(const double ndelay)
@@ -42,6 +43,7 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
+		secondsPerUpdate = 1.0 / 60.0;
 		root.setViewport(&viewport);
 		int width, height;
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
@@ -74,9 +76,11 @@ namespace game
 		render1.setDimensions(128.0f, 128.0f);
 
 
-		//actorPtr->setPosition({ 64, 45, 2 });
+		actorPtr->setPosition({ 64, 45, 2 });
 
 		root.addActor(actorPtr);
 		root.addActor(actorPtr1);
+
+		//root.camera.set({ 200, 300 }, 0.0f, 1.0f);
 	}
 }
