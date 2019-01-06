@@ -26,7 +26,7 @@ namespace engine
 			shaderProgramId = glCreateProgram();
 			if (vertex != nullptr)
 			{
-				auto handle = currentApp->resourceCache.getHandle(vertex);
+				auto handle = currentApp->resourceCache.getHandle(*vertex);
 				if (!handle)
 					return false;
 				glAttachShader(shaderProgramId, static_cast<VertexShaderData*>(&*handle->getExtra())->getId());
@@ -38,7 +38,7 @@ namespace engine
 
 			if (fragment != nullptr)
 			{
-				auto handle = currentApp->resourceCache.getHandle(fragment);
+				auto handle = currentApp->resourceCache.getHandle(*fragment);
 				if (!handle)
 					return false;
 				glAttachShader(shaderProgramId, static_cast<FragmentShaderData*>(&*handle->getExtra())->getId());

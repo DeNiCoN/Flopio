@@ -13,7 +13,7 @@
 namespace engine 
 {
 	typedef std::list<std::shared_ptr<ResourceHandle>> ResourceHandlesList;
-	typedef std::unordered_map<std::string, std::shared_ptr<ResourceHandle>> ResourceHandlesMap;
+	typedef std::unordered_map<int, std::shared_ptr<ResourceHandle>> ResourceHandlesMap;
 	typedef std::vector<std::shared_ptr<ResourceLoader>> ResourceLoadersVector;
 	typedef std::vector<std::shared_ptr<ResourceFile>> ResourceFileVector;
 

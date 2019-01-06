@@ -80,6 +80,7 @@ namespace engine {
 		{
 			currentTime = glfwGetTime();
 			delta = currentTime - lastTime;
+			lastTime = currentTime;
 			delay += delta;
 			second += delta;
 			while (delay >= app.secondsPerUpdate)
@@ -90,9 +91,8 @@ namespace engine {
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			app.VOnRender(delay / app.secondsPerUpdate);
-
-			lastTime = currentTime;
 			glfwSwapBuffers(window);
+			
 			fps++;
 			if (second >= 1.0)
 			{

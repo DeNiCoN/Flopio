@@ -49,7 +49,7 @@ namespace engine {
 
 	std::shared_ptr<ResourceHandle> ResourceCache::find(Resource & resource)
 	{
-		ResourceHandlesMap::iterator i = handlesMap.find(resource.getName());
+		ResourceHandlesMap::iterator i = handlesMap.find(resource.getHashed());
 		if (i == handlesMap.end())
 			return std::shared_ptr<ResourceHandle>();
 		return i->second;
@@ -144,14 +144,18 @@ namespace engine {
 		else if(first)
 		{
 			//Resource lay first after block header
-
 			//get new previous next free space start size and set it
 			uintptr_t nextFSize = reinterpret_cast<uintptr_t>(header) - reinterpret_cast<uintptr_t>(pNextFreeSpaceStart) + header->buffSize + sizeof(ResCacheResourceHeader);
-			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = nextFSize; // Note: when resource header lay after first block header, this will corrupt it startOfBlock data
+			*reinterpret_cast<uintptr_t*>(pNextFreeSpaceStart) = nextFSize; // Note: when resource header lay after first block header, this will corrupt it startOfBlock data. No. Yes.
 
 			//create new block 
 			ResCacheBlockHeader* newBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(pNextFreeSpaceStart) + nextFSize - sizeof(ResCacheBlockHeader));
 			*newBlock = *block;
+			if (reinterpret_cast<char*>(block) == this->cacheBuffer)
+			{
+				block->nextFreeSpaceStart = reinterpret_cast<char*>(block + 1);
+				newBlock->prevBlockHeader = block;
+			}
 			next->prevBlockHeader = newBlock;
 
 			//update startOfBlock of each resource header in block;
@@ -180,6 +184,13 @@ namespace engine {
 			*reinterpret_cast<uintptr_t*>(block->nextFreeSpaceStart) = reinterpret_cast<uintptr_t>(endOfResBuff) - reinterpret_cast<uintptr_t>(header);
 			nextBlock->nextFreeSpaceStart = oldNextFSS;
 			nextBlock->prevBlockHeader = block;
+			ResCacheResourceHeader* nextHeader = reinterpret_cast<ResCacheResourceHeader*>(nextBlock + 1);
+			while (nextHeader != nextBlock->nextFreeSpaceStart)
+			{
+				nextHeader->startOfBlock = nextBlock;
+
+				nextHeader = reinterpret_cast<ResCacheResourceHeader*>(reinterpret_cast<char*>(nextHeader + 1) + nextHeader->buffSize);
+			}
 		}
 	};
 
@@ -279,7 +290,7 @@ namespace engine {
 				logger << "ResourceCache out of memory while loading " << resource.getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
-			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(resource, buffer, rawSize, this),
+			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(resource, buffer, size, this),
 			[&](ResourceHandle * ptr)
 			{
 				this->deallocate(ptr->getBuffer());
@@ -302,7 +313,7 @@ namespace engine {
 		if (handle)
 		{
 			LRUList.push_front(handle);
-			handlesMap[resource.getName()] = handle;
+			handlesMap[resource.getHashed()] = handle;
 		}
 
 		return handle;
