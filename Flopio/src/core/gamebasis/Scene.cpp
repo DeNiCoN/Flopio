@@ -44,10 +44,7 @@ namespace engine
 		}
 
 		//clean
-		for (auto pair : tempActorsMap)
-		{
-			pair.second.clear();
-		}
+		tempActorsMap.clear();
 	
 	}
 

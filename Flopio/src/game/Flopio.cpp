@@ -20,7 +20,7 @@ namespace game
 
 	void Flopio::VOnUpdate()
 	{
-		root.camera.set(vec2AddScalar(root.camera.getPosition(), 100.0f*secondsPerUpdate), root.camera.getAngle() + 1.1f*secondsPerUpdate, 1.0f);
+		root.camera.set(root.camera.getPosition(), root.camera.getAngle() + 1.1f*secondsPerUpdate, 1.0f);
 		ship.setAngle(ship.getAngle() + 1.0*secondsPerUpdate);
 	}
 
@@ -43,7 +43,7 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
-		secondsPerUpdate = 1.0 / 60.0;
+		secondsPerUpdate = 1.0 / 20.0;
 		root.setViewport(&viewport);
 		int width, height;
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
@@ -76,7 +76,8 @@ namespace game
 		render1.setDimensions(128.0f, 128.0f);
 
 
-		actorPtr->setPosition({ 64, 45, 2 });
+		actorPtr1->setPosition({ 0, 0, 2 });
+		actorPtr->setPosition({ 64, 45, 1 });
 
 		root.addActor(actorPtr);
 		root.addActor(actorPtr1);

@@ -37,7 +37,7 @@ namespace engine {
 		return true;
 	}
 
-	std::shared_ptr<ResourceHandle> ResourceCache::getHandle(Resource * resource)
+	std::shared_ptr<ResourceHandle> ResourceCache::getHandle(Resource & resource)
 	{
 		std::shared_ptr<ResourceHandle> handle = find(resource);
 		if (handle == nullptr)
@@ -47,9 +47,9 @@ namespace engine {
 		return handle;
 	}
 
-	std::shared_ptr<ResourceHandle> ResourceCache::find(Resource * resource)
+	std::shared_ptr<ResourceHandle> ResourceCache::find(Resource & resource)
 	{
-		ResourceHandlesMap::iterator i = handlesMap.find(resource->getName());
+		ResourceHandlesMap::iterator i = handlesMap.find(resource.getName());
 		if (i == handlesMap.end())
 			return std::shared_ptr<ResourceHandle>();
 		return i->second;
@@ -188,19 +188,19 @@ namespace engine {
 		//lol
 	}
 
-	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource * resource) 
+	std::shared_ptr<ResourceHandle> ResourceCache::load(Resource & resource) 
 	{
 		std::shared_ptr<ResourceHandle> handle;
 		std::shared_ptr<ResourceLoader> loader;
 		std::shared_ptr<ResourceFile> file;
-		
+		//std::cout << "load " << resource->getName() << "\n";
 		for (std::shared_ptr<ResourceLoader> l : loaders) 
 		{
 			int size;
 			const std::string* wilds = l->VGetWildcardPattern(&size);
 			for (int i = 0; i < size; i++)
 			{
-				if (wildcardMath(wilds[i].c_str(), resource->getName().substr(resource->getColonPos() + 1).c_str()))
+				if (wildcardMath(wilds[i].c_str(), resource.getName().substr(resource.getColonPos() + 1).c_str()))
 				{
 					loader = l;
 					break;
@@ -212,13 +212,13 @@ namespace engine {
 
 		if (!loader)
 		{
-			logger << "Resource loader for " << resource->getName() << " not found\n";
+			logger << "Resource loader for " << resource.getName() << " not found\n";
 			return handle;
 		}
 
 		for (std::shared_ptr<ResourceFile> f : files)
 		{
-			if (!resource->getName().compare(0, resource->getColonPos(), f->getName(), 0, resource->getColonPos()))
+			if (!resource.getName().compare(0, resource.getColonPos(), f->getName(), 0, resource.getColonPos()))
 			{
 				file = f;
 				break;
@@ -227,27 +227,27 @@ namespace engine {
 
 		if (!file)
 		{
-			logger << "ResourceFile for " << resource->getName() << " not found\n";
+			logger << "ResourceFile for " << resource.getName() << " not found\n";
 			return handle;
 		}
 
-		int rawSize = file->VGetRawResourceSize(*resource);
+		int rawSize = file->VGetRawResourceSize(resource);
 		if (rawSize == 0)
 		{
-			logger << "Resource size returned 0 - Resource " << resource->getName() << " not found\n";
+			logger << "Resource size returned 0 - Resource " << resource.getName() << " not found\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 		char *rawBuffer = allocate(rawSize);
 
 		if (rawBuffer == NULL)
 		{
-			logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+			logger << "ResourceCache out of memory while loading " << resource.getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 
-		if (file->VGetRawResource(*resource, rawBuffer) == -1)
+		if (file->VGetRawResource(resource, rawBuffer) == -1)
 		{
-			logger << "Something went wrong when getting " << resource->getName() << "\n";
+			logger << "Something went wrong when getting " << resource.getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
 
@@ -262,7 +262,7 @@ namespace engine {
 			{
 				logger << "ResourceCache out of ResourceHandles\n";
 			}
-			new (handl) ResourceHandle(*resource, buffer, rawSize, this);
+			new (handl) ResourceHandle(resource, buffer, rawSize, this);
 			handle = std::shared_ptr<ResourceHandle>(handl,
 			[&](ResourceHandle * ptr)
 			{
@@ -276,10 +276,10 @@ namespace engine {
 			buffer = allocate(size);
 			if ((rawBuffer == NULL || buffer == NULL) && size != 0)
 			{
-				logger << "ResourceCache out of memory while loading " << resource->getName() << "\n";
+				logger << "ResourceCache out of memory while loading " << resource.getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
-			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(*resource, buffer, rawSize, this),
+			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(resource, buffer, rawSize, this),
 			[&](ResourceHandle * ptr)
 			{
 				this->deallocate(ptr->getBuffer());
@@ -294,7 +294,7 @@ namespace engine {
 
 			if (!success)
 			{
-				logger << "Something went wrong when loading " << resource->getName() << "\n";
+				logger << "Something went wrong when loading " << resource.getName() << "\n";
 				return std::shared_ptr<ResourceHandle>();
 			}
 		}
@@ -302,7 +302,7 @@ namespace engine {
 		if (handle)
 		{
 			LRUList.push_front(handle);
-			handlesMap[resource->getName()] = handle;
+			handlesMap[resource.getName()] = handle;
 		}
 
 		return handle;

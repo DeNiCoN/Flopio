@@ -32,6 +32,7 @@ namespace engine
 		if (data)
 		{
 			unsigned int pixelFormat = GL_RGB;
+			std::cout << fileChanels << "\n";
 			switch (fileChanels)
 			{
 			case(3):
