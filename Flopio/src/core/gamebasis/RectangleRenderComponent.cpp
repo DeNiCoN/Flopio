@@ -73,10 +73,10 @@ namespace engine
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());
 			unsigned int id = component->getShaderProgramId();
-			glUseProgram(id);
 			if (pspid != id)
 			{
 				pspid = id;
+				glUseProgram(id);
 				glUniformMatrix4fv(glGetUniformLocation(id, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
 			}
 			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);

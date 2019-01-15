@@ -41,9 +41,13 @@ namespace engine {
 	{
 		std::shared_ptr<ResourceHandle> handle = find(resource);
 		if (handle == nullptr)
+		{
 			handle = load(resource);
+		}
 		else
-			update(handle);
+		{
+			//update(handle);
+		}
 		return handle;
 	}
 
@@ -86,16 +90,28 @@ namespace engine {
 					ptr = reinterpret_cast<char*>(nextPtr) + sizeof(ResCacheResourceHeader);
 					diff = nextFreeSize - fullSize;
 					resHeader->startOfBlock = blockHeader;
-					resHeader->buffSize = size;
 					resHeader->handle = nullptr;
-					if (diff <= sizeof(ResCacheBlockHeader) + 1)
+					if (diff <= sizeof(ResCacheBlockHeader))
 					{
-						//TODO merge two blocks
-						logger << "ResourceCache data corrupting\n";
+						resHeader->buffSize = size + diff;
+						ResCacheBlockHeader * nextBlock = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));
+						blockHeader->nextFreeSpaceStart = nextBlock->nextFreeSpaceStart;
+						reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(blockHeader->nextFreeSpaceStart) + *reinterpret_cast<uintptr_t*>(blockHeader->nextFreeSpaceStart) - sizeof(ResCacheBlockHeader))->prevBlockHeader = blockHeader;
+						ResCacheResourceHeader* nextHeader = reinterpret_cast<ResCacheResourceHeader*>(reinterpret_cast<char*>(resHeader + 1) + resHeader->buffSize);
+						while (nextHeader != blockHeader->nextFreeSpaceStart)
+						{
+							nextHeader->startOfBlock = blockHeader;
+
+							nextHeader = reinterpret_cast<ResCacheResourceHeader*>(reinterpret_cast<char*>(nextHeader + 1) + nextHeader->buffSize);
+						}
 					}
-					nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
-					blockHeader->nextFreeSpaceStart = nextPtr;
-					*nextPtr = diff;
+					else
+					{
+						resHeader->buffSize = size;
+						nextPtr = reinterpret_cast<uintptr_t*>(reinterpret_cast<char*>(nextPtr) + fullSize);
+						blockHeader->nextFreeSpaceStart = nextPtr;
+						*nextPtr = diff;
+					}
 					return ptr;
 				}
 				blockHeader = reinterpret_cast<ResCacheBlockHeader*>(reinterpret_cast<char*>(nextPtr) + nextFreeSize - sizeof(ResCacheBlockHeader));

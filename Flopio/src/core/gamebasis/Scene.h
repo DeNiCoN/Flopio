@@ -35,10 +35,10 @@ namespace engine
 		Viewport* getViewport() const { return viewport; }
 		mat44 getProjectionView() const { return projectionView; }
 		void setViewport(Viewport* viewport) { this->viewport = viewport; }
+		std::vector<SharedActor> actors;
 	private:
 		Viewport* viewport;
 		mat44 projectionView;
-		std::vector<SharedActor> actors;
 		static std::unordered_map<unsigned int, std::vector<SharedActor>> tempActorsMap;
 		static std::unordered_map<unsigned int, RenderFuntion> renderFunctionsMap;
 	};

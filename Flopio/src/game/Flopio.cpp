@@ -6,6 +6,7 @@
 #include "../core/resourse/loaders/TextureResourceLoader.h"
 #include "../core/gamebasis/viewports/ScreenViewport.h"
 #include "../core/math/linearmath.h"
+#include "../core/math/prng.h"
 
 namespace game
 {
@@ -28,7 +29,6 @@ namespace game
 	{
 		root.render(ndelay);
 	}
-
 	Actor back;
 	RectangleRenderComponent render;
 	RectangleRenderComponent render1;
@@ -82,6 +82,26 @@ namespace game
 		root.addActor(actorPtr);
 		root.addActor(actorPtr1);
 
+		seedUsingRandXorshift128(0);
+		Actor * tmp;
+		RectangleRenderComponent * r;
+		for (int i = 0; i < 1000; i++)
+		{
+			tmp = new Actor();
+			r = new RectangleRenderComponent(&background);
+			r->shaderInit(&vertex, nullptr, &fragment);
+			std::shared_ptr<RenderComponent> renderPtr2{ r };
+			std::shared_ptr<Actor> actorPtr2{ tmp };
+			actorPtr2->setRenderer(renderPtr2);
+			r->setDimensions(10.f, 10.f);
+
+			actorPtr2->setPosition({ xorshift128Limit(width) - 200.f, xorshift128Limit(height) - 200.f, xorshift128f() + 1.f });
+			root.addActor(actorPtr2);
+		}
+		std::sort(root.actors.begin(), root.actors.end(), [](SharedActor f, SharedActor l) 
+		{
+			return f->getPosition().z < l->getPosition().z;
+		});
 		//root.camera.set({ 200, 300 }, 0.0f, 1.0f);
 	}
 }
