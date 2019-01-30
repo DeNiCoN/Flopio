@@ -1,4 +1,4 @@
-#include "Actor.h"
+#include "../gamebasis/Actor.h"
 #include "../Engine.h"
 #include "../resourse/loaders/VertexShaderResourceLoader.h"
 #include "../resourse/loaders/FragmentShaderResourceLoader.h"
@@ -8,8 +8,9 @@ namespace engine
 {
 	std::map<ThreeResourceTuple, unsigned int> RenderComponent::shaderPrograms;
 
-	bool RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
+	unsigned int RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
 	{
+		unsigned int shaderProgramId;
 		char tmplog[512];
 		int success;
 
@@ -23,30 +24,34 @@ namespace engine
 		if (shaderPrograms.find(tuple) == shaderPrograms.end())
 		{
 
-			shaderProgramId = glCreateProgram();
+			std::shared_ptr<ResourceHandle> vhandle;
 			if (vertex != nullptr)
 			{
-				auto handle = currentApp->resourceCache.getHandle(*vertex);
-				if (!handle)
-					return false;
-				glAttachShader(shaderProgramId, static_cast<VertexShaderData*>(&*handle->getExtra())->getId());
+				vhandle = currentApp->resourceCache.getHandle(*vertex);
+				if (!vhandle)
+					return 0;
 			}
 			else {
 				logger << "RenderComponent::shaderInit error: vertex is null\n";
-				return false;
+				return 0;
 			}
 
+			std::shared_ptr<ResourceHandle> fhandle;
 			if (fragment != nullptr)
 			{
-				auto handle = currentApp->resourceCache.getHandle(*fragment);
-				if (!handle)
-					return false;
-				glAttachShader(shaderProgramId, static_cast<FragmentShaderData*>(&*handle->getExtra())->getId());
+				fhandle = currentApp->resourceCache.getHandle(*fragment);
+				if (!fhandle)
+					return 0;
 			}
 			else {
 				logger << "RenderComponent::shaderInit error: fragment is null\n";
-				return false;
+				return 0;
 			}
+
+			shaderProgramId = glCreateProgram();
+
+			glAttachShader(shaderProgramId, static_cast<VertexShaderData*>(&*vhandle->getExtra())->getId());
+			glAttachShader(shaderProgramId, static_cast<FragmentShaderData*>(&*fhandle->getExtra())->getId());
 
 			glLinkProgram(shaderProgramId);
 			glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &success);
@@ -54,7 +59,8 @@ namespace engine
 			{
 				glGetShaderInfoLog(shaderProgramId, 512, NULL, tmplog);
 				engine::logger << "SHADER PROGRAM LINK FAILED\n" << tmplog << "\n";
-				return false;
+				glDeleteProgram(shaderProgramId);
+				return 0;
 			};
 			shaderPrograms[tuple] = shaderProgramId;
 		}
@@ -62,6 +68,6 @@ namespace engine
 		{
 			shaderProgramId = shaderPrograms[tuple];
 		}
-		return true;
+		return shaderProgramId;
 	}
 }

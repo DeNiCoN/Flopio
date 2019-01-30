@@ -46,7 +46,7 @@ namespace engine {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-		
+		glfwWindowHint(GLFW_SAMPLES, 4);
 
 		GLFWwindow *window = glfwCreateWindow(config.width, config.height, config.appTitle.c_str(), config.fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (window == NULL)
@@ -59,15 +59,20 @@ namespace engine {
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			logger << "Failed to initialize GLAD" << "\n";
+			logger << "Failed to initialize GLAD\n";
 			return false;
 		}
 
+		if (!GLAD_GL_ARB_bindless_texture)
+		{
+			logger << "Bindless textures not supported\n";
+			return false;
+		}
+		
 		glEnable(GL_DEPTH_TEST);
-
+		glEnable(GL_MULTISAMPLE);
 		
 		app.VOnInit();
-
 		int fps = 0;
 		double second = 0.0;
 		double currentTime;

@@ -81,19 +81,22 @@
     <ClCompile Include="src\game\Flopio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\gamebasis\RectangleRenderComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\gamebasis\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\gamebasis\RenderComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\gamebasis\Actor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\gamebasis\viewports\ScreenViewport.cpp">
+    <ClCompile Include="src\core\graphics\viewports\ScreenViewport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\RenderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\rendercomps\TextureRC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\graphics\rendercomps\CustomShaderTextureRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -111,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\gamebasis\App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\gamebasis\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\resourse\ResourceCache.h">
@@ -194,13 +194,19 @@
     <ClInclude Include="src\core\gamebasis\Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\gamebasis\RectangleRenderComponent.h">
+    <ClInclude Include="src\core\graphics\viewports\ScreenViewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\gamebasis\viewports\Viewport.h">
+    <ClInclude Include="src\core\graphics\viewports\Viewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\gamebasis\viewports\ScreenViewport.h">
+    <ClInclude Include="src\core\graphics\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\rendercomps\TextureRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\graphics\rendercomps\CustomShaderTextureRC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,5 +221,7 @@
   <ItemGroup>
     <None Include="Resources\vertex.vs" />
     <None Include="Resources\fragment.fs" />
+    <None Include="EngineResources\TextureRC.vs" />
+    <None Include="EngineResources\TextureRC.fs" />
   </ItemGroup>
 </Project>

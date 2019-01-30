@@ -48,8 +48,8 @@ namespace engine
 			glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
 			if (generateMipmaps)
 			{
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 				glGenerateMipmap(GL_TEXTURE_2D);
 			}
 			else
@@ -64,6 +64,8 @@ namespace engine
 			logger << "Failed to load texture " << resHandle->getResource().getName() << "\n";
 			ret = false;
 		}
+		extra->handle = glGetTextureHandleARB(extra->textureId);
+		glMakeTextureHandleResidentARB(extra->handle);
 		stbi_image_free(data);
 		return ret;
 	};

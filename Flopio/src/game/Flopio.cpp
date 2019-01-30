@@ -1,5 +1,5 @@
 #include "Flopio.h"
-#include "../core/gamebasis/RectangleRenderComponent.h"
+#include "../core/gamebasis/TextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
 #include "../core/resourse/loaders/FragmentShaderResourceLoader.h"
 #include "../core/resourse/loaders/VertexShaderResourceLoader.h"
@@ -30,8 +30,8 @@ namespace game
 		root.render(ndelay);
 	}
 	Actor back;
-	RectangleRenderComponent render;
-	RectangleRenderComponent render1;
+	TextureRC render;
+	TextureRC render1;
 	Resource texture("Resources:ship.png");
 	Resource vertex("Resources:vertex.vs");
 	Resource fragment("Resources:fragment.fs");
@@ -49,8 +49,8 @@ namespace game
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
 		viewport.VResize(width, height);
 
-		Scene::registerRenderer(render.getId(), &RectangleRenderComponent::render);
-		RectangleRenderComponent::init();
+		Scene::registerRenderer(render.getId(), &TextureRC::render);
+		TextureRC::init();
 
 		textureLoader.generateMipmaps = false;
 
@@ -82,18 +82,18 @@ namespace game
 		root.addActor(actorPtr);
 		root.addActor(actorPtr1);
 
-		seedUsingRandXorshift128(0);
+		seedUsingRandXorshift128(glfwGetTime());
 		Actor * tmp;
-		RectangleRenderComponent * r;
-		for (int i = 0; i < 1000; i++)
+		TextureRC * r;
+		for (int i = 0; i < 10000; i++)
 		{
 			tmp = new Actor();
-			r = new RectangleRenderComponent(&background);
+			r = new TextureRC(&background);
 			r->shaderInit(&vertex, nullptr, &fragment);
 			std::shared_ptr<RenderComponent> renderPtr2{ r };
 			std::shared_ptr<Actor> actorPtr2{ tmp };
 			actorPtr2->setRenderer(renderPtr2);
-			r->setDimensions(10.f, 10.f);
+			r->setDimensions(100.f, 100.f);
 
 			actorPtr2->setPosition({ xorshift128Limit(width) - 200.f, xorshift128Limit(height) - 200.f, xorshift128f() + 1.f });
 			root.addActor(actorPtr2);

@@ -9,8 +9,10 @@ namespace engine
 		std::string getName() { return "textureExtraData"; }
 	private:
 		unsigned int textureId;
+		GLuint64 handle;
 	public:
 		unsigned int getTextureId() const { return textureId; }
+		unsigned int getHandle() const { return handle; }
 		~TextureExtraData();
 	};
 

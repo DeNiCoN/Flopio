@@ -1,16 +1,16 @@
 #pragma once
-#include "Actor.h"
-#include "../resourse/Resource.h"
-#include "Scene.h"
+#include "../../gamebasis/Actor.h"
+#include "../../resourse/Resource.h"
+#include "../Scene.h"
 
 namespace engine
 {
-	class RectangleRenderComponent : public RenderComponent
+	class CustomShaderTextureRC : public RenderComponent
 	{
 	private:
 		static bool initialized;
-		static unsigned int VBO,VAO,EBO;
-		static constexpr float rect[] = { 
+		static unsigned int VBO, VAO, EBO;
+		static constexpr float rect[] = {
 		-0.5f, -0.5f,
 		-0.5f, 0.5f,
 		0.5f, -0.5f,
@@ -28,11 +28,12 @@ namespace engine
 	public:
 		Resource * texture;
 		std::pair<float, float> getDimensions();
+		unsigned int shaderProgramId;
 		void setDimensions(float width, float height);
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
-		RectangleRenderComponent() {}
-		RectangleRenderComponent(Resource * texture) : texture{ texture } { RectangleRenderComponent(); }
-		virtual const char* getName() const override { return "RectangleRenderComponent"; }
+		CustomShaderTextureRC() {}
+		CustomShaderTextureRC(Resource * texture) : texture{ texture } { CustomShaderTextureRC(); }
+		virtual const char* getName() const override { return "CustomShaderTextureRC"; }
 	};
 }

@@ -1,4 +1,5 @@
 #include "ResourceCache.h"
+#include "files/DirectoryResourceFile.h"
 #include "../utils.h"
 #include "../Engine.h"
 #include <iostream>
@@ -14,6 +15,8 @@ namespace engine {
 			delete[] cacheBuffer;
 		}
 	}
+
+	DirectoryResourceFile engineResFile("EngineResources");
 
 	bool ResourceCache::init()
 	{
@@ -33,6 +36,8 @@ namespace engine {
 		firstHeader->prevBlockHeader = nullptr;
 		firstHeader->nextFreeSpaceStart = cacheBuffer + sizeof(ResCacheBlockHeader);
 		*static_cast<uintptr_t*>(firstHeader->nextFreeSpaceStart) = cacheBufferSize - sizeof(ResCacheBlockHeader); // each free block contains it size
+
+		addFile(std::shared_ptr<DirectoryResourceFile>(&engineResFile, [](DirectoryResourceFile*) {}));
 
 		return true;
 	}

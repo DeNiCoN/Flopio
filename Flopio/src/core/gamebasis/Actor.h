@@ -31,15 +31,13 @@ namespace engine
 	{
 		friend class Actor;
 	private:
-		unsigned int shaderProgramId;
 		static std::map<ThreeResourceTuple, unsigned int> shaderPrograms;
 	protected:
 		virtual void VOnActorAngleSet(float radians) {}
 		virtual void VOnActorPositionSet(vec3 pos) {}
 	public:
-		unsigned int getShaderProgramId() { return shaderProgramId; }
 		static std::map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
-		bool shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
+		static unsigned int shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
 	};
 
 	class Actor
