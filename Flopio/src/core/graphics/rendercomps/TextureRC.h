@@ -9,6 +9,7 @@ namespace engine
 	{
 	private:
 		static bool initialized;
+		static unsigned int shaderProgramId;
 		static unsigned int VBO, VAO, EBO, transformBO, textureHandleBO;
 		static constexpr float rect[] = { 
 		-0.5f, -0.5f,

@@ -1,10 +1,10 @@
 #include "Flopio.h"
-#include "../core/gamebasis/TextureRC.h"
+#include "../core/graphics/rendercomps/TextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
 #include "../core/resourse/loaders/FragmentShaderResourceLoader.h"
 #include "../core/resourse/loaders/VertexShaderResourceLoader.h"
 #include "../core/resourse/loaders/TextureResourceLoader.h"
-#include "../core/gamebasis/viewports/ScreenViewport.h"
+#include "../core/graphics/viewports/ScreenViewport.h"
 #include "../core/math/linearmath.h"
 #include "../core/math/prng.h"
 
@@ -49,9 +49,6 @@ namespace game
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
 		viewport.VResize(width, height);
 
-		Scene::registerRenderer(render.getId(), &TextureRC::render);
-		TextureRC::init();
-
 		textureLoader.generateMipmaps = false;
 
 		resourceCache.addFile(std::shared_ptr<DirectoryResourceFile>(&resFile, [](DirectoryResourceFile*) {}));
@@ -59,6 +56,9 @@ namespace game
 		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader, [](VertexShaderResourceLoader*) {}));
 		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader, [](TextureResourceLoader*) {}));
 		
+		Scene::registerRenderer(render.getId(), &TextureRC::render);
+		TextureRC::init();
+
 		std::shared_ptr<RenderComponent> renderPtr { &render,[](RenderComponent*) {} };
 		ship.setRenderer(renderPtr);
 		std::shared_ptr<Actor> actorPtr { &ship ,[](Actor*) {} };
@@ -98,10 +98,10 @@ namespace game
 			actorPtr2->setPosition({ xorshift128Limit(width) - 200.f, xorshift128Limit(height) - 200.f, xorshift128f() + 1.f });
 			root.addActor(actorPtr2);
 		}
-		std::sort(root.actors.begin(), root.actors.end(), [](SharedActor f, SharedActor l) 
-		{
-			return f->getPosition().z < l->getPosition().z;
-		});
+		//std::sort(root.actors.begin(), root.actors.end(), [](SharedActor f, SharedActor l) 
+		//{
+		//	return f->getPosition().z < l->getPosition().z;
+		//});
 		//root.camera.set({ 200, 300 }, 0.0f, 1.0f);
 	}
 }

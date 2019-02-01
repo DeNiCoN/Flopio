@@ -5,11 +5,18 @@
 namespace engine
 {
 	bool TextureRC::initialized;
-	unsigned int TextureRC::VBO, 
+
+	unsigned int 
+		TextureRC::VBO, 
 		TextureRC::VAO, 
 		TextureRC::EBO,
 		TextureRC::transformBO,
-		TextureRC::textureHandleBO;
+		TextureRC::textureHandleBO,
+		TextureRC::shaderProgramId;
+
+	Resource 
+		vertex("EngineResources:TextureRC.vs"), 
+		fragment("EngineResources:TextureRC.fs");
 
 	void TextureRC::init()
 	{
@@ -41,6 +48,7 @@ namespace engine
 			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)48);
 			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)64);
 
+			glVertexAttribDivisor(1, 1);
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
 			glVertexAttribDivisor(4, 1);
@@ -52,6 +60,11 @@ namespace engine
 			glEnableVertexAttribArray(3);
 			glEnableVertexAttribArray(4);
 			glEnableVertexAttribArray(5);
+
+			if (!(shaderProgramId = shaderInit(&vertex, nullptr, &fragment)))
+			{
+				logger << "Failed to initialize shader for TextureRC\n";
+			}
 		}
 	}
 
@@ -89,23 +102,29 @@ namespace engine
 	{
 		TextureRC * component;
 		glBindVertexArray(VAO);
-		unsigned int pspid = 0;
+		size_t count = actors.size();
+		glBufferData(transformBO, sizeof(mat44)*count, NULL, GL_STATIC_DRAW);
+		glBufferData(textureHandleBO, sizeof(__int64)*count, NULL, GL_STATIC_DRAW);
+		auto transformBufferPtr = reinterpret_cast<mat44*>(glMapBuffer(transformBO, GL_WRITE_ONLY));
+		auto textureHandleBufferPtr = reinterpret_cast<__int64*>(glMapBuffer(textureHandleBO, GL_WRITE_ONLY));
+
+
+		size_t i = 0;
 		for (auto actor : actors)
 		{
 			component = static_cast<TextureRC*>(&*actor->getRenderer());
 			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());
-			unsigned int id = component->getShaderProgramId();
-			if (pspid != id)
-			{
-				pspid = id;
-				glUseProgram(id);
-				glUniformMatrix4fv(glGetUniformLocation(id, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
-			}
-			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			memcpy(transformBufferPtr + i, &component->model, sizeof(mat44));
+			*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
+			i++;
 		}
+
+		glUnmapBuffer(transformBO);
+		glUnmapBuffer(textureHandleBO);
+		
+		glUseProgram(shaderProgramId);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
 		glBindVertexArray(0);
 	}
 }

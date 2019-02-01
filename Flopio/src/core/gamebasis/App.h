@@ -4,7 +4,7 @@
 #include <string>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Scene.h"
+#include "../graphics/Scene.h"
 
 namespace engine {
 
