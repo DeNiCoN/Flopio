@@ -11,7 +11,7 @@ namespace engine
 	unsigned int RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
 	{
 		unsigned int shaderProgramId;
-		char tmplog[512];
+		char tmplog[1024];
 		int success;
 
 		ThreeResourceTuple tuple;
@@ -57,11 +57,21 @@ namespace engine
 			glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &success);
 			if (!success)
 			{
-				glGetShaderInfoLog(shaderProgramId, 512, NULL, tmplog);
+				glGetProgramInfoLog(shaderProgramId, 1024, NULL, tmplog);
 				engine::logger << "SHADER PROGRAM LINK FAILED\n" << tmplog << "\n";
 				glDeleteProgram(shaderProgramId);
 				return 0;
 			};
+
+			glGetProgramiv(shaderProgramId, GL_VALIDATE_STATUS, &success);
+			if (!success)
+			{
+				glGetProgramInfoLog(shaderProgramId, 1024, NULL, tmplog);
+				engine::logger << "SHADER PROGRAM VALIDATE FAILED\n" << tmplog << "\n";
+				glDeleteProgram(shaderProgramId);
+				return 0;
+			};
+
 			shaderPrograms[tuple] = shaderProgramId;
 		}
 		else 

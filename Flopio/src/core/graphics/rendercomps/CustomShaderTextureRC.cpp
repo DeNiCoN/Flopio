@@ -26,7 +26,7 @@ namespace engine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16 * 5, (void*)0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8, (void*)0);
 
 			glEnableVertexAttribArray(0);
 		}

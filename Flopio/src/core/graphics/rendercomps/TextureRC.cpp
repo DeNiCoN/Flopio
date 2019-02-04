@@ -61,6 +61,9 @@ namespace engine
 			glEnableVertexAttribArray(4);
 			glEnableVertexAttribArray(5);
 
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+
 			if (!(shaderProgramId = shaderInit(&vertex, nullptr, &fragment)))
 			{
 				logger << "Failed to initialize shader for TextureRC\n";
@@ -101,13 +104,15 @@ namespace engine
 	void TextureRC::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)
 	{
 		TextureRC * component;
-		glBindVertexArray(VAO);
 		size_t count = actors.size();
-		glBufferData(transformBO, sizeof(mat44)*count, NULL, GL_STATIC_DRAW);
-		glBufferData(textureHandleBO, sizeof(__int64)*count, NULL, GL_STATIC_DRAW);
-		auto transformBufferPtr = reinterpret_cast<mat44*>(glMapBuffer(transformBO, GL_WRITE_ONLY));
-		auto textureHandleBufferPtr = reinterpret_cast<__int64*>(glMapBuffer(textureHandleBO, GL_WRITE_ONLY));
 
+		glBindBuffer(GL_ARRAY_BUFFER, transformBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(mat44)*count, NULL, GL_DYNAMIC_DRAW);
+		auto transformBufferPtr = reinterpret_cast<mat44*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+		glBindBuffer(GL_ARRAY_BUFFER, textureHandleBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(__int64)*count, NULL, GL_DYNAMIC_DRAW);
+		auto textureHandleBufferPtr = reinterpret_cast<__int64*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		size_t i = 0;
 		for (auto actor : actors)
@@ -118,12 +123,14 @@ namespace engine
 			*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
 			i++;
 		}
-
-		glUnmapBuffer(transformBO);
-		glUnmapBuffer(textureHandleBO);
+		
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, transformBO);
+		glUnmapBuffer(GL_ARRAY_BUFFER);
 		
 		glUseProgram(shaderProgramId);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
+		glBindVertexArray(VAO);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
 		glBindVertexArray(0);
 	}
