@@ -9,6 +9,8 @@ namespace engine {
 
 	App *currentApp;
 	Logger logger;
+	LinearAllocator oneFrame;
+	char* oneFrameBuffer;
 
 	void GLAPIENTRY GLErrorCallback(GLenum source,
 			GLenum type,
@@ -45,6 +47,9 @@ namespace engine {
 			return false;
 		}
 
+		oneFrameBuffer = (char*) malloc(1024 * 1024 * 1);
+		linAllocInit(&oneFrame, oneFrameBuffer, 1024 * 1024 * 1);
+
 		stbi_set_flip_vertically_on_load(true);
 		
 		glfwSetErrorCallback(glfwErrorCallback);
@@ -74,8 +79,8 @@ namespace engine {
 			logger << "Failed to initialize GLAD\n";
 			return false;
 		}
-		glEnable(GL_DEBUG_OUTPUT);
-		glDebugMessageCallback(GLErrorCallback, 0);
+		//glEnable(GL_DEBUG_OUTPUT);
+		//glDebugMessageCallback(GLErrorCallback, 0);
 
 		if (!GLAD_GL_ARB_bindless_texture)
 		{
@@ -119,11 +124,19 @@ namespace engine {
 				fps = 0;
 				second = 0.0;
 			}
+			linReset(&oneFrame);
 			glfwPollEvents();
 		}
 
+		free(oneFrameBuffer);
+
 		glfwTerminate();
 		return 0;
+	}
+
+	void* oneFrameAlloc(size_t size)
+	{
+		return linAlloc(&oneFrame, size);
 	}
 
 }

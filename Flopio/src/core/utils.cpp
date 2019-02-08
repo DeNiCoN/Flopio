@@ -58,6 +58,19 @@ bool shaderLoadHelperFunc(int shaderType, char* rawBuffer, int rawBufSize, unsig
 	return true;
 }
 
+void shaderValidateCheck(unsigned int shader)
+{
+	static char infoLog[512];
+	int success;
+	glValidateProgram(shader);
+	glGetProgramiv(shader, GL_VALIDATE_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(shader, 512, NULL, infoLog);
+		engine::logger << "SHADER PROGRAM VALIDATE:\n" << infoLog << "\n";
+	};
+}
+
 std::vector<std::string> splitpath(const std::string& str, const std::set<char> delimiters)
 {
 	std::vector<std::string> result;

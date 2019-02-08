@@ -63,15 +63,6 @@ namespace engine
 				return 0;
 			};
 
-			glGetProgramiv(shaderProgramId, GL_VALIDATE_STATUS, &success);
-			if (!success)
-			{
-				glGetProgramInfoLog(shaderProgramId, 1024, NULL, tmplog);
-				engine::logger << "SHADER PROGRAM VALIDATE FAILED\n" << tmplog << "\n";
-				glDeleteProgram(shaderProgramId);
-				return 0;
-			};
-
 			shaderPrograms[tuple] = shaderProgramId;
 		}
 		else 

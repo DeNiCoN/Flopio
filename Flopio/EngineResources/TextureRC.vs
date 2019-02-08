@@ -5,15 +5,15 @@ layout (location = 1) in uvec2 texture;
 layout (location = 2) in mat4 model;
 
 out vec2 textCoord;
-//out uvec2 textureH;
+out uvec2 textureH;
 
 uniform mat4 projectionView;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0, 1.0);
+    gl_Position = projectionView * model * vec4(aPos, 0.0, 1.0);
 	textCoord = aPos + 0.5;
-	//textureH = texture;
+	textureH = texture;
 	//
 	///////////////////////////////////
 }

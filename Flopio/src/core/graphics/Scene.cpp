@@ -44,6 +44,7 @@ namespace engine
 		}
 
 		//clean
+
 		tempActorsMap.clear();
 	
 	}

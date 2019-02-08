@@ -67,11 +67,11 @@ namespace game
 		back.setRenderer(renderPtr1);
 		std::shared_ptr<Actor> actorPtr1{ &back ,[](Actor*) {} };
 
-		//render.shaderInit(&vertex, nullptr, &fragment);
+		//render.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
 		render.texture = &texture;
 		render.setDimensions(64.0f, 64.0f);
 
-		//render1.shaderInit(&vertex, nullptr, &fragment);
+		//render1.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
 		render1.texture = &background;
 		render1.setDimensions(128.0f, 128.0f);
 
@@ -89,7 +89,7 @@ namespace game
 		{
 			tmp = new Actor();
 			r = new TextureRC(&background);
-			//r->shaderInit(&vertex, nullptr, &fragment);
+			//r->shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
 			std::shared_ptr<RenderComponent> renderPtr2{ r };
 			std::shared_ptr<Actor> actorPtr2{ tmp };
 			actorPtr2->setRenderer(renderPtr2);

@@ -37,16 +37,16 @@ namespace engine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16 * 5, (void*)0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, textureHandleBO);
-			glVertexAttribPointer(1, 2, GL_UNSIGNED_INT, GL_FALSE, 16 * 5, (void*)8);
+			glVertexAttribPointer(1, 2, GL_UNSIGNED_INT, GL_FALSE, 8, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, transformBO);
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)16);
-			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)32);
-			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)48);
-			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * 5, (void*)64);
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)0);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)16);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)32);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)48);
 
 			glVertexAttribDivisor(1, 1);
 			glVertexAttribDivisor(2, 1);
@@ -118,9 +118,9 @@ namespace engine
 		for (auto actor : actors)
 		{
 			component = static_cast<TextureRC*>(&*actor->getRenderer());
-			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
+			//auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
 			memcpy(transformBufferPtr + i, &component->model, sizeof(mat44));
-			*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
+			//*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
 			i++;
 		}
 		
@@ -128,9 +128,9 @@ namespace engine
 		glBindBuffer(GL_ARRAY_BUFFER, transformBO);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		
+		glBindVertexArray(VAO);
 		glUseProgram(shaderProgramId);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
-		glBindVertexArray(VAO);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
 		glBindVertexArray(0);
 	}
