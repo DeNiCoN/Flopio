@@ -37,10 +37,10 @@ namespace engine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 8, (void*)0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, textureHandleBO);
-			glVertexAttribPointer(1, 2, GL_UNSIGNED_INT, GL_FALSE, 8, (void*)0);
+			glVertexAttribLPointer(1, 1, GL_UNSIGNED_INT64_ARB, 0, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, transformBO);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)0);
@@ -118,9 +118,9 @@ namespace engine
 		for (auto actor : actors)
 		{
 			component = static_cast<TextureRC*>(&*actor->getRenderer());
-			//auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
+			auto textureExtra = std::static_pointer_cast<TextureExtraData>(component->texture->getExtra());
 			memcpy(transformBufferPtr + i, &component->model, sizeof(mat44));
-			//*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
+			*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();
 			i++;
 		}
 		

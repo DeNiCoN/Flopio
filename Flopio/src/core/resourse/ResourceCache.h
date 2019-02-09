@@ -17,29 +17,17 @@ namespace engine
 	typedef std::vector<std::shared_ptr<ResourceLoader>> ResourceLoadersVector;
 	typedef std::vector<std::shared_ptr<ResourceFile>> ResourceFileVector;
 
-	struct ResCacheResourceHeader
-	{
-		void* startOfBlock;
-		size_t buffSize;
-		ResourceHandle* handle;
-	};
-
-	struct ResCacheBlockHeader
-	{
-		ResCacheBlockHeader* prevBlockHeader;
-		void* nextFreeSpaceStart;
-	};
+	
 
 	class ResourceCache 
 	{
 		friend class ResourceHandle;
 
 	protected:
+
+
 		PoolAllocator handlePool;
 		unsigned int maxHandleCount;
-
-		char* cacheBuffer;
-		unsigned int cacheBufferSize;
 		unsigned int allocatedSize;
 
 		ResourceHandlesList LRUList;
@@ -47,8 +35,6 @@ namespace engine
 		ResourceLoadersVector loaders;
 		ResourceFileVector files;
 
-		char* allocate(unsigned int size);
-		void deallocate(char* buffer);
 		void makeRoom(unsigned int size);
 		std::shared_ptr<ResourceHandle> load(Resource & resource);
 		void update(std::shared_ptr<ResourceHandle> resHandle);
@@ -58,7 +44,7 @@ namespace engine
 
 	public:
 		//setting default maxHandleCount to sizeInMB * 256 means that we 'have' 4 KB of buffer for each handle
-		ResourceCache(unsigned int sizeInMB) : cacheBufferSize(sizeInMB * 1024 * 1024), allocatedSize(0), maxHandleCount(sizeInMB * 256) {}
+		ResourceCache(unsigned int sizeInMB) : allocatedSize(0), maxHandleCount(sizeInMB * 256) {}
 		virtual ~ResourceCache();
 		bool init();
 		bool init(unsigned int maxHandleCount) { this->maxHandleCount = maxHandleCount; return init(); }

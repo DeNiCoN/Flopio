@@ -4,8 +4,10 @@
 namespace engine
 {
 	class ResourceCache;
+	class ResourceHandle;
 	class ResourceExtraData
 	{
+		friend class ResourceHandle;
 	public:
 		virtual std::string getName() = 0;
 	};

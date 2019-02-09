@@ -27,13 +27,12 @@ namespace engine
 		virtual void VOnActorPositionSet(vec3 pos) override;
 		void updateModel();
 	public:
-		Resource * texture;
+		std::shared_ptr<ResourceHandle> texture;
 		std::pair<float, float> getDimensions();
 		void setDimensions(float width, float height);
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
 		TextureRC() {}
-		TextureRC(Resource * texture) : texture{ texture } { TextureRC(); }
 		virtual const char* getName() const override { return "TextureRC"; }
 	};
 }

@@ -99,6 +99,9 @@
     <ClCompile Include="src\core\graphics\rendercomps\CustomShaderTextureRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\memory\allocator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Engine.h">
@@ -207,6 +210,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\graphics\rendercomps\CustomShaderTextureRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\memory\allocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

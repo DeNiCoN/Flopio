@@ -68,11 +68,11 @@ namespace game
 		std::shared_ptr<Actor> actorPtr1{ &back ,[](Actor*) {} };
 
 		//render.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
-		render.texture = &texture;
+		render.texture = resourceCache.getHandle(texture);
 		render.setDimensions(64.0f, 64.0f);
 
 		//render1.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
-		render1.texture = &background;
+		render1.texture = resourceCache.getHandle(background);
 		render1.setDimensions(128.0f, 128.0f);
 
 
@@ -85,10 +85,11 @@ namespace game
 		seedUsingRandXorshift128(glfwGetTime());
 		Actor * tmp;
 		TextureRC * r;
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			tmp = new Actor();
-			r = new TextureRC(&background);
+			r = new TextureRC();
+			r->texture = resourceCache.getHandle(background);
 			//r->shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
 			std::shared_ptr<RenderComponent> renderPtr2{ r };
 			std::shared_ptr<Actor> actorPtr2{ tmp };

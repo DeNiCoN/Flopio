@@ -26,6 +26,7 @@
     <ClCompile Include="src\core\graphics\RenderComponent.cpp" />
     <ClCompile Include="src\core\graphics\Scene.cpp" />
     <ClCompile Include="src\core\graphics\viewports\ScreenViewport.cpp" />
+    <ClCompile Include="src\core\memory\allocator.c" />
     <ClCompile Include="src\core\resourse\loaders\FragmentShaderResourceLoader.cpp" />
     <ClCompile Include="src\core\Engine.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="src\core\graphics\rendercomps\CustomShaderTextureRC.h" />
     <ClInclude Include="src\core\graphics\rendercomps\TextureRC.h" />
     <ClInclude Include="src\core\graphics\viewports\ScreenViewport.h" />
+    <ClInclude Include="src\core\memory\allocator.h" />
     <ClInclude Include="src\core\resourse\loaders\FragmentShaderResourceLoader.h" />
     <ClInclude Include="src\core\DelayProcess.h" />
     <ClInclude Include="src\core\gamebasis\App.h" />
