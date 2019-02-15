@@ -1,4 +1,5 @@
 #include "Flopio.h"
+#include "../core/Engine.h"
 #include "../core/graphics/rendercomps/TextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
 #include "../core/resourse/loaders/FragmentShaderResourceLoader.h"
@@ -14,6 +15,11 @@ namespace game
 
 	ScreenViewport viewport;
 
+	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		((Flopio *)currentApp)->scrollCallback(window, xoffset, yoffset);
+	}
+
 	void Flopio::VOnResize(GLFWwindow* window, int width, int height) 
 	{
 		viewport.VResize(width, height);
@@ -21,8 +27,7 @@ namespace game
 
 	void Flopio::VOnUpdate()
 	{
-		root.camera.set(root.camera.getPosition(), root.camera.getAngle() + 1.1f*secondsPerUpdate, 1.0f);
-		ship.setAngle(ship.getAngle() + 1.0*secondsPerUpdate);
+		updateCam();
 	}
 
 	void Flopio::VOnRender(const double ndelay)
@@ -41,12 +46,15 @@ namespace game
 	VertexShaderResourceLoader vertexLoader;
 	TextureResourceLoader textureLoader;
 
+	
+
 	void Flopio::VOnInit()
 	{
-		secondsPerUpdate = 1.0 / 20.0;
+		secondsPerUpdate = 1.0 / 60.0;
 		root.setViewport(&viewport);
 		int width, height;
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
+		glfwSetScrollCallback(glfwWindowHandle, scroll_callback);
 		viewport.VResize(width, height);
 
 		textureLoader.generateMipmaps = false;
@@ -103,6 +111,42 @@ namespace game
 		//{
 		//	return f->getPosition().z < l->getPosition().z;
 		//});
-		//root.camera.set({ 200, 300 }, 0.0f, 1.0f);
+		root.camera.set({ 200, 300 }, 0.0f, 1.0f);
+	}
+
+	void Flopio::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		root.camera.set(root.camera.getPosition(), root.camera.getAngle(), root.camera.getScale() + root.camera.getScale()*yoffset*0.1f);
+	}
+
+	void Flopio::updateCam()
+	{
+		const float speed = 400.f;
+		Camera & cam = root.camera;
+		float angle = cam.getAngle();
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_W) == GLFW_PRESS)
+		{
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -sinf(angle), cosf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+		}
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_S) == GLFW_PRESS)
+		{
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ sinf(angle), -cosf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+		}
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_A) == GLFW_PRESS)
+		{
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -cosf(angle), -sinf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+		}
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_D) == GLFW_PRESS)
+		{
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ cosf(angle), sinf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+		}
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_Q) == GLFW_PRESS)
+		{
+			cam.set(cam.getPosition(), cam.getAngle() + 1.f*secondsPerUpdate, cam.getScale());
+		}
+		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_E) == GLFW_PRESS)
+		{
+			cam.set(cam.getPosition(), cam.getAngle() + -1.f*secondsPerUpdate, cam.getScale());
+		}
 	}
 }

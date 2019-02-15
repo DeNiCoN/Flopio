@@ -44,9 +44,10 @@ namespace engine
 	{
 	private:
 		std::vector<SharedComponent> components;
-		float angle;
 		vec3 position;
 		vec3 speed;
+		float angle;
+		unsigned int id;
 		std::shared_ptr<RenderComponent> renderer;
 	public:
 		void setPosition(vec3 pos);

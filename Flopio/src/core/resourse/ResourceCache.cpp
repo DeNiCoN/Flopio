@@ -134,6 +134,7 @@ namespace engine {
 			if (!handl)
 			{
 				logger << "ResourceCache out of ResourceHandles\n";
+				return std::shared_ptr<ResourceHandle>();
 			}
 			new (handl) ResourceHandle(resource, buffer, rawSize, this);
 			handle = std::shared_ptr<ResourceHandle>(handl,

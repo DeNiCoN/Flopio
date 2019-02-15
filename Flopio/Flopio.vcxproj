@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\libs\lib\glad.c" />
+    <ClCompile Include="..\..\libs\lib\tinyxml2.cpp" />
     <ClCompile Include="src\core\gamebasis\Actor.cpp" />
+    <ClCompile Include="src\core\gamebasis\ActorFactory.cpp" />
     <ClCompile Include="src\core\graphics\rendercomps\CustomShaderTextureRC.cpp" />
     <ClCompile Include="src\core\graphics\rendercomps\TextureRC.cpp" />
     <ClCompile Include="src\core\graphics\RenderComponent.cpp" />
@@ -37,6 +39,7 @@
     <ClCompile Include="src\core\memory\stackAlloc.c" />
     <ClCompile Include="src\core\resourse\files\DirectoryResourceFile.cpp" />
     <ClCompile Include="src\core\resourse\loaders\TextureResourceLoader.cpp" />
+    <ClCompile Include="src\core\resourse\loaders\XmlResourceLoader.cpp" />
     <ClCompile Include="src\core\resourse\Resource.cpp" />
     <ClCompile Include="src\core\resourse\ResourceCache.cpp" />
     <ClCompile Include="src\core\resourse\ResourceHandle.cpp" />
@@ -47,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\gamebasis\Actor.h" />
+    <ClInclude Include="src\core\gamebasis\ActorFactory.h" />
     <ClInclude Include="src\core\graphics\rendercomps\CustomShaderTextureRC.h" />
     <ClInclude Include="src\core\graphics\rendercomps\TextureRC.h" />
     <ClInclude Include="src\core\graphics\viewports\ScreenViewport.h" />
@@ -68,6 +72,7 @@
     <ClInclude Include="src\core\resourse\files\DirectoryResourceFile.h" />
     <ClInclude Include="src\core\resourse\loaders\DefaultResourceLoader.h" />
     <ClInclude Include="src\core\resourse\loaders\TextureResourceLoader.h" />
+    <ClInclude Include="src\core\resourse\loaders\XmlResourceLoader.h" />
     <ClInclude Include="src\core\resourse\Resource.h" />
     <ClInclude Include="src\core\resourse\ResourceCache.h" />
     <ClInclude Include="src\core\resourse\ResourceFile.h" />

@@ -102,6 +102,15 @@
     <ClCompile Include="src\core\memory\allocator.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\resourse\loaders\XmlResourceLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libs\lib\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gamebasis\ActorFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Engine.h">
@@ -213,6 +222,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\gamebasis\DelayProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resourse\loaders\XmlResourceLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gamebasis\ActorFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
