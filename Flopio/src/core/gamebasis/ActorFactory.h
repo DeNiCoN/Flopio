@@ -6,7 +6,7 @@ namespace engine
 {
 
 	template <typename T>
-	Component* createComponent() {
+	Component* createComponentFunc() {
 		return new T();
 	}
 
@@ -16,12 +16,14 @@ namespace engine
 		std::unordered_map<unsigned int, Component* *()> genericComponentFactory;
 	public:
 		template <typename T>
-		void registerComponent(unsigned int id) {}
+		void registerComponent(unsigned int id) { genericComponentFactory[id] = createComponentFunc<T>}
 
+		ActorFactory();
+		SharedActor createActor(const tinyxml2::XMLElement* pRoot, const vec3* initialPosition = nullptr, const float* initialAngle = nullptr);
 		SharedActor createActor(Resource xmlFile, const vec3* initialPosition = nullptr, const float* initialAngle = nullptr);
 		void modifyActor(SharedActor actor, tinyxml2::XMLElement* data);
 
-		SharedComponent VCreateComponent(tinyxml2::XMLElement* data);
+		SharedComponent createComponent(const tinyxml2::XMLElement* data);
 
 		static unsigned int nextActorId() { static unsigned int next = 1; return next++; }
 	};

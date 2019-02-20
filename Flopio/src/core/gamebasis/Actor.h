@@ -7,6 +7,8 @@
 #include <optional>
 #include "../resourse/ResourceCache.h"
 #include "../math/linearmath.h"
+#include <algorithm>
+#include <tinyxml2.h>
 
 namespace engine
 {
@@ -14,14 +16,23 @@ namespace engine
 
 	class Component
 	{
+	private:
+		static std::vector<unsigned int> renderIds;
 	protected:
 		Actor* parent;
 	public:
 		void setParent(Actor * parent) { this->parent = parent; }
-		virtual void update(double delta) {}
+		virtual void VUpdate(double delta) {}
 		virtual const char* getName() const = 0;
-		constexpr unsigned int getId() const { return hash(getName(), strlen(getName())); }
+		virtual bool VInit(tinyxml2::XMLElement node);
+		virtual void VPostInit();
 
+		
+		static constexpr unsigned int getId(const char* name) { return hash(name, strlen(name)); }
+
+		//keep renderIds sorted
+		static void registerRender(unsigned int id) { renderIds.insert(std::lower_bound(renderIds.begin(), renderIds.end(), id), id); }
+		static bool isRender(unsigned int id) { return std::binary_search(renderIds.begin(), renderIds.end(), id); };
 	};
 
 	using SharedComponent = std::shared_ptr<Component>;
@@ -50,6 +61,7 @@ namespace engine
 		unsigned int id;
 		std::shared_ptr<RenderComponent> renderer;
 	public:
+		Actor(unsigned int id) : id(id) {}
 		void setPosition(vec3 pos);
 		vec3 getPosition() const { return position; }
 		float getAngle() const { return angle; }
@@ -58,6 +70,9 @@ namespace engine
 		void addComponent(SharedComponent component);
 		void removeComponent(SharedComponent component);
 		std::shared_ptr<RenderComponent> getRenderer() const { return renderer; }
+
+		bool init(const tinyxml2::XMLElement * root) { return true; }
+		bool postInit() { for (auto comp : components) comp->VPostInit(); }
 	};
 	typedef std::shared_ptr<Actor> SharedActor;
 }

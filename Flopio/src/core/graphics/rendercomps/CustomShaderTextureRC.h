@@ -34,6 +34,8 @@ namespace engine
 		static void init();
 		CustomShaderTextureRC() {}
 		CustomShaderTextureRC(Resource * texture) : texture{ texture } { CustomShaderTextureRC(); }
-		virtual const char* getName() const override { return "CustomShaderTextureRC"; }
+		
+		static const char* name;
+		virtual const char* getName() const override { return name; }
 	};
 }

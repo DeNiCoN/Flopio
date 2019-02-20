@@ -33,6 +33,8 @@ namespace engine
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
 		TextureRC() {}
-		virtual const char* getName() const override { return "TextureRC"; }
+
+		static const char* name;
+		virtual const char* getName() const override { return name; }
 	};
 }

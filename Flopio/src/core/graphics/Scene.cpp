@@ -32,7 +32,7 @@ namespace engine
 		//sort by renderer component id
 		for (SharedActor actor : actors)
 		{
-			tempActorsMap[actor->getRenderer()->getId()].push_back(actor);
+			tempActorsMap[Component::getId(actor->getRenderer()->getName())].push_back(actor);
 		}
 
 		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());

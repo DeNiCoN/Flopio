@@ -3,6 +3,8 @@
 namespace engine
 {
 
+	std::vector<unsigned int> renderIds;
+
 	void Actor::setPosition(vec3 pos)
 	{
 		position = pos;

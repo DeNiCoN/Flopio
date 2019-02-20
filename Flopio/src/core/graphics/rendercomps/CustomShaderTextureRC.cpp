@@ -5,6 +5,7 @@
 namespace engine
 {
 	bool CustomShaderTextureRC::initialized;
+	const char* CustomShaderTextureRC::name = "CustomShaderTextureRC";
 	unsigned int CustomShaderTextureRC::VBO,
 		CustomShaderTextureRC::VAO,
 		CustomShaderTextureRC::EBO;
@@ -14,6 +15,8 @@ namespace engine
 		if (!initialized)
 		{
 			initialized = true;
+			Component::registerRender(Component::getId(name));
+
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
 			glGenBuffers(1, &EBO);

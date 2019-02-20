@@ -6,6 +6,8 @@ namespace engine
 {
 	bool TextureRC::initialized;
 
+	const char* TextureRC::name = "TextureRC";
+
 	unsigned int 
 		TextureRC::VBO, 
 		TextureRC::VAO, 
@@ -23,6 +25,8 @@ namespace engine
 		if (!initialized)
 		{
 			initialized = true;
+			Component::registerRender(Component::getId(name));
+
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &transformBO);
 			glGenBuffers(1, &textureHandleBO);
