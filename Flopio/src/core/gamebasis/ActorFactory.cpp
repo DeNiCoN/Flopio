@@ -3,6 +3,7 @@
 #include "../resourse/loaders/XmlResourceLoader.h"
 #include "../graphics/rendercomps/CustomShaderTextureRC.h"
 #include "../graphics/rendercomps/TextureRC.h"
+#include <algorithm>
 
 namespace engine
 {
@@ -16,6 +17,29 @@ namespace engine
 	SharedActor ActorFactory::createActor(Resource xmlFile, const vec3 * initialPosition, const float * initialAngle)
 	{
 		createActor(std::static_pointer_cast<XmlExtraData>(currentApp->resourceCache.getHandle(xmlFile)->getExtra())->getRoot(), initialPosition, initialAngle);
+	}
+
+	SharedComponent ActorFactory::createComponent(const tinyxml2::XMLElement * pData)
+	{
+		const char* name = pData->Value();
+
+		auto it = std::find(genericComponentFactory.begin(), genericComponentFactory.end(), Component::getId(name));
+
+
+		if (it != genericComponentFactory.end())
+		{
+			SharedComponent pComponent(it->second());
+			if (!pComponent->VInit(pData))
+			{
+				logger << "Component failed to initialize: " << name << "\n";
+				return SharedComponent();
+			}
+		}
+		else
+		{
+			logger << "Couldn't find ActorComponent named " << std::string(name) << "\n";
+			return SharedComponent();
+		}
 	}
 
 	SharedActor ActorFactory::createActor(const tinyxml2::XMLElement* pRoot, const vec3 * initialPosition, const float * initialAngle)

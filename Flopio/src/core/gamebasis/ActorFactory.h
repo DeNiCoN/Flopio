@@ -13,7 +13,7 @@ namespace engine
 	class ActorFactory
 	{
 	private:
-		std::unordered_map<unsigned int, Component* *()> genericComponentFactory;
+		std::unordered_map<unsigned int, Component* (*)()> genericComponentFactory;
 	public:
 		template <typename T>
 		void registerComponent(unsigned int id) { genericComponentFactory[id] = createComponentFunc<T>}

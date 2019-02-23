@@ -24,7 +24,7 @@ namespace engine
 		void setParent(Actor * parent) { this->parent = parent; }
 		virtual void VUpdate(double delta) {}
 		virtual const char* getName() const = 0;
-		virtual bool VInit(tinyxml2::XMLElement node);
+		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
 		virtual void VPostInit();
 
 		
