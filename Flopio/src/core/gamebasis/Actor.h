@@ -25,7 +25,7 @@ namespace engine
 		virtual void VUpdate(double delta) {}
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
-		virtual void VPostInit();
+		virtual void VPostInit() {};
 
 		
 		static constexpr unsigned int getId(const char* name) { return hash(name, strlen(name)); }
@@ -49,6 +49,7 @@ namespace engine
 	public:
 		static std::map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
 		static unsigned int shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
+		static unsigned int shaderInitFromXML(const tinyxml2::XMLElement * pData);
 	};
 
 	class Actor

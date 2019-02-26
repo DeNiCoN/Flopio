@@ -35,34 +35,16 @@ namespace engine
 		}
 	}
 
-	void CustomShaderTextureRC::VOnActorAngleSet(float radians)
+	bool CustomShaderTextureRC::VInit(const tinyxml2::XMLElement * pData)
 	{
-		updateModel();
-	}
+		bool ret = TextureRC::VInit(pData);
+		if (!ret)
+			return ret;
 
-	void CustomShaderTextureRC::VOnActorPositionSet(vec3 pos)
-	{
-		updateModel();
-	}
-
-	void CustomShaderTextureRC::updateModel()
-	{
-		mat44 rotate, translate;
-		rotate = mat44RotateByZ(parent->getAngle());
-		translate = mat44Translate(parent->getPosition());
-		model = mat44Multiply(translate, mat44Multiply(rotate, mat44Scale(width, height, 1)));
-	}
-
-	void CustomShaderTextureRC::setDimensions(float width, float height)
-	{
-		this->width = width;
-		this->height = height;
-		updateModel();
-	}
-
-	std::pair<float, float> CustomShaderTextureRC::getDimensions()
-	{
-		return std::make_pair(width, height);
+		shaderProgramId = shaderInitFromXML(pData->FirstChildElement("Shader"));
+		if (!shaderProgramId)
+			return false;
+		return true;
 	}
 
 	void CustomShaderTextureRC::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)

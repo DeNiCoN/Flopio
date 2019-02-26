@@ -11,9 +11,10 @@ namespace engine
 		std::string name;
 		unsigned int hashed;
 		unsigned char colonPos;
+		Resource();
 	public:
-		Resource() {};
 		Resource(const std::string& resName);
+		//Resource(const char* resName);
 		std::string getName() const { return name; };
 		unsigned char getColonPos() const { return colonPos; };
 		bool operator==(Resource a) { return hashed == a.hashed; }

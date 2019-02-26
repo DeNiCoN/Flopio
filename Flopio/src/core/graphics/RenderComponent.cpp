@@ -8,18 +8,38 @@ namespace engine
 {
 	std::map<ThreeResourceTuple, unsigned int> RenderComponent::shaderPrograms;
 
+	unsigned int RenderComponent::shaderInitFromXML(const tinyxml2::XMLElement * pData)
+	{
+		if (!pData)
+			return 0;
+
+		const char* vertexName = pData->Attribute("vertex");
+		if (!vertexName)
+			return 0;
+		const char* geometryName = pData->Attribute("geometry");
+		const char* fragmentName = pData->Attribute("fragment");
+		if (!fragmentName)
+			return 0;
+		Resource vertex(vertexName);
+		Resource fragment(fragmentName);
+		if (geometryName)
+		{
+			Resource geometry(geometryName);
+			return shaderInit(&vertex, &geometry, &fragment);
+		}
+		else
+		{
+			return shaderInit(&vertex, nullptr, &fragment);
+		}
+	}
+
 	unsigned int RenderComponent::shaderInit(Resource * vertex, Resource * geometry, Resource * fragment)
 	{
 		unsigned int shaderProgramId;
 		char tmplog[1024];
 		int success;
 
-		ThreeResourceTuple tuple;
-
-		if (geometry == nullptr)
-			tuple = std::make_tuple(*vertex, std::nullopt, *fragment);
-		else
-			tuple = std::make_tuple(*vertex, *geometry, *fragment);
+		ThreeResourceTuple tuple = tuple = std::make_tuple(*vertex, geometry ? std::optional(*geometry) : std::nullopt, *fragment);;
 
 		if (shaderPrograms.find(tuple) == shaderPrograms.end())
 		{

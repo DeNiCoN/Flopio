@@ -75,6 +75,11 @@ namespace engine
 		}
 	}
 
+	bool TextureRC::VInit(const tinyxml2::XMLElement * pData)
+	{
+		return false;
+	}
+
 	void TextureRC::VOnActorAngleSet(float radians)
 	{
 		updateModel();
@@ -137,5 +142,38 @@ namespace engine
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*) &scene.getProjectionView());
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
 		glBindVertexArray(0);
+	}
+
+	bool TextureRC::VInit(const tinyxml2::XMLElement * pData)
+	{
+		this->width = pData->FloatAttribute("width", 64.f);
+		this->height = pData->FloatAttribute("height", 64.f);
+		
+		auto textureElement = pData->FirstChildElement("Texture");
+		std::string textureName;
+
+		if (textureElement)
+		{
+			textureName = textureElement->GetText();
+			Resource textureResource(textureName);
+			texture = currentApp->resourceCache.getHandle(textureResource);
+		}
+		else
+		{
+			Resource textureResource("EngineResources:notexture.jpg");
+			texture = currentApp->resourceCache.getHandle(textureResource);
+		}
+		if (!texture)
+		{
+			logger << "failed to get texture handle for TextureRenderComponent: " << textureName << "\n";
+			return false;
+		}
+
+		return true;
+	}
+
+	void TextureRC::VPostInit()
+	{
+		updateModel();
 	}
 }

@@ -2,10 +2,11 @@
 #include "../../gamebasis/Actor.h"
 #include "../../resourse/Resource.h"
 #include "../Scene.h"
+#include "TextureRC.h"
 
 namespace engine
 {
-	class CustomShaderTextureRC : public RenderComponent
+	class CustomShaderTextureRC : public TextureRC
 	{
 	private:
 		static bool initialized;
@@ -19,17 +20,9 @@ namespace engine
 		static constexpr unsigned int indices[] = {
 		0, 1, 3,
 		0, 3, 2 };
-	protected:
-		float width = 1, height = 1;
-		mat44 model;
-		virtual void VOnActorAngleSet(float radians) override;
-		virtual void VOnActorPositionSet(vec3 pos) override;
-		void updateModel();
 	public:
 		Resource * texture;
-		std::pair<float, float> getDimensions();
 		unsigned int shaderProgramId;
-		void setDimensions(float width, float height);
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
 		CustomShaderTextureRC() {}
@@ -37,5 +30,6 @@ namespace engine
 		
 		static const char* name;
 		virtual const char* getName() const override { return name; }
+		virtual bool VInit(const tinyxml2::XMLElement * pData) override;
 	};
 }

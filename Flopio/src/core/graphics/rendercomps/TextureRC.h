@@ -21,7 +21,7 @@ namespace engine
 		0, 1, 3,
 		0, 3, 2 };
 	protected:
-		float width = 1, height = 1;
+		float width = 64, height = 64;
 		mat44 model;
 		virtual void VOnActorAngleSet(float radians) override;
 		virtual void VOnActorPositionSet(vec3 pos) override;
@@ -35,6 +35,8 @@ namespace engine
 		TextureRC() {}
 
 		static const char* name;
+		virtual void VPostInit() override;
 		virtual const char* getName() const override { return name; }
+		virtual bool VInit(const tinyxml2::XMLElement * pData) override;
 	};
 }

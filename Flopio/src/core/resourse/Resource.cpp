@@ -7,11 +7,10 @@
 
 namespace engine
 {
-	Resource::Resource(const std::string &resName)
+	Resource::Resource()
 	{
-		name = resName;
 		std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
-		hashed = hash(resName.c_str(), resName.length());
+		hashed = hash(name.c_str(), name.length());
 		size_t pos = name.find(':', 0);
 		if (pos == std::string::npos)
 		{
@@ -22,6 +21,17 @@ namespace engine
 		{
 			colonPos = static_cast<unsigned char>(pos);
 		}
-
 	}
+
+	Resource::Resource(const std::string &resName)
+	{
+		name = resName;
+		Resource();
+	}
+
+	/*Resource::Resource(const char* resName)
+	{
+		name = std::string(resName);
+		Resource();
+	}*/
 }
