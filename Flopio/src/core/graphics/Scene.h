@@ -30,7 +30,8 @@ namespace engine
 	public:
 		Camera camera;
 		void render(const double ndelay);
-		void addActor(SharedActor actor) { actors.push_back(actor); }
+		void update(const double delta);
+		void addActor(SharedActor actor);
 		static void registerRenderer(unsigned int componentId, RenderFuntion renderFunction);
 		Viewport* getViewport() const { return viewport; }
 		mat44 getProjectionView() const { return projectionView; }

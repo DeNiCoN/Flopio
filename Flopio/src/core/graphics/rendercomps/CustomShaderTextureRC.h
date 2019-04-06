@@ -25,10 +25,10 @@ namespace engine
 		unsigned int shaderProgramId;
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
-		CustomShaderTextureRC() {}
+		static const char* name;
+		CustomShaderTextureRC() { id = Component::getId(name); }
 		CustomShaderTextureRC(Resource * texture) : texture{ texture } { CustomShaderTextureRC(); }
 		
-		static const char* name;
 		virtual const char* getName() const override { return name; }
 		virtual bool VInit(const tinyxml2::XMLElement * pData) override;
 	};

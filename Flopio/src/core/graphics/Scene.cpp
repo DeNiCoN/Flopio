@@ -5,6 +5,7 @@ namespace engine
 
 	std::unordered_map<unsigned int, std::vector<SharedActor>> Scene::tempActorsMap;
 	std::unordered_map<unsigned int, RenderFuntion> Scene::renderFunctionsMap;
+	std::vector<std::shared_ptr<RenderComponent>> renderers;
 
 	Camera::Camera()
 	{
@@ -29,24 +30,39 @@ namespace engine
 
 	void Scene::render(const double ndelay)
 	{
-		//sort by renderer component id
-		for (SharedActor actor : actors)
-		{
-			tempActorsMap[Component::getId(actor->getRenderer()->getName())].push_back(actor);
-		}
-
-		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());
-
 		//render   
 		for (auto pair : tempActorsMap)
 		{
 			(*renderFunctionsMap[pair.first])(pair.second, *this, ndelay);
 		}
-
-		//clean
-
-		tempActorsMap.clear();
 	
+	}
+
+	void Scene::update(const double delta)
+	{
+		for (auto actor : actors)
+		{
+			actor->update(delta);
+		}
+
+		//update render data
+		//clean
+		tempActorsMap.clear();
+
+		//sort by renderer component id
+		for (SharedActor actor : actors)
+		{
+			tempActorsMap[actor->getRenderer()->getId()].push_back(actor);
+		}
+
+		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());
+
+
+	}
+
+	void Scene::addActor(SharedActor actor)
+	{
+		actors.push_back(actor);
 	}
 
 	void Scene::registerRenderer(unsigned int componentId, RenderFuntion renderFunction)

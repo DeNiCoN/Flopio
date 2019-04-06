@@ -20,17 +20,18 @@ namespace engine
 		static std::vector<unsigned int> renderIds;
 	protected:
 		Actor* parent;
+		unsigned int id;
 	public:
 		void setParent(Actor * parent) { this->parent = parent; }
-		virtual void VUpdate(double delta) {}
+		virtual void VUpdate(const double delta) {}
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
 		virtual void VPostInit() {};
 
-		
+		unsigned int getId() { return id; };
 		static constexpr unsigned int getId(const char* name) { return hash(name, strlen(name)); }
 
-		//keep renderIds sorted
+		//keep renderIds sorted for binary search
 		static void registerRender(unsigned int id) { renderIds.insert(std::lower_bound(renderIds.begin(), renderIds.end(), id), id); }
 		static bool isRender(unsigned int id) { return std::binary_search(renderIds.begin(), renderIds.end(), id); };
 	};
@@ -74,6 +75,7 @@ namespace engine
 
 		bool init(const tinyxml2::XMLElement * root) { return true; }
 		void postInit() { for (auto comp : components) comp->VPostInit(); }
+		void update(const double delta) { for (auto comp : components) comp->VUpdate(delta); }
 	};
 	typedef std::shared_ptr<Actor> SharedActor;
 }

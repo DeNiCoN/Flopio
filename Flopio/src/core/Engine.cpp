@@ -111,7 +111,7 @@ namespace engine {
 			while (delay >= app.secondsPerUpdate)
 			{
 				delay -= app.secondsPerUpdate;
-				app.VOnUpdate();
+				app.VOnUpdate(app.secondsPerUpdate);
 			}
 
 			app.VOnRender(delay / app.secondsPerUpdate);

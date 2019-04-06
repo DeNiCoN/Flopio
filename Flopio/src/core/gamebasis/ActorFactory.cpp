@@ -67,7 +67,7 @@ namespace engine
 			SharedComponent pComponent(createComponent(pNode));
 			if (pComponent)
 			{
-				if (!Component::isRender(Component::getId(pComponent->getName())))
+				if (!Component::isRender(pComponent->getId()))
 					pActor->addComponent(pComponent);
 				else
 					pActor->setRenderer(std::static_pointer_cast<RenderComponent>(pComponent));

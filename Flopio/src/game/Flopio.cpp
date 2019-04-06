@@ -38,7 +38,7 @@ namespace game
 		viewport.VResize(width, height);
 	}
 
-	void Flopio::VOnUpdate()
+	void Flopio::VOnUpdate(const double delta)
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -74,7 +74,8 @@ namespace game
 		}
 		ImGui::End();
 
-		updateCam();
+		updateCam(delta);
+		root.update(delta);
 
 		ImGui::Render();
 		
@@ -170,34 +171,34 @@ namespace game
 		}
 	}
 
-	void Flopio::updateCam()
+	void Flopio::updateCam(const double delta)
 	{
 		const float speed = 400.f;
 		Camera & cam = root.camera;
 		float angle = cam.getAngle();
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -sinf(angle), cosf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -sinf(angle), cosf(angle) }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_S) == GLFW_PRESS)
 		{
-			cam.set(vec2Add(cam.getPosition(), vec2Scale({ sinf(angle), -cosf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ sinf(angle), -cosf(angle) }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_A) == GLFW_PRESS)
 		{
-			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -cosf(angle), -sinf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -cosf(angle), -sinf(angle) }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_D) == GLFW_PRESS)
 		{
-			cam.set(vec2Add(cam.getPosition(), vec2Scale({ cosf(angle), sinf(angle) }, speed * (float)secondsPerUpdate * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ cosf(angle), sinf(angle) }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_Q) == GLFW_PRESS)
 		{
-			cam.set(cam.getPosition(), cam.getAngle() + 1.f*secondsPerUpdate, cam.getScale());
+			cam.set(cam.getPosition(), cam.getAngle() + 1.f* delta, cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_E) == GLFW_PRESS)
 		{
-			cam.set(cam.getPosition(), cam.getAngle() + -1.f*secondsPerUpdate, cam.getScale());
+			cam.set(cam.getPosition(), cam.getAngle() + -1.f* delta, cam.getScale());
 		}
 	}
 }

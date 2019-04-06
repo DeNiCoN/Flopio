@@ -32,11 +32,12 @@ namespace engine
 		void setDimensions(float width, float height);
 		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
 		static void init();
-		TextureRC() {}
 
 		static const char* name;
-		virtual void VPostInit() override;
+		TextureRC() { id = Component::getId(name); }
 		virtual const char* getName() const override { return name; }
+
 		virtual bool VInit(const tinyxml2::XMLElement * pData) override;
+		virtual void VPostInit() override;
 	};
 }

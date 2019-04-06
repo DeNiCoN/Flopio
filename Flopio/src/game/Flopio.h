@@ -6,7 +6,7 @@ namespace game {
 	{
 	public:
 		virtual void VOnResize(GLFWwindow* window, int width, int height) override;
-		virtual void VOnUpdate() override;
+		virtual void VOnUpdate(const double delta) override;
 		virtual void VOnRender(const double ndelay) override;
 		virtual void VOnInit() override;
 		virtual void VOnExit() override;
@@ -14,6 +14,6 @@ namespace game {
 		void dropCallback(GLFWwindow* window, int count, const char** paths);
 		Flopio() : App(1) {}
 	private:
-		void updateCam();
+		void updateCam(const double delta);
 	};
 }
