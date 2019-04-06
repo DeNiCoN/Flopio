@@ -1,13 +1,21 @@
 #include "Flopio.h"
+
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 #include "../core/Engine.h"
 #include "../core/graphics/rendercomps/TextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
 #include "../core/resourse/loaders/FragmentShaderResourceLoader.h"
 #include "../core/resourse/loaders/VertexShaderResourceLoader.h"
 #include "../core/resourse/loaders/TextureResourceLoader.h"
+#include "../core/resourse/loaders/XmlResourceLoader.h"
 #include "../core/graphics/viewports/ScreenViewport.h"
 #include "../core/math/linearmath.h"
 #include "../core/math/prng.h"
+#include "../core/gamebasis/ActorFactory.h"
+#include <filesystem>
 
 namespace game
 {
@@ -20,6 +28,11 @@ namespace game
 		((Flopio *)currentApp)->scrollCallback(window, xoffset, yoffset);
 	}
 
+	void drop_callback(GLFWwindow* window, int count, const char** paths)
+	{
+		((Flopio *)currentApp)->dropCallback(window, count, paths);
+	}
+
 	void Flopio::VOnResize(GLFWwindow* window, int width, int height) 
 	{
 		viewport.VResize(width, height);
@@ -27,34 +40,74 @@ namespace game
 
 	void Flopio::VOnUpdate()
 	{
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Hello, world!");
+		if (ImGui::TreeNode("Keyboard, Mouse & Navigation State"))
+		{
+
+			ImGuiIO& io = ImGui::GetIO();
+
+			if (ImGui::IsMousePosValid())
+				ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+			else
+				ImGui::Text("Mouse pos: <INVALID>");
+			ImGui::Text("Mouse delta: (%g, %g)", io.MouseDelta.x, io.MouseDelta.y);
+			ImGui::Text("Mouse down:");     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (io.MouseDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
+			ImGui::Text("Mouse clicked:");  for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse dbl-clicked:"); for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDoubleClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse released:"); for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseReleased(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);
+
+			ImGui::Text("Keys down:");      for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (io.KeysDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::Text("%d (%.02f secs)", i, io.KeysDownDuration[i]); }
+			ImGui::Text("Keys pressed:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyPressed(i)) { ImGui::SameLine(); ImGui::Text("%d", i); }
+			ImGui::Text("Keys release:");   for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyReleased(i)) { ImGui::SameLine(); ImGui::Text("%d", i); }
+			ImGui::Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+
+			ImGui::Text("NavInputs down:"); for (int i = 0; i < IM_ARRAYSIZE(io.NavInputs); i++) if (io.NavInputs[i] > 0.0f) { ImGui::SameLine(); ImGui::Text("[%d] %.2f", i, io.NavInputs[i]); }
+			ImGui::Text("NavInputs pressed:"); for (int i = 0; i < IM_ARRAYSIZE(io.NavInputs); i++) if (io.NavInputsDownDuration[i] == 0.0f) { ImGui::SameLine(); ImGui::Text("[%d]", i); }
+			ImGui::Text("NavInputs duration:"); for (int i = 0; i < IM_ARRAYSIZE(io.NavInputs); i++) if (io.NavInputsDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::Text("[%d] %.2f", i, io.NavInputsDownDuration[i]); }
+
+			ImGui::TreePop();
+		}
+		ImGui::End();
+
 		updateCam();
+
+		ImGui::Render();
+		
 	}
 
 	void Flopio::VOnRender(const double ndelay)
 	{
 		root.render(ndelay);
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
-	Actor back;
-	TextureRC render;
-	TextureRC render1;
-	Resource texture("Resources:ship.png");
-	Resource vertex("Resources:vertex.vs");
-	Resource fragment("Resources:fragment.fs");
-	Resource background("Resources:background.jpg");
+
+
 	DirectoryResourceFile resFile("Resources");
 	FragmentShaderResourceLoader fragmentLoader;
 	VertexShaderResourceLoader vertexLoader;
 	TextureResourceLoader textureLoader;
-
-	
+	XmlResourceLoader xmlLoader;
+	ActorFactory actorFactory;
 
 	void Flopio::VOnInit()
 	{
 		secondsPerUpdate = 1.0 / 60.0;
+
+		ImGui::CreateContext();
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(glfwWindowHandle, true);
+		ImGui_ImplOpenGL3_Init("#version 450 core");
+
 		root.setViewport(&viewport);
 		int width, height;
 		glfwGetWindowSize(glfwWindowHandle, &width, &height);
 		glfwSetScrollCallback(glfwWindowHandle, scroll_callback);
+		glfwSetDropCallback(glfwWindowHandle, drop_callback);
 		viewport.VResize(width, height);
 
 		textureLoader.generateMipmaps = false;
@@ -63,60 +116,58 @@ namespace game
 		resourceCache.addLoader(std::shared_ptr<FragmentShaderResourceLoader>(&fragmentLoader, [](FragmentShaderResourceLoader*) {}));
 		resourceCache.addLoader(std::shared_ptr<VertexShaderResourceLoader>(&vertexLoader, [](VertexShaderResourceLoader*) {}));
 		resourceCache.addLoader(std::shared_ptr<TextureResourceLoader>(&textureLoader, [](TextureResourceLoader*) {}));
+		resourceCache.addLoader(std::shared_ptr<XmlResourceLoader>(&xmlLoader, [](XmlResourceLoader*) {}));
 		
 		TextureRC::init();
-		Scene::registerRenderer(render.getId(), &TextureRC::render);
+		Scene::registerRenderer(Component::getId(TextureRC::name), &TextureRC::render);
 
-		std::shared_ptr<RenderComponent> renderPtr { &render,[](RenderComponent*) {} };
-		ship.setRenderer(renderPtr);
-		std::shared_ptr<Actor> actorPtr { &ship ,[](Actor*) {} };
-
-		std::shared_ptr<RenderComponent> renderPtr1{ &render1,[](RenderComponent*) {} };
-		back.setRenderer(renderPtr1);
-		std::shared_ptr<Actor> actorPtr1{ &back ,[](Actor*) {} };
-
-		//render.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
-		render.texture = resourceCache.getHandle(texture);
-		render.setDimensions(64.0f, 64.0f);
-
-		//render1.shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
-		render1.texture = resourceCache.getHandle(background);
-		render1.setDimensions(128.0f, 128.0f);
-
-
-		actorPtr1->setPosition({ 0, 0, 2 });
-		actorPtr->setPosition({ 64, 45, 1 });
-
-		root.addActor(actorPtr);
-		root.addActor(actorPtr1);
-
-		seedUsingRandXorshift128(glfwGetTime());
-		Actor * tmp;
-		TextureRC * r;
-		for (int i = 0; i < 10; i++)
-		{
-			tmp = new Actor();
-			r = new TextureRC();
-			r->texture = resourceCache.getHandle(background);
-			//r->shaderProgramId = RenderComponent::shaderInit(&vertex, nullptr, &fragment);
-			std::shared_ptr<RenderComponent> renderPtr2{ r };
-			std::shared_ptr<Actor> actorPtr2{ tmp };
-			actorPtr2->setRenderer(renderPtr2);
-			r->setDimensions(100.f, 100.f);
-
-			actorPtr2->setPosition({ xorshift128Limit(width) - 200.f, xorshift128Limit(height) - 200.f, xorshift128f() + 1.f });
-			root.addActor(actorPtr2);
-		}
 		//std::sort(root.actors.begin(), root.actors.end(), [](SharedActor f, SharedActor l) 
 		//{
 		//	return f->getPosition().z < l->getPosition().z;
 		//});
-		root.camera.set({ 200, 300 }, 0.0f, 1.0f);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		ImGui::Render();
+	}
+
+	void Flopio::VOnExit()
+	{
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 
 	void Flopio::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	{
 		root.camera.set(root.camera.getPosition(), root.camera.getAngle(), root.camera.getScale() + root.camera.getScale()*yoffset*0.1f);
+	}
+
+	void Flopio::dropCallback(GLFWwindow* window, int count, const char** paths)
+	{
+		int width, height;
+		double xpos, ypos;
+		float angle = root.camera.getAngle();
+		glfwGetWindowSize(window, &width, &height);
+		glfwGetCursorPos(window, &xpos, &ypos);
+		vec4 pos = vec4CreateSse(xpos - width / 2, height / 2 - ypos, 1, 1);
+		pos.ssevalue = sseVecMat44Multiply(pos.ssevalue, &mat44TransformInverse(root.camera.getView()));
+		vec3 pos3 = vec3Create(pos.x, pos.y, 1.f);
+
+		for (int i = 0; i < count; i++)
+		{
+			std::filesystem::path path(paths[i]);
+			
+			std::string pathString = path.string();
+			pathString.replace(pathString.find_last_of(std::filesystem::path::preferred_separator), 1, &Resource::separator);
+			Resource res(pathString);
+			std::shared_ptr<DirectoryResourceFile> resFile(new DirectoryResourceFile (pathString.substr(0, res.getSeparatorPos())));
+			resourceCache.addFile(resFile);
+			if (SharedActor newActor = actorFactory.createActor(res, &pos3, &angle))
+			{
+				root.addActor(newActor);
+			}
+		}
 	}
 
 	void Flopio::updateCam()

@@ -27,21 +27,21 @@ namespace engine
 			}
 			return true;
 		}
-		return false;
+ 		return false;
 	}
 
 	int DirectoryResourceFile::VGetRawResourceSize(const Resource &r) 
 	{
-		return filesMap[r.getName().substr(r.getColonPos() + 1)];
+		return filesMap[r.getName().substr(r.getSeparatorPos() + 1)];
 	}
 
 	int DirectoryResourceFile::VGetRawResource(const Resource &r, char *buffer)
 	{
 		std::ifstream file;
-		file.open(name + "/" + r.getName().substr(r.getColonPos() + 1), std::ifstream::in | std::ifstream::binary);
+		file.open(name + "/" + r.getName().substr(r.getSeparatorPos() + 1), std::ifstream::in | std::ifstream::binary);
 		if (file.fail())
 			return -1;
-		file.read(buffer, filesMap[r.getName().substr(r.getColonPos() + 1)]);
+		file.read(buffer, filesMap[r.getName().substr(r.getSeparatorPos() + 1)]);
 		return 0;
 	}
 

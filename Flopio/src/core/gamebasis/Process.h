@@ -35,7 +35,7 @@ namespace engine {
 		SharedProcessPtr removeNext()
 		{
 			SharedProcessPtr r = next;
-			next == nullptr;
+			next == SharedProcessPtr();
 			return r;
 		}
 		SharedProcessPtr getNext() { return next; }

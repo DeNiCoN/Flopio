@@ -9,10 +9,11 @@ namespace game {
 		virtual void VOnUpdate() override;
 		virtual void VOnRender(const double ndelay) override;
 		virtual void VOnInit() override;
+		virtual void VOnExit() override;
 		void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+		void dropCallback(GLFWwindow* window, int count, const char** paths);
 		Flopio() : App(1) {}
 	private:
-		Actor ship;
 		void updateCam();
 	};
 }

@@ -3,7 +3,9 @@
 namespace engine
 {
 
-	std::vector<unsigned int> renderIds;
+
+
+	std::vector<unsigned int> Component::renderIds;
 
 	void Actor::setPosition(vec3 pos)
 	{

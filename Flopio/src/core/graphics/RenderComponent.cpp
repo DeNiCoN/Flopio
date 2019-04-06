@@ -39,7 +39,7 @@ namespace engine
 		char tmplog[1024];
 		int success;
 
-		ThreeResourceTuple tuple = tuple = std::make_tuple(*vertex, geometry ? std::optional(*geometry) : std::nullopt, *fragment);;
+		ThreeResourceTuple tuple = geometry ? std::make_tuple(*vertex, std::make_optional(*geometry), *fragment) : std::make_tuple(*vertex, std::nullopt, *fragment);
 
 		if (shaderPrograms.find(tuple) == shaderPrograms.end())
 		{

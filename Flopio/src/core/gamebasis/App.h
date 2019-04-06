@@ -35,6 +35,7 @@ namespace engine {
 		ResourceCache resourceCache;
 	protected:
 		virtual void VOnInit() {}
+		virtual void VOnExit() {}
 		virtual void VOnUpdate() = 0;
 		virtual void VOnRender(const double ndelta) = 0;
 		virtual void VOnResize(GLFWwindow* window, int width, int height) {}

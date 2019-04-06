@@ -73,7 +73,7 @@ namespace engine
 		std::shared_ptr<RenderComponent> getRenderer() const { return renderer; }
 
 		bool init(const tinyxml2::XMLElement * root) { return true; }
-		bool postInit() { for (auto comp : components) comp->VPostInit(); }
+		void postInit() { for (auto comp : components) comp->VPostInit(); }
 	};
 	typedef std::shared_ptr<Actor> SharedActor;
 }

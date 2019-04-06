@@ -24,7 +24,7 @@ namespace engine
 		mat44 rotate, translate;
 		translate = mat44TranslateVec2(vec2Neg(position));
 		rotate = mat44RotateByZ(-angle);
-		view = mat44Multiply(mat44Multiply(rotate, mat44Scale(scale, scale, 1.0f)), translate);
+		view = mat44Multiply(&mat44Multiply(&rotate, &mat44Scale(scale, scale, 1.0f)), &translate);
 	}
 
 	void Scene::render(const double ndelay)

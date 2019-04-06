@@ -20,7 +20,7 @@ namespace engine
 		vec2 getPosition() const { return position; }
 		float getAngle() const { return angle; }
 		float getScale() const { return scale; }
-		mat44 getView() const { return view; }
+		const mat44 * getView() const { return &view; }
 		void set(vec2 position, float angle, float scale);
 	};
 	class Scene;

@@ -21,6 +21,7 @@ namespace engine {
 			return false;
 		if (!poolInit(&handlePool, poolBuf, sizeof(ResourceHandle), maxHandleCount))
 			return false;
+
 		addFile(std::shared_ptr<DirectoryResourceFile>(&engineResFile, [](DirectoryResourceFile*) {}));
 
 		return true;
@@ -73,7 +74,7 @@ namespace engine {
 			const std::string* wilds = l->VGetWildcardPattern(&size);
 			for (int i = 0; i < size; i++)
 			{
-				if (wildcardMath(wilds[i].c_str(), resource.getName().substr(resource.getColonPos() + 1).c_str()))
+				if (wildcardMath(wilds[i].c_str(), resource.getName().substr(resource.getSeparatorPos() + 1).c_str()))
 				{
 					loader = l;
 					break;
@@ -91,7 +92,7 @@ namespace engine {
 
 		for (std::shared_ptr<ResourceFile> f : files)
 		{
-			if (!resource.getName().compare(0, resource.getColonPos(), f->getName(), 0, resource.getColonPos()))
+			if (!resource.getName().compare(0, resource.getSeparatorPos(), f->getName(), 0, resource.getSeparatorPos()))
 			{
 				file = f;
 				break;
@@ -110,7 +111,8 @@ namespace engine {
 			logger << "Resource size returned 0 - Resource " << resource.getName() << " not found\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
-		char *rawBuffer = new char[rawSize];
+		char *rawBuffer = new char[rawSize + 1];
+		rawBuffer[rawSize] = '\0';
 
 		if (rawBuffer == NULL)
 		{
@@ -186,9 +188,10 @@ namespace engine {
 
 	void ResourceCache::addFile(std::shared_ptr<ResourceFile> file) 
 	{
-		if (file->VOpen())
-			files.push_back(file);
-		else
-			logger << "failed to open file " << file->getName() << "\n";
+		if(std::find(files.begin(), files.end(), file) == files.end())
+			if (file->VOpen())
+				files.push_back(file);
+			else
+				logger << "failed to open file " << file->getName() << "\n";
 	}
 }

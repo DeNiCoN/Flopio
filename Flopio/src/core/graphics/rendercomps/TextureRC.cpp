@@ -17,8 +17,8 @@ namespace engine
 		TextureRC::shaderProgramId;
 
 	Resource 
-		vertex("EngineResources:TextureRC.vs"), 
-		fragment("EngineResources:TextureRC.fs");
+		vertex("EngineResources|TextureRC.vs"), 
+		fragment("EngineResources|TextureRC.fs");
 
 	void TextureRC::init()
 	{
@@ -75,11 +75,6 @@ namespace engine
 		}
 	}
 
-	bool TextureRC::VInit(const tinyxml2::XMLElement * pData)
-	{
-		return false;
-	}
-
 	void TextureRC::VOnActorAngleSet(float radians)
 	{
 		updateModel();
@@ -95,7 +90,7 @@ namespace engine
 		mat44 rotate, translate;
 		rotate = mat44RotateByZ(parent->getAngle());
 		translate = mat44Translate(parent->getPosition());
-		model = mat44Multiply(translate, mat44Multiply(rotate, mat44Scale(width, height, 1)));
+		model = mat44Multiply(&translate, &mat44Multiply(&rotate, &mat44Scale(width, height, 1)));
 	}
 
 	void TextureRC::setDimensions(float width, float height)
@@ -148,19 +143,16 @@ namespace engine
 	{
 		this->width = pData->FloatAttribute("width", 64.f);
 		this->height = pData->FloatAttribute("height", 64.f);
-		
-		auto textureElement = pData->FirstChildElement("Texture");
-		std::string textureName;
+		const char* textureName = pData->Attribute("texture");
 
-		if (textureElement)
+		if (textureName)
 		{
-			textureName = textureElement->GetText();
 			Resource textureResource(textureName);
 			texture = currentApp->resourceCache.getHandle(textureResource);
 		}
 		else
 		{
-			Resource textureResource("EngineResources:notexture.jpg");
+			Resource textureResource("EngineResources|notexture.jpg");
 			texture = currentApp->resourceCache.getHandle(textureResource);
 		}
 		if (!texture)

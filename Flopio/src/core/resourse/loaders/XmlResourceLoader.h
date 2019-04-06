@@ -10,7 +10,7 @@ namespace engine
 		tinyxml2::XMLDocument document;
 	public:
 		const tinyxml2::XMLElement * getRoot() const { return document.RootElement(); }
-		void parseXml(char* pRawBuffer);
+		bool parseXml(char* pRawBuffer);
 		virtual std::string getName() { return "XmlExtraData"; }
 	};
 

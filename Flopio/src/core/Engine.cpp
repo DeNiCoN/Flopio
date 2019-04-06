@@ -90,6 +90,7 @@ namespace engine {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
+
 		
 		app.VOnInit();
 		int fps = 0;
@@ -113,9 +114,9 @@ namespace engine {
 				app.VOnUpdate();
 			}
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			app.VOnRender(delay / app.secondsPerUpdate);
 			glfwSwapBuffers(window);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			fps++;
 			if (second >= 1.0)
@@ -127,6 +128,7 @@ namespace engine {
 			linReset(&oneFrame);
 			glfwPollEvents();
 		}
+		app.VOnExit();
 
 		free(oneFrameBuffer);
 

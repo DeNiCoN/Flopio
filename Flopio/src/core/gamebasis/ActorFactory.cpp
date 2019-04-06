@@ -16,14 +16,17 @@ namespace engine
 
 	SharedActor ActorFactory::createActor(Resource xmlFile, const vec3 * initialPosition, const float * initialAngle)
 	{
-		createActor(std::static_pointer_cast<XmlExtraData>(currentApp->resourceCache.getHandle(xmlFile)->getExtra())->getRoot(), initialPosition, initialAngle);
+		if (auto handle = currentApp->resourceCache.getHandle(xmlFile))
+			return createActor(std::static_pointer_cast<XmlExtraData>(handle->getExtra())->getRoot(), initialPosition, initialAngle);
+		else
+			return SharedActor();
 	}
 
 	SharedComponent ActorFactory::createComponent(const tinyxml2::XMLElement * pData)
 	{
 		const char* name = pData->Value();
 
-		auto it = std::find(genericComponentFactory.begin(), genericComponentFactory.end(), Component::getId(name));
+		auto it = genericComponentFactory.find(Component::getId(name));
 
 
 		if (it != genericComponentFactory.end())
@@ -34,6 +37,7 @@ namespace engine
 				logger << "Component failed to initialize: " << name << "\n";
 				return SharedComponent();
 			}
+			return pComponent;
 		}
 		else
 		{
@@ -63,7 +67,10 @@ namespace engine
 			SharedComponent pComponent(createComponent(pNode));
 			if (pComponent)
 			{
-				pActor->addComponent(pComponent);
+				if (!Component::isRender(Component::getId(pComponent->getName())))
+					pActor->addComponent(pComponent);
+				else
+					pActor->setRenderer(std::static_pointer_cast<RenderComponent>(pComponent));
 			}
 			else
 			{
@@ -71,12 +78,12 @@ namespace engine
 			}
 		}
 
-		if (!initialPosition)
+		if (initialPosition)
 		{
 			pActor->setPosition(*initialPosition);
 		}
 
-		if (!initialAngle)
+		if (initialAngle)
 		{
 			pActor->setAngle(*initialAngle);
 		}

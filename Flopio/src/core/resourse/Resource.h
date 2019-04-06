@@ -10,13 +10,15 @@ namespace engine
 	private:
 		std::string name;
 		unsigned int hashed;
-		unsigned char colonPos;
+		unsigned char separatorPos;
 		Resource();
 	public:
+		static const char separator = '|';
+
 		Resource(const std::string& resName);
 		//Resource(const char* resName);
 		std::string getName() const { return name; };
-		unsigned char getColonPos() const { return colonPos; };
+		unsigned char getSeparatorPos() const { return separatorPos; };
 		bool operator==(Resource a) { return hashed == a.hashed; }
 		unsigned int getHashed() const { return hashed; }
 	};
