@@ -23,7 +23,7 @@ namespace engine
 	public:
 		Resource * texture;
 		unsigned int shaderProgramId;
-		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
+		static void render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay);
 		static void init();
 		static const char* name;
 		CustomShaderTextureRC() { id = Component::getId(name); }

@@ -47,14 +47,13 @@ namespace engine
 		return true;
 	}
 
-	void CustomShaderTextureRC::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)
+	void CustomShaderTextureRC::render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay)
 	{
-		CustomShaderTextureRC * component;
 		glBindVertexArray(VAO);
 		unsigned int pspid = 0;
-		for (auto actor : actors)
+		for (auto r : renderers)
 		{
-			component = static_cast<CustomShaderTextureRC*>(&*actor->getRenderer());
+			auto component = std::static_pointer_cast<CustomShaderTextureRC>(r);
 			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());

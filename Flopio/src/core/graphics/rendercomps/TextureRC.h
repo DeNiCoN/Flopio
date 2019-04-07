@@ -30,7 +30,7 @@ namespace engine
 		std::shared_ptr<ResourceHandle> texture;
 		std::pair<float, float> getDimensions();
 		void setDimensions(float width, float height);
-		static void render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay);
+		static void render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay);
 		static void init();
 
 		static const char* name;

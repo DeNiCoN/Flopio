@@ -16,17 +16,21 @@ namespace engine
 
 	class Component
 	{
+		friend class Actor;
 	private:
 		static std::vector<unsigned int> renderIds;
+		void setParent(Actor * parent) { this->parent = parent; }
 	protected:
+		virtual void VOnActorAngleSet(float radians) {}
+		virtual void VOnActorPositionSet(vec3 pos) {}
+		virtual void VUpdate(const double delta) {}
+		virtual void VPostInit() {};
 		Actor* parent;
 		unsigned int id;
 	public:
-		void setParent(Actor * parent) { this->parent = parent; }
-		virtual void VUpdate(const double delta) {}
+		bool hasParent() { return parent; }
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
-		virtual void VPostInit() {};
 
 		unsigned int getId() { return id; };
 		static constexpr unsigned int getId(const char* name) { return hash(name, strlen(name)); }
@@ -44,9 +48,6 @@ namespace engine
 		friend class Actor;
 	private:
 		static std::map<ThreeResourceTuple, unsigned int> shaderPrograms;
-	protected:
-		virtual void VOnActorAngleSet(float radians) {}
-		virtual void VOnActorPositionSet(vec3 pos) {}
 	public:
 		static std::map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
 		static unsigned int shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
@@ -55,23 +56,21 @@ namespace engine
 
 	class Actor
 	{
+		friend class Scene;
 	private:
 		std::vector<SharedComponent> components;
 		vec3 position;
 		vec3 speed;
 		float angle;
 		unsigned int id;
-		std::shared_ptr<RenderComponent> renderer;
 	public:
 		Actor(unsigned int id) : id(id) {}
 		void setPosition(vec3 pos);
 		vec3 getPosition() const { return position; }
 		float getAngle() const { return angle; }
 		void setAngle(float radians);
-		void setRenderer(std::shared_ptr<RenderComponent> renderer);
 		void addComponent(SharedComponent component);
 		void removeComponent(SharedComponent component);
-		std::shared_ptr<RenderComponent> getRenderer() const { return renderer; }
 
 		bool init(const tinyxml2::XMLElement * root) { return true; }
 		void postInit() { for (auto comp : components) comp->VPostInit(); }

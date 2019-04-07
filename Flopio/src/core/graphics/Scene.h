@@ -24,7 +24,7 @@ namespace engine
 		void set(vec2 position, float angle, float scale);
 	};
 	class Scene;
-	using RenderFuntion = void(*)(std::vector<SharedActor>&, Scene&, const double);
+	using RenderFuntion = void(*)(std::vector<std::shared_ptr<RenderComponent>>&, Scene&, const double);
 	class Scene
 	{
 	public:
@@ -32,15 +32,18 @@ namespace engine
 		void render(const double ndelay);
 		void update(const double delta);
 		void addActor(SharedActor actor);
+		void removeActor(SharedActor actor);
 		static void registerRenderer(unsigned int componentId, RenderFuntion renderFunction);
 		Viewport* getViewport() const { return viewport; }
 		mat44 getProjectionView() const { return projectionView; }
 		void setViewport(Viewport* viewport) { this->viewport = viewport; }
 		std::vector<SharedActor> actors;
 	private:
+		void rendererRemoved(std::shared_ptr<RenderComponent> renderer);
 		Viewport* viewport;
 		mat44 projectionView;
-		static std::unordered_map<unsigned int, std::vector<SharedActor>> tempActorsMap;
+		std::vector<std::shared_ptr<RenderComponent>> renderers;
+		std::unordered_map<unsigned int, std::vector<std::shared_ptr<RenderComponent>>> tempRenderersMap;
 		static std::unordered_map<unsigned int, RenderFuntion> renderFunctionsMap;
 	};
 }

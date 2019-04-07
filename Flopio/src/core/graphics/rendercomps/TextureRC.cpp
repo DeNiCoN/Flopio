@@ -105,10 +105,9 @@ namespace engine
 		return std::make_pair(width, height);
 	}
 
-	void TextureRC::render(std::vector<SharedActor>& actors, Scene& scene, const double ndelay)
+	void TextureRC::render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay)
 	{
-		TextureRC * component;
-		size_t count = actors.size();
+		size_t count = renderers.size();
 
 		glBindBuffer(GL_ARRAY_BUFFER, transformBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(mat44)*count, NULL, GL_DYNAMIC_DRAW);
@@ -119,9 +118,9 @@ namespace engine
 		auto textureHandleBufferPtr = reinterpret_cast<__int64*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		size_t i = 0;
-		for (auto actor : actors)
+		for (auto r : renderers)
 		{
-			component = static_cast<TextureRC*>(&*actor->getRenderer());
+			auto component = std::static_pointer_cast<TextureRC>(r);
 			auto textureExtra = std::static_pointer_cast<TextureExtraData>(component->texture->getExtra());
 			memcpy(transformBufferPtr + i, &component->model, sizeof(mat44));
 			*(textureHandleBufferPtr + i) = textureExtra->getTextureHandle();

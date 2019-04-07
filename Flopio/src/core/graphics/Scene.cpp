@@ -2,10 +2,7 @@
 
 namespace engine
 {
-
-	std::unordered_map<unsigned int, std::vector<SharedActor>> Scene::tempActorsMap;
 	std::unordered_map<unsigned int, RenderFuntion> Scene::renderFunctionsMap;
-	std::vector<std::shared_ptr<RenderComponent>> renderers;
 
 	Camera::Camera()
 	{
@@ -31,7 +28,7 @@ namespace engine
 	void Scene::render(const double ndelay)
 	{
 		//render   
-		for (auto pair : tempActorsMap)
+		for (auto pair : tempRenderersMap)
 		{
 			(*renderFunctionsMap[pair.first])(pair.second, *this, ndelay);
 		}
@@ -47,12 +44,19 @@ namespace engine
 
 		//update render data
 		//clean
-		tempActorsMap.clear();
+		tempRenderersMap.clear();
 
 		//sort by renderer component id
-		for (SharedActor actor : actors)
+		for (auto rendComp : renderers)
 		{
-			tempActorsMap[actor->getRenderer()->getId()].push_back(actor);
+			if (rendComp->hasParent())
+			{
+				tempRenderersMap[rendComp->getId()].push_back(rendComp);
+			}
+			else
+			{
+				rendererRemoved(rendComp);
+			}
 		}
 
 		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());
@@ -63,12 +67,35 @@ namespace engine
 	void Scene::addActor(SharedActor actor)
 	{
 		actors.push_back(actor);
+		for (auto component : actor->components)
+		{
+			if (Component::isRender(component->getId()))
+			{
+				renderers.push_back(std::static_pointer_cast<RenderComponent>(component));
+			}
+		}
+	}
+
+	void Scene::removeActor(SharedActor actor)
+	{
+		actors.erase(std::find(actors.begin(), actors.end(), actor));
+		for (auto component : actor->components)
+		{
+			if (Component::isRender(component->getId()))
+			{
+				rendererRemoved(std::static_pointer_cast<RenderComponent>(component));
+			}
+		}
 	}
 
 	void Scene::registerRenderer(unsigned int componentId, RenderFuntion renderFunction)
 	{
 		renderFunctionsMap[componentId] = renderFunction;
-		tempActorsMap[componentId] = std::vector<SharedActor>();
+	}
+
+	void Scene::rendererRemoved(std::shared_ptr<RenderComponent> renderer)
+	{
+		renderers.erase(std::find(renderers.begin(), renderers.end(), renderer));
 	}
 
 }
