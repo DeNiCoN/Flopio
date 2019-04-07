@@ -263,4 +263,7 @@
     <None Include="EngineResources\TextureRC.vs" />
     <None Include="EngineResources\TextureRC.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Resources\ship.xml" />
+  </ItemGroup>
 </Project>

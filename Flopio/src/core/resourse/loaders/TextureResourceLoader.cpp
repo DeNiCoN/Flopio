@@ -16,7 +16,7 @@ namespace engine
 	bool TextureResourceLoader::VLoad(char * rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle)
 	{
 		char* extraData = resHandle->getBuffer();
-		auto extra = std::shared_ptr<TextureExtraData>(new (extraData) TextureExtraData());
+		auto extra = std::shared_ptr<TextureExtraData>(new (extraData) TextureExtraData(), [](TextureExtraData * t) {t->~TextureExtraData(); });
 		resHandle->setExtra(extra);
 		glGenTextures(1, &extra->textureId);
 

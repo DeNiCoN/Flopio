@@ -28,6 +28,7 @@ namespace engine
 		Actor* parent;
 		unsigned int id;
 	public:
+		virtual ~Component() {};
 		bool hasParent() { return parent; }
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
@@ -49,6 +50,7 @@ namespace engine
 	private:
 		static std::map<ThreeResourceTuple, unsigned int> shaderPrograms;
 	public:
+		virtual ~RenderComponent() {};
 		static std::map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
 		static unsigned int shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
 		static unsigned int shaderInitFromXML(const tinyxml2::XMLElement * pData);
@@ -65,6 +67,7 @@ namespace engine
 		unsigned int id;
 	public:
 		Actor(unsigned int id) : id(id) {}
+		~Actor();
 		void setPosition(vec3 pos);
 		vec3 getPosition() const { return position; }
 		float getAngle() const { return angle; }

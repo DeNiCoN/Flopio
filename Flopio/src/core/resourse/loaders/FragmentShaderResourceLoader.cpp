@@ -8,7 +8,7 @@ namespace engine
 	{
 		char* extraData = resHandle->getBuffer();
 		new (extraData) FragmentShaderData();
-		std::shared_ptr<FragmentShaderData> extra = std::shared_ptr<FragmentShaderData>(reinterpret_cast<FragmentShaderData*>(extraData));
+		std::shared_ptr<FragmentShaderData> extra = std::shared_ptr<FragmentShaderData>(reinterpret_cast<FragmentShaderData*>(extraData), [](FragmentShaderData * t) { t->~FragmentShaderData(); });
 		resHandle->setExtra(extra);
 
 		return shaderLoadHelperFunc(GL_FRAGMENT_SHADER, rawBuffer, rawBufSize, &extra->fragmentShaderID);

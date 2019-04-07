@@ -25,6 +25,12 @@ namespace engine
 		view = mat44Multiply(&mat44Multiply(&rotate, &mat44Scale(scale, scale, 1.0f)), &translate);
 	}
 
+	Scene::~Scene()
+	{
+		actors.clear();
+		renderers.clear();
+	}
+
 	void Scene::render(const double ndelay)
 	{
 		//render   

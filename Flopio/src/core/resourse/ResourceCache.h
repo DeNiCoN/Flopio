@@ -48,7 +48,21 @@ namespace engine
 		virtual ~ResourceCache();
 		bool init();
 		bool init(unsigned int maxHandleCount) { this->maxHandleCount = maxHandleCount; return init(); }
+		
 		std::shared_ptr<ResourceHandle> getHandle(Resource & resource);
+		inline std::shared_ptr<ResourceHandle> getHandle(Resource&& resource)
+		{
+			return getHandle(resource);
+		}
+		inline std::shared_ptr<ResourceHandle> getHandle(const char* resource)
+		{
+			return getHandle(Resource(resource));
+		}
+		inline std::shared_ptr<ResourceHandle> getHandle(std::string& resource)
+		{
+			return getHandle(Resource(resource));
+		}
+
 		void addLoader(std::shared_ptr<ResourceLoader> loader) { loaders.push_back(loader); }
 		void addFile(std::shared_ptr<ResourceFile> file);
 	};

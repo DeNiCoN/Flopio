@@ -97,6 +97,7 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
+		std::cout << sizeof(std::shared_ptr<TextureRC>);
 		secondsPerUpdate = 1.0 / 60.0;
 
 		ImGui::CreateContext();

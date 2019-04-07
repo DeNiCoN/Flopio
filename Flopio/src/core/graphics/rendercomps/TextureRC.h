@@ -27,6 +27,7 @@ namespace engine
 		virtual void VOnActorPositionSet(vec3 pos) override;
 		void updateModel();
 	public:
+		~TextureRC() { texture = nullptr; }
 		std::shared_ptr<ResourceHandle> texture;
 		std::pair<float, float> getDimensions();
 		void setDimensions(float width, float height);

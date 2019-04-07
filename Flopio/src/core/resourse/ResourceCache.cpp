@@ -10,6 +10,8 @@ namespace engine {
 	{
 		LRUList.clear();
 		handlesMap.clear();
+		files.clear();
+		loaders.clear();
 	}
 
 	DirectoryResourceFile engineResFile("EngineResources");
@@ -142,8 +144,8 @@ namespace engine {
 			handle = std::shared_ptr<ResourceHandle>(handl,
 			[&](ResourceHandle * ptr)
 			{
-				delete[](buffer);
-				poolFree(&this->handlePool, this);
+				delete[](ptr->getBuffer());
+				poolFree(&this->handlePool, ptr);
 			});
 		}
 		else
@@ -158,7 +160,6 @@ namespace engine {
 			handle = std::shared_ptr<ResourceHandle>(new (reinterpret_cast<ResourceHandle *>(poolAlloc(&handlePool))) ResourceHandle(resource, buffer, size, this),
 			[&](ResourceHandle * ptr)
 			{
-
 				delete[](ptr->getBuffer());
 				poolFree(&this->handlePool, ptr);
 			});

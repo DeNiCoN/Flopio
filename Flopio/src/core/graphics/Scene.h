@@ -28,6 +28,7 @@ namespace engine
 	class Scene
 	{
 	public:
+		~Scene();
 		Camera camera;
 		void render(const double ndelay);
 		void update(const double delta);

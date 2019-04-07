@@ -19,11 +19,11 @@ namespace engine
 		if (rawBufSize <= 0)
 			return false;
 
-		std::shared_ptr<XmlExtraData> pExtraData = std::shared_ptr<XmlExtraData>(new XmlExtraData());
+		std::shared_ptr<XmlExtraData> pExtraData = std::shared_ptr<XmlExtraData>(new (resHandle->getBuffer()) XmlExtraData(), [](XmlExtraData * t) {});
 		if (!pExtraData->parseXml(rawBuffer))
 			return false;
 
-		resHandle->setExtra(std::shared_ptr<XmlExtraData>(pExtraData));
+		resHandle->setExtra(pExtraData);
 
 		return true;
 	}

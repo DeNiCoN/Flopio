@@ -41,7 +41,7 @@ namespace engine
 		}
 		else
 		{
-			logger << "Couldn't find ActorComponent named " << std::string(name) << "\n";
+			logger << "Couldn't find the ActorComponent named " << std::string(name) << "\n";
 			return SharedComponent();
 		}
 	}
@@ -64,7 +64,7 @@ namespace engine
 
 		for (const tinyxml2::XMLElement* pNode = pRoot->FirstChildElement(); pNode; pNode = pNode->NextSiblingElement())
 		{
-			SharedComponent pComponent(createComponent(pNode));
+			SharedComponent pComponent = createComponent(pNode);
 			if (pComponent)
 			{
 				pActor->addComponent(pComponent);
