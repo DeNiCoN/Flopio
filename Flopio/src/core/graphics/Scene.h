@@ -3,6 +3,7 @@
 #include "viewports/Viewport.h"
 #include "../gamebasis/Actor.h"
 #include <unordered_map>
+#include "../Box2D.h"
 
 namespace engine
 {
@@ -42,6 +43,7 @@ namespace engine
 	private:
 		void rendererRemoved(std::shared_ptr<RenderComponent> renderer);
 		Viewport* viewport;
+		b2World world;
 		mat44 projectionView;
 		std::vector<std::shared_ptr<RenderComponent>> renderers;
 		std::unordered_map<unsigned int, std::vector<std::shared_ptr<RenderComponent>>> tempRenderersMap;

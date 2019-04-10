@@ -43,6 +43,8 @@ namespace engine
 
 	void Scene::update(const double delta)
 	{
+		world.Step(delta, 8, 3);
+
 		for (auto actor : actors)
 		{
 			actor->update(delta);
@@ -79,6 +81,7 @@ namespace engine
 			{
 				renderers.push_back(std::static_pointer_cast<RenderComponent>(component));
 			}
+			component->VOnActorAddedToScene(*this);
 		}
 	}
 
@@ -91,6 +94,7 @@ namespace engine
 			{
 				rendererRemoved(std::static_pointer_cast<RenderComponent>(component));
 			}
+			component->VOnActorRemovedFromScene(*this);
 		}
 	}
 

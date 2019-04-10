@@ -13,10 +13,12 @@
 namespace engine
 {
 	class Actor;
+	class Scene;
 
 	class Component
 	{
 		friend class Actor;
+		friend class Scene;
 	private:
 		static std::vector<unsigned int> renderIds;
 		void setParent(Actor * parent) { this->parent = parent; }
@@ -24,6 +26,8 @@ namespace engine
 		virtual void VOnActorAngleSet(float radians) {}
 		virtual void VOnActorPositionSet(vec3 pos) {}
 		virtual void VUpdate(const double delta) {}
+		virtual void VOnActorAddedToScene(Scene& scene) {}
+		virtual void VOnActorRemovedFromScene(Scene& scene) {}
 		virtual void VPostInit() {};
 		Actor* parent;
 		unsigned int id;
