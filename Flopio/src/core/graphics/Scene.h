@@ -24,12 +24,14 @@ namespace engine
 		const mat44 * getView() const { return &view; }
 		void set(vec2 position, float angle, float scale);
 	};
+
 	class Scene;
 	using RenderFuntion = void(*)(std::vector<std::shared_ptr<RenderComponent>>&, Scene&, const double);
 	class Scene
 	{
 	public:
 		~Scene();
+		Scene() : world({ 0.f, 9.8f }) {}
 		Camera camera;
 		void render(const double ndelay);
 		void update(const double delta);
@@ -37,7 +39,8 @@ namespace engine
 		void removeActor(SharedActor actor);
 		static void registerRenderer(unsigned int componentId, RenderFuntion renderFunction);
 		Viewport* getViewport() const { return viewport; }
-		mat44 getProjectionView() const { return projectionView; }
+		const mat44* getProjectionView() const { return &projectionView; }
+		b2World& getWorld() { return world; }
 		void setViewport(Viewport* viewport) { this->viewport = viewport; }
 		std::vector<SharedActor> actors;
 	private:

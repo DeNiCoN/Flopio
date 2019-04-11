@@ -12,10 +12,11 @@ namespace engine
 		~PhysicsComponent();
 		virtual const char* getName() const override;
 		virtual bool VInit(const tinyxml2::XMLElement* pData) override;
+		virtual void VOnActorAddedToScene(Scene& scene) override;
+		virtual void VOnActorRemovedFromScene(Scene& scene) override;
 	private:
 		b2BodyDef bodyDef;
-		b2FixtureDef fixtureDef;
+		std::vector<b2FixtureDef> fixtureDefs;
 		b2Body* body;
-		b2Shape* shape;
 	};
 }
