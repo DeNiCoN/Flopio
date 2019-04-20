@@ -9,6 +9,7 @@ namespace engine
 	{
 		for (auto fixture : fixtureDefs)
 		{
+			delete &fixture.shape;
 			delete &fixture;
 		}
 	}
@@ -59,8 +60,8 @@ namespace engine
 			if (auto pNode1 = pNode->FirstChildElement("Box"))
 			{
 				b2PolygonShape* shape = new b2PolygonShape();
-				shape->SetAsBox(pNode1->FloatAttribute("width")/2, 
-					pNode1->FloatAttribute("heigth")/2, 
+				shape->SetAsBox(pNode1->FloatAttribute("width") / 2,
+					pNode1->FloatAttribute("heigth") / 2,
 					{ pNode1->FloatAttribute("x"),
 					pNode1->FloatAttribute("y") },
 					pNode1->FloatAttribute("angle"));
@@ -100,7 +101,6 @@ namespace engine
 				if (pNode->NoChildren())
 					continue;
 				b2ChainShape* shape = new b2ChainShape();
-				b2PolygonShape* shape = new b2PolygonShape();
 				int n = 0;
 				for (const tinyxml2::XMLElement* pNode2 = pNode1->FirstChildElement("Point"); pNode2; pNode2 = pNode2->NextSiblingElement("Point"))
 				{
@@ -112,7 +112,7 @@ namespace engine
 				{
 					vertices[i++] = { pNode2->FloatAttribute("x"), pNode2->FloatAttribute("y") };
 				}
-				shape->(vertices, n);
+				shape->CreateChain(vertices, n);
 				delete[] vertices;
 
 				f->shape = shape;
@@ -122,7 +122,6 @@ namespace engine
 				if (pNode->NoChildren())
 					continue;
 				b2ChainShape* shape = new b2ChainShape();
-				b2PolygonShape* shape = new b2PolygonShape();
 				int n = 0;
 				for (const tinyxml2::XMLElement* pNode2 = pNode1->FirstChildElement("Point"); pNode2; pNode2 = pNode2->NextSiblingElement("Point"))
 				{
@@ -134,23 +133,20 @@ namespace engine
 				{
 					vertices[i++] = { pNode2->FloatAttribute("x"), pNode2->FloatAttribute("y") };
 				}
-				shape->Set(vertices, n);
+				shape->CreateLoop(vertices, n);
 				delete[] vertices;
 
 				f->shape = shape;
 			}
-			else if (auto pNode1 = pNode->FirstChildElement("Edge"))
-			{
-				if (pNode->NoChildren())
-					continue;
-			}
+			else
+				continue;
 
 			fixtureDefs.push_back(*f);
 		}
+
 		if (fixtureDefs.size() == 0)
 			return false;
 		return true;
-
 	}
 
 	void PhysicsComponent::VOnActorAddedToScene(Scene& scene)
@@ -164,7 +160,7 @@ namespace engine
 
 	void PhysicsComponent::VOnActorRemovedFromScene(Scene& scene)
 	{
-
+		scene.getWorld().DestroyBody(body);
 	}
 
 }

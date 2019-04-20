@@ -1,0 +1,41 @@
+cmake_minimum_required(VERSION 3.12)
+project(Flopio)
+set (CMAKE_CXX_STANDARD 17)
+
+file(GLOB_RECURSE FlopioSources
+    "Flopio/src/*.h"
+    "Flopio/src/*.cpp"
+	"Flopio/src/*.c"
+)
+
+file(GLOB_RECURSE ImGUISources
+    "libs/include/imgui/*.h"
+    "libs/include/imgui/*.cpp"
+	"libs/include/imgui/*.c"
+)
+
+file(GLOB_RECURSE Box2DSources
+    "libs/include/Box2D/*.h"
+    "libs/include/Box2D/*.cpp"
+	"libs/include/Box2D/*.c"
+)
+
+add_executable(flopio
+	${FlopioSources}
+	${ImGUISources}
+	${Box2DSources}
+	"libs/lib/glad.c"
+	"libs/lib/tinyxml2.cpp"
+)
+
+find_package(OpenGL REQUIRED)
+target_include_directories(flopio PRIVATE 
+	${OPENGL_INCLUDE_DIRS}
+	"libs/include"
+)
+add_subdirectory("libs/lib/glfw")
+
+target_link_libraries(flopio glfw
+	${GLFW_LIBRARIES}
+	${OPENGL_LIBRARIES}
+)

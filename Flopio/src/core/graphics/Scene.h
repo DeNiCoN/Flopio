@@ -3,7 +3,7 @@
 #include "viewports/Viewport.h"
 #include "../gamebasis/Actor.h"
 #include <unordered_map>
-#include "../Box2D.h"
+#include <Box2D/Box2D.h>
 
 namespace engine
 {
