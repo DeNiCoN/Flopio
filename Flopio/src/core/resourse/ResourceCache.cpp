@@ -195,4 +195,13 @@ namespace engine {
 			else
 				logger << "failed to open file " << file->getName() << "\n";
 	}
+
+	void ResourceCache::clearResources()
+	{
+		handlesMap.clear();
+		for (auto file : files)
+		{
+			file->VReload();
+		}
+	}
 }

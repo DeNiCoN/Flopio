@@ -3,6 +3,7 @@
 #include "../resourse/loaders/XmlResourceLoader.h"
 #include "../graphics/rendercomps/CustomShaderTextureRC.h"
 #include "../graphics/rendercomps/TextureRC.h"
+#include "PhysicsComponent.h"
 #include <algorithm>
 
 namespace engine
@@ -12,6 +13,7 @@ namespace engine
 	{
 		registerComponent<CustomShaderTextureRC>(Component::getId(CustomShaderTextureRC::name));
 		registerComponent<TextureRC>(Component::getId(TextureRC::name));
+		registerComponent<PhysicsComponent>(Component::getId(PhysicsComponent::name));
 	}
 
 	SharedActor ActorFactory::createActor(Resource xmlFile, const vec3 * initialPosition, const float * initialAngle)

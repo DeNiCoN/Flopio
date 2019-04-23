@@ -72,6 +72,11 @@ namespace game
 
 			ImGui::TreePop();
 		}
+		if (ImGui::Button("Reload Resources"))
+		{
+			resourceCache.clearResources();
+		}
+
 		ImGui::End();
 
 		updateCam(delta);
@@ -98,7 +103,7 @@ namespace game
 	void Flopio::VOnInit()
 	{
 		std::cout << sizeof(std::shared_ptr<TextureRC>);
-		secondsPerUpdate = 1.0 / 60.0;
+		secondsPerUpdate = 1.0 / 15.0;
 
 		ImGui::CreateContext();
 		ImGui::StyleColorsDark();

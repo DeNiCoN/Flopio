@@ -62,7 +62,7 @@ namespace engine
 		{
 			return getHandle(Resource(resource));
 		}
-
+		void clearResources();
 		void addLoader(std::shared_ptr<ResourceLoader> loader) { loaders.push_back(loader); }
 		void addFile(std::shared_ptr<ResourceFile> file);
 	};

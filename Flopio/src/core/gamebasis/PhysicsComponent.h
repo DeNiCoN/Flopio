@@ -14,9 +14,12 @@ namespace engine
 		virtual bool VInit(const tinyxml2::XMLElement* pData) override;
 		virtual void VOnActorAddedToScene(Scene& scene) override;
 		virtual void VOnActorRemovedFromScene(Scene& scene) override;
+		virtual void VOnActorPositionSet(vec3 pos) override;
+		virtual void VOnActorAngleSet(float radians) override;
+		virtual void VUpdate(double delta) override;
 	private:
 		b2BodyDef bodyDef;
 		std::vector<b2FixtureDef> fixtureDefs;
-		b2Body* body;
+		b2Body* body = nullptr;
 	};
 }

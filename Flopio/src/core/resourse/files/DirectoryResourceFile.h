@@ -12,6 +12,7 @@ namespace engine
 		std::map<std::string, unsigned int> filesMap;
 	public:
 		DirectoryResourceFile(std::string path) : ResourceFile(path) {}
+		virtual void VReload() override;
 		virtual bool VOpen();
 		virtual int VGetRawResourceSize(const Resource &r);
 		virtual int VGetRawResource(const Resource &r, char *buffer);

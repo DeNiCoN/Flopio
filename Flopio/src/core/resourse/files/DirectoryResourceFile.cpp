@@ -30,6 +30,19 @@ namespace engine
  		return false;
 	}
 
+	void DirectoryResourceFile::VReload()
+	{
+		for (auto p : std::filesystem::directory_iterator(name))
+		{
+			if (!p.is_directory())
+			{
+				std::string path = p.path().filename().string();
+				std::transform(path.begin(), path.end(), path.begin(), (int(*)(int)) std::tolower);
+				filesMap[path] = p.file_size();
+			}
+		}
+	}
+
 	int DirectoryResourceFile::VGetRawResourceSize(const Resource &r) 
 	{
 		return filesMap[r.getName().substr(r.getSeparatorPos() + 1)];

@@ -16,6 +16,7 @@ namespace engine
 			std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
 		}
 		virtual ~ResourceFile() {};
+		virtual void VReload() = 0;
 		virtual bool VOpen() = 0;
 		virtual int VGetRawResourceSize(const Resource &r) = 0;
 		virtual int VGetRawResource(const Resource &r, char *buffer) = 0;

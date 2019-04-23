@@ -31,7 +31,7 @@ namespace engine
 	{
 	public:
 		~Scene();
-		Scene() : world({ 0.f, 9.8f }) {}
+		Scene() : world({ 0.f, -9.8f }) {}
 		Camera camera;
 		void render(const double ndelay);
 		void update(const double delta);
