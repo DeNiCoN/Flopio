@@ -15,6 +15,7 @@
 #include "../core/math/linearmath.h"
 #include "../core/math/prng.h"
 #include "../core/gamebasis/ActorFactory.h"
+#include "../core/gamebasis/EventManager.h"
 #include <filesystem>
 
 namespace game
@@ -22,6 +23,8 @@ namespace game
 	using namespace engine;
 
 	ScreenViewport viewport;
+
+	float UPS = 60.f;
 
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	{
@@ -76,7 +79,9 @@ namespace game
 		{
 			resourceCache.clearResources();
 		}
-
+		
+		ImGui::DragFloat("UPS", &UPS,1.0f, 1.f, 300.f);
+		secondsPerUpdate = 1 / UPS;
 		ImGui::End();
 
 		updateCam(delta);
@@ -102,8 +107,11 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
+		EventManager m;
+		m.newEvent<EventData>("test");
+
 		std::cout << sizeof(std::shared_ptr<TextureRC>);
-		secondsPerUpdate = 1.0 / 15.0;
+		secondsPerUpdate = 1.0 / 60.0;
 
 		ImGui::CreateContext();
 		ImGui::StyleColorsDark();

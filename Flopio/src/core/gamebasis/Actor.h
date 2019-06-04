@@ -9,6 +9,7 @@
 #include "../math/linearmath.h"
 #include <algorithm>
 #include <tinyxml2.h>
+#include <optional>
 
 namespace engine
 {
