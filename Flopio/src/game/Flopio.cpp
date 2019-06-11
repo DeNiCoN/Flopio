@@ -25,6 +25,7 @@ namespace game
 	ScreenViewport viewport;
 
 	float UPS = 60.f;
+	float MSS = 1.f;
 
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	{
@@ -82,13 +83,17 @@ namespace game
 		
 		ImGui::DragFloat("UPS", &UPS,1.0f, 1.f, 300.f);
 		secondsPerUpdate = 1 / UPS;
+		//if (ImGui::DragFloat("MSS", &MSS, 0.01f, 0.f, 1.f))
+		//{
+		//	glMinSampleShading(MSS);
+		//}
 		ImGui::End();
+
 
 		updateCam(delta);
 		root.update(delta);
 
 		ImGui::Render();
-		
 	}
 
 	void Flopio::VOnRender(const double ndelay)
@@ -96,7 +101,6 @@ namespace game
 		root.render(ndelay);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
-
 
 	DirectoryResourceFile resFile("Resources");
 	FragmentShaderResourceLoader fragmentLoader;
@@ -107,8 +111,8 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
-		EventManager m;
-		m.newEvent<EventData>("test");
+		//EventManager m;
+		//m.newEvent<EventData>("test");
 
 		std::cout << sizeof(std::shared_ptr<TextureRC>);
 		secondsPerUpdate = 1.0 / 60.0;
@@ -140,6 +144,7 @@ namespace game
 		//{
 		//	return f->getPosition().z < l->getPosition().z;
 		//});
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

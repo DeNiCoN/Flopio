@@ -63,7 +63,7 @@ namespace engine {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		glfwWindowHint(GLFW_SAMPLES, 16);
 
 		GLFWwindow *window = glfwCreateWindow(config.width, config.height, config.appTitle.c_str(), config.fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (window == NULL)
@@ -90,7 +90,8 @@ namespace engine {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
-
+		//glEnable(GL_SAMPLE_SHADING);
+		//glMinSampleShading(1.f);
 		
 		app.VOnInit();
 		int fps = 0;
