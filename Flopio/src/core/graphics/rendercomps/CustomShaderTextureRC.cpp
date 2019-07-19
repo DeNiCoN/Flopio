@@ -41,7 +41,7 @@ namespace engine
 		if (!ret)
 			return ret;
 
-		shaderProgramId = shaderInitFromXML(pData->FirstChildElement("Shader"));
+		shaderProgramId = shaderInitFromXML(pData->FirstChildElement("shader"));
 		if (!shaderProgramId)
 			return false;
 		return true;

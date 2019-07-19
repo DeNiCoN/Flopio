@@ -111,8 +111,6 @@ namespace game
 
 	void Flopio::VOnInit()
 	{
-		//EventManager m;
-		//m.newEvent<EventData>("test");
 
 		std::cout << sizeof(std::shared_ptr<TextureRC>);
 		secondsPerUpdate = 1.0 / 60.0;

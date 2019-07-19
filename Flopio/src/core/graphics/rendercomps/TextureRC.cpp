@@ -142,18 +142,11 @@ namespace engine
 	{
 		this->width = pData->FloatAttribute("width", 64.f);
 		this->height = pData->FloatAttribute("height", 64.f);
-		const char* textureName = pData->Attribute("texture");
+		const char* textureName = pData->Attribute("texture", "EngineResources | notexture.jpg");
 
-		if (textureName)
-		{
-			Resource textureResource(textureName);
-			texture = currentApp->resourceCache.getHandle(textureResource);
-		}
-		else
-		{
-			Resource textureResource("EngineResources|notexture.jpg");
-			texture = currentApp->resourceCache.getHandle(textureResource);
-		}
+		Resource textureResource(textureName);
+		texture = currentApp->resourceCache.getHandle(textureResource);
+
 		if (!texture)
 		{
 			logger << "failed to get texture handle for TextureRenderComponent: " << textureName << "\n";

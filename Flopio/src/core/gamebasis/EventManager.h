@@ -34,7 +34,7 @@ namespace engine
 		{
 			static_assert(std::is_base_of_v<EventData, T> && "Type need to inherit from EventData");
 			Event* eventp = (Event*)queueAllocAligned(&allocator, sizeof(Event) + sizeof(T), alignof(Event) < alignof(T) ? alignof(T) : alignof(Event));
-			T* eventData = new ((T*)(eventp++)) T();
+			T* eventData = new ((T*)(eventp + 1)) T();
 			new (eventp) Event(name, *eventData);
 
 			return *eventData;
