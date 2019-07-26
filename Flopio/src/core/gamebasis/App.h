@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../graphics/Scene.h"
+#include "../core/gamebasis/EventManager.h"
 
 namespace engine {
 
@@ -30,9 +31,10 @@ namespace engine {
 		friend void VOnResizeWrapper(GLFWwindow* window, int width, int height);
 		friend bool appInit(App &app, const AppConfig &config);
 	public:
-		App(unsigned int resourceCacheSizeInMB) : resourceCache(resourceCacheSizeInMB) {}
+		App(unsigned int RCSizeInMB, unsigned int EMSizeInMB) : resourceCache(RCSizeInMB), eventManager(EMSizeInMB) {}
 		ProcessManager processManager;
 		ResourceCache resourceCache;
+		EventManager eventManager;
 	protected:
 		virtual void VOnInit() {}
 		virtual void VOnExit() {}

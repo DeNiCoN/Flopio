@@ -1,6 +1,9 @@
 #include "../memory/queueAlloc.h"
 #include <string>
 #include "../utils.h"
+#include <vector>
+#include <unordered_map>
+#include <functional>
 
 namespace engine
 {
@@ -8,7 +11,6 @@ namespace engine
 	{
 	public:
 		virtual ~EventData() {}
-		double b;
 	};
 
 	class Event
@@ -29,6 +31,11 @@ namespace engine
 	class EventManager
 	{
 	public:
+		EventManager(unsigned int allocBufferSizeInMb);
+		~EventManager();
+		void registerCallback(const char* eventName, std::function<void(Event&)> callback);
+		void removeCallback(const char* eventName, std::function<void(Event&)> callback);
+		void processPending();
 		template <class T>
 		T& newEvent(const char* name)
 		{
@@ -41,5 +48,6 @@ namespace engine
 		}
 	private:
 		QueueAllocator allocator;
+		std::unordered_map<unsigned int, std::vector<std::function<void(Event&)>>> callbacks;
 	};
 }

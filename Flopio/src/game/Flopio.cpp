@@ -15,7 +15,6 @@
 #include "../core/math/linearmath.h"
 #include "../core/math/prng.h"
 #include "../core/gamebasis/ActorFactory.h"
-#include "../core/gamebasis/EventManager.h"
 #include <filesystem>
 
 namespace game
@@ -44,6 +43,7 @@ namespace game
 
 	void Flopio::VOnUpdate(const double delta)
 	{
+		eventManager.processPending();
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -109,9 +109,9 @@ namespace game
 	XmlResourceLoader xmlLoader;
 	ActorFactory actorFactory;
 
+
 	void Flopio::VOnInit()
 	{
-
 		std::cout << sizeof(std::shared_ptr<TextureRC>);
 		secondsPerUpdate = 1.0 / 60.0;
 
@@ -143,6 +143,11 @@ namespace game
 		//	return f->getPosition().z < l->getPosition().z;
 		//});
 
+		eventManager.registerCallback("test",
+			[](Event& e) {
+				std::cout << e.getName() << " " << e.getHashed();
+			});
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -159,6 +164,7 @@ namespace game
 	void Flopio::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	{
 		root.camera.set(root.camera.getPosition(), root.camera.getAngle(), root.camera.getScale() + root.camera.getScale()*yoffset*0.1f);
+		eventManager.newEvent<EventData>("test");
 	}
 
 	void Flopio::dropCallback(GLFWwindow* window, int count, const char** paths)

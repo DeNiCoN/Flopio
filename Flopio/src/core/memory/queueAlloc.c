@@ -1,5 +1,5 @@
 #include "queueAlloc.h"
-#define QUEUE_HEADER_SIZE_BYTES sizeof(size_t)
+#define QUEUE_HEADER_SIZE_BYTES sizeof(QueueHeader)
 
 //returns pointer to new allocated space aligned by align 
 //align must be power of 2
@@ -11,14 +11,14 @@ void* queueAllocAligned(QueueAllocator* alloc, size_t size, size_t align)
 		return NULL;
 	}
 	uintptr_t mask = align - 1;
-	uintptr_t prevTail = alloc->tail;
+	QueueHeader* header = (QueueHeader*)alloc->tail;
 	size_t actualSize = size + mask + QUEUE_HEADER_SIZE_BYTES;
 
-	if (alloc->tail > alloc->head)
+	if (alloc->tail >= alloc->head)
 	{
-		if ((alloc->tail + actualSize) > (alloc->buffer + alloc->size))
+		if ((alloc->tail + actualSize + sizeof(size_t)) > (alloc->buffer + alloc->size))
 		{
-			if ((alloc->buffer + actualSize) > alloc->head)
+			if ((alloc->buffer + actualSize + sizeof(size_t)) > alloc->head)
 			{
 				//out of memory
 				return NULL;
@@ -28,27 +28,48 @@ void* queueAllocAligned(QueueAllocator* alloc, size_t size, size_t align)
 				//allocate from buffer start
 
 				//size of 0 mean that allocated memory starts from buffer
-				*((size_t*)alloc->tail) = 0;
+				header->size = 0;
+				header = (QueueHeader*)alloc->buffer;
 				*((size_t*)alloc->buffer) = actualSize;
 				alloc->tail = alloc->buffer + actualSize;
-				return (void*)((uintptr_t)(alloc->buffer + QUEUE_HEADER_SIZE_BYTES) & ~mask);
 			}
 		}
+		else
+		{
+			alloc->tail += actualSize;
+		}
 	}
-	else if ((alloc->tail + actualSize) > alloc->head)
+	else if ((alloc->tail + actualSize + sizeof(size_t)) > alloc->head)
 	{
 		//out of memory
 		return NULL;
 	}
+	else
+	{
+		alloc->tail += actualSize;
+	}
 
-	*((size_t*)alloc->tail) = actualSize;
-	alloc->tail += actualSize;
-	return (void*)((uintptr_t)(alloc->buffer + prevTail + QUEUE_HEADER_SIZE_BYTES) & ~mask);
+	char* rawAddress = (char*)header + QUEUE_HEADER_SIZE_BYTES;
+	ptrdiff_t adjustment = align - ((uintptr_t)rawAddress & mask);
+	header->size = actualSize;
+	char* actualAddress = rawAddress + adjustment;
+	header->adjustment = adjustment;
+	return (void*)actualAddress;
 }
 
 void* queueAlloc(QueueAllocator* alloc, size_t size)
 {
 	return queueAllocAligned(alloc, size, 1);
+}
+
+void* queueAllocGetFirst(QueueAllocator* alloc)
+{
+	if (alloc->head == alloc->tail)
+	{
+		return NULL;
+	}
+	QueueHeader* header = (QueueHeader*)alloc->head;
+	return (void*)((char*)(header + 1) + header->adjustment);
 }
 
 void queueAllocInit(QueueAllocator* alloc, char* buffer, size_t size)
