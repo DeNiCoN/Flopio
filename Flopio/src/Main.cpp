@@ -6,8 +6,10 @@
 using namespace engine;
 using namespace game;
 
+class Flopio;
 int main()
 {
+
 	Flopio app;
 	AppConfig config;
 	//config.fullscreen = true;
