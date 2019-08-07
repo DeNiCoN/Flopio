@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../graphics/Scene.h"
-#include "../core/gamebasis/EventManager.h"
+#include "EventManager.h"
 
 namespace engine {
 

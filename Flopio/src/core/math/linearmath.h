@@ -5,6 +5,16 @@
 #include <math.h>
 #include <smmintrin.h>
 
+#if defined(_MSC_VER)
+#define ALIGNED_(x) __declspec(align(x))
+#define FORCEINLINE FORCEINLINE
+#else
+#if defined(__GNUC__)
+#define ALIGNED_(x) __attribute__ ((aligned(x)))
+#define FORCEINLINE __attribute__ ((always_inline))
+#endif
+#endif
+
 #define S_INLINE static inline
 
 #define SHUFFLE_PARAM(x, y, z, w) \
@@ -29,7 +39,7 @@
 extern "C" {
 #endif
 
-	typedef __declspec(align(8)) union
+	typedef ALIGNED_(8) union
 	{
 		struct {
 			float x;
@@ -51,7 +61,7 @@ extern "C" {
 		float value[3];
 	}  vec3;
 
-	typedef __declspec(align(16)) union
+	typedef ALIGNED_(16) union
 	{
 
 		struct
@@ -78,7 +88,7 @@ extern "C" {
 
 	typedef vec4 quat;
 
-	typedef __declspec(align(16))
+	typedef ALIGNED_(16)
 		union
 		{
 			vec4 value[4];
@@ -588,14 +598,14 @@ extern "C" {
 		return c;
 	}
 
-	__forceinline __m128 Mat2Mul(__m128 vec1, __m128 vec2)
+	FORCEINLINE __m128 Mat2Mul(__m128 vec1, __m128 vec2)
 	{
 		return
 			_mm_add_ps(_mm_mul_ps(vec1, VecSwizzle(vec2, 0, 3, 0, 3)),
 				_mm_mul_ps(VecSwizzle(vec1, 1, 0, 3, 2), VecSwizzle(vec2, 2, 1, 2, 1)));
 	}
 	// 2x2 row major Matrix adjugate multiply (A#)*B
-	__forceinline __m128 Mat2AdjMul(__m128 vec1, __m128 vec2)
+	FORCEINLINE __m128 Mat2AdjMul(__m128 vec1, __m128 vec2)
 	{
 		return
 			_mm_sub_ps(_mm_mul_ps(VecSwizzle(vec1, 3, 3, 0, 0), vec2),
@@ -603,7 +613,7 @@ extern "C" {
 
 	}
 	// 2x2 row major Matrix multiply adjugate A*(B#)
-	__forceinline __m128 Mat2MulAdj(__m128 vec1, __m128 vec2)
+	FORCEINLINE __m128 Mat2MulAdj(__m128 vec1, __m128 vec2)
 	{
 		return
 			_mm_sub_ps(_mm_mul_ps(vec1, VecSwizzle(vec2, 3, 0, 3, 0)),

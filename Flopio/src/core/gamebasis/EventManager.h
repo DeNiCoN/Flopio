@@ -1,5 +1,6 @@
 #include "../memory/queueAlloc.h"
 #include <string>
+#include <cstring>
 #include "../utils.h"
 #include <vector>
 #include <unordered_map>
