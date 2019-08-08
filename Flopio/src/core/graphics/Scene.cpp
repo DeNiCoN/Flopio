@@ -22,7 +22,7 @@ namespace engine
 		mat44 rotate, translate;
 		translate = mat44TranslateVec2(vec2Neg(position));
 		rotate = mat44RotateByZ(-angle);
-		view = mat44Multiply(&mat44Multiply(&rotate, &mat44Scale(scale, scale, 1.0f)), &translate);
+		view = mat44Multiply(mat44Multiply(rotate, mat44Scale(scale, scale, 1.0f)), translate);
 	}
 
 	Scene::~Scene()
@@ -66,9 +66,7 @@ namespace engine
 				rendererRemoved(rendComp);
 			}
 		}
-
 		projectionView = mat44Multiply(viewport->getProjection(), camera.getView());
-
 
 	}
 

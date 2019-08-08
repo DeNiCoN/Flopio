@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
-project(Flopio)
+project(Flopio CXX C)
 set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(flopio
 	"Flopio/src/core/Engine.cpp"
@@ -191,12 +192,19 @@ target_include_directories(flopio PUBLIC
 	${OPENGL_INCLUDE_DIRS}
 	"libs/include"
 )
+
+set (GLFW_BUILD_DOCS OFF)
+set (GLFW_BUILD_EXAMPLES OFF)
+set (GLFW_BUILD_TESTS OFF)
 add_subdirectory("libs/lib/glfw")
 
 target_link_libraries(flopio glfw
 	${GLFW_LIBRARIES}
 	${OPENGL_LIBRARIES}
 )
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+	target_link_libraries(flopio stdc++fs)
+endif()
 
 file(COPY Flopio/Resources DESTINATION .)
 file(COPY Flopio/EngineResources DESTINATION .)

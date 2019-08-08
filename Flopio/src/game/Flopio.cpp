@@ -175,7 +175,7 @@ namespace game
 		glfwGetWindowSize(window, &width, &height);
 		glfwGetCursorPos(window, &xpos, &ypos);
 		vec4 pos = vec4CreateSse(xpos - width / 2, height / 2 - ypos, 1, 1);
-		pos.ssevalue = sseVecMat44Multiply(pos.ssevalue, &mat44TransformInverse(root.camera.getView()));
+		pos.ssevalue = sseVecMat44Multiply(pos.ssevalue, mat44TransformInverse(root.camera.getView()));
 		vec3 pos3 = vec3Create(pos.x, pos.y, 1.f);
 
 		for (int i = 0; i < count; i++)

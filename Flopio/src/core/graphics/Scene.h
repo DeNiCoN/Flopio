@@ -21,7 +21,7 @@ namespace engine
 		vec2 getPosition() const { return position; }
 		float getAngle() const { return angle; }
 		float getScale() const { return scale; }
-		const mat44 * getView() const { return &view; }
+		const mat44& getView() const { return view; }
 		void set(vec2 position, float angle, float scale);
 	};
 
@@ -39,7 +39,7 @@ namespace engine
 		void removeActor(SharedActor actor);
 		static void registerRenderer(unsigned int componentId, RenderFuntion renderFunction);
 		Viewport* getViewport() const { return viewport; }
-		const mat44* getProjectionView() const { return &projectionView; }
+		const mat44& getProjectionView() const { return projectionView; }
 		b2World& getWorld() { return world; }
 		void setViewport(Viewport* viewport) { this->viewport = viewport; }
 		std::vector<SharedActor> actors;

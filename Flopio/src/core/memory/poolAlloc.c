@@ -1,5 +1,5 @@
 #include "poolAlloc.h"
-#include <ctype.h>
+#include <stddef.h>
 
 int poolInit(PoolAllocator* alloc, char* buffer, size_t objSize, unsigned int objCount) 
 {

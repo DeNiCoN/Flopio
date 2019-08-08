@@ -1,4 +1,5 @@
 #include "allocator.h"
+#include <stdint.h>
 
 char* buf;
 size_t bufSize;

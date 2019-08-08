@@ -7,6 +7,7 @@
 
 namespace engine
 {
+	const char Resource::separator = '|';
 	Resource::Resource()
 	{
 		std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);

@@ -1,4 +1,3 @@
-#pragma once
 #include "Engine.h"
 #include <iostream>
 #include <fstream>
@@ -11,7 +10,7 @@ namespace engine {
 	Logger logger;
 	LinearAllocator oneFrame;
 	char* oneFrameBuffer;
-
+	
 	void GLAPIENTRY GLErrorCallback(GLenum source,
 			GLenum type,
 			GLuint id,
@@ -56,7 +55,7 @@ namespace engine {
 
 		if (!glfwInit())
 			return false;
-
+		logger << "Glfw initialized\n";
 		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -64,7 +63,7 @@ namespace engine {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 		glfwWindowHint(GLFW_SAMPLES, 16);
-
+		
 		GLFWwindow *window = glfwCreateWindow(config.width, config.height, config.appTitle.c_str(), config.fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (window == NULL)
 			return false;
@@ -79,6 +78,7 @@ namespace engine {
 			logger << "Failed to initialize GLAD\n";
 			return false;
 		}
+		logger << "Glad initialized\n";
 		//glEnable(GL_DEBUG_OUTPUT);
 		//glDebugMessageCallback(GLErrorCallback, 0);
 

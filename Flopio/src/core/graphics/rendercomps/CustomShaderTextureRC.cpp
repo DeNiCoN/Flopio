@@ -62,7 +62,7 @@ namespace engine
 			{
 				pspid = id;
 				glUseProgram(id);
-				glUniformMatrix4fv(glGetUniformLocation(id, "projectionView"), 1, GL_FALSE, (GLfloat*)scene.getProjectionView());
+				glUniformMatrix4fv(glGetUniformLocation(id, "projectionView"), 1, GL_FALSE, (GLfloat*)&scene.getProjectionView());
 			}
 			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

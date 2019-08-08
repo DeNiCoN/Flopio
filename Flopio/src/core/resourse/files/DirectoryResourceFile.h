@@ -13,10 +13,10 @@ namespace engine
 	public:
 		DirectoryResourceFile(std::string path) : ResourceFile(path) {}
 		virtual void VReload() override;
-		virtual bool VOpen();
-		virtual int VGetRawResourceSize(const Resource &r);
-		virtual int VGetRawResource(const Resource &r, char *buffer);
-		virtual int VGetNumResources() const;
-		virtual std::string VGetResourceName(int num) const;
+		virtual bool VOpen() override;
+		virtual int VGetRawResourceSize(const Resource &r) override;
+		virtual int VGetRawResource(const Resource &r, char *buffer) override;
+		virtual int VGetNumResources() const override;
+		virtual std::string VGetResourceName(int num) const override;
 	};
 }

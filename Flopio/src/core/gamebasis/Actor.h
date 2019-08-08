@@ -39,7 +39,7 @@ namespace engine
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
 
 		unsigned int getId() { return id; };
-		static constexpr unsigned int getId(const char* name) { return hash(name, strlen(name)); }
+		static unsigned int getId(const char* name) { return hash(name, strlen(name)); }
 
 		//keep renderIds sorted for binary search
 		static void registerRender(unsigned int id) { renderIds.insert(std::lower_bound(renderIds.begin(), renderIds.end(), id), id); }

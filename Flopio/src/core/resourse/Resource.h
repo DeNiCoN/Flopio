@@ -13,7 +13,7 @@ namespace engine
 		unsigned char separatorPos;
 		Resource();
 	public:
-		static const char separator = '|';
+		static const char separator;
 
 		Resource(const std::string& resName);
 		//Resource(const char* resName);

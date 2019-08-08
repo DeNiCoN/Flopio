@@ -7,11 +7,11 @@
 
 #if defined(_MSC_VER)
 #define ALIGNED_(x) __declspec(align(x))
-#define FORCEINLINE FORCEINLINE
+#define FORCEINLINE inline __forceinline 
 #else
 #if defined(__GNUC__)
 #define ALIGNED_(x) __attribute__ ((aligned(x)))
-#define FORCEINLINE __attribute__ ((always_inline))
+#define FORCEINLINE inline __attribute__ ((always_inline))
 #endif
 #endif
 
@@ -494,31 +494,32 @@ extern "C" {
 		return c;
 	}
 
-	S_INLINE mat44 mat44Add(const mat44 * a, const mat44 * b)
+	S_INLINE mat44 mat44Add(const mat44 a, const mat44 b)
 	{
 		mat44 c;
-		c.value[0].ssevalue = _mm_add_ps(a->mVec[0], b->mVec[0]);
-		c.value[1].ssevalue = _mm_add_ps(a->mVec[1], b->mVec[1]);
-		c.value[2].ssevalue = _mm_add_ps(a->mVec[2], b->mVec[2]);
-		c.value[3].ssevalue = _mm_add_ps(a->mVec[3], b->mVec[3]);
-	}
-
-	S_INLINE __m128 sseVecMat44Multiply(__m128 a, const mat44 * b)
-	{
-		__m128 c = _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(0, 0, 0, 0)), b->mVec[0]);
-		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(1, 1, 1, 1)), b->mVec[1]));
-		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(2, 2, 2, 2)), b->mVec[2]));
-		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(3, 3, 3, 3)), b->mVec[3]));
+		c.value[0].ssevalue = _mm_add_ps(a.mVec[0], b.mVec[0]);
+		c.value[1].ssevalue = _mm_add_ps(a.mVec[1], b.mVec[1]);
+		c.value[2].ssevalue = _mm_add_ps(a.mVec[2], b.mVec[2]);
+		c.value[3].ssevalue = _mm_add_ps(a.mVec[3], b.mVec[3]);
 		return c;
 	}
 
-	S_INLINE mat44 mat44Multiply(const mat44 * a,const mat44 * b)
+	S_INLINE __m128 sseVecMat44Multiply(__m128 a, const mat44 b)
+	{
+		__m128 c = _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(0, 0, 0, 0)), b.mVec[0]);
+		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(1, 1, 1, 1)), b.mVec[1]));
+		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(2, 2, 2, 2)), b.mVec[2]));
+		c = _mm_add_ps(c, _mm_mul_ps(_mm_shuffle_ps(a, a, SHUFFLE_PARAM(3, 3, 3, 3)), b.mVec[3]));
+		return c;
+	}
+
+	S_INLINE mat44 mat44Multiply(const mat44 a, const mat44 b)
 	{
 		mat44 c;
-		c.mVec[0] = sseVecMat44Multiply(b->mVec[0], a);
-		c.mVec[1] = sseVecMat44Multiply(b->mVec[1], a);
-		c.mVec[2] = sseVecMat44Multiply(b->mVec[2], a);
-		c.mVec[3] = sseVecMat44Multiply(b->mVec[3], a);
+		c.mVec[0] = sseVecMat44Multiply(b.mVec[0], a);
+		c.mVec[1] = sseVecMat44Multiply(b.mVec[1], a);
+		c.mVec[2] = sseVecMat44Multiply(b.mVec[2], a);
+		c.mVec[3] = sseVecMat44Multiply(b.mVec[3], a);
 		return c;
 	}
 
@@ -528,6 +529,7 @@ extern "C" {
 		float tmp = radians / 2;
 		c.xyz = vec3Scale(a, sinf(tmp));
 		c.w = cosf(tmp);
+		return c;
 	}
 
 	S_INLINE quat quatFromVec4V2(vec4 a, float radians)
@@ -566,7 +568,7 @@ extern "C" {
 		__m128 wzyx = _mm_shuffle_ps(a.ssevalue, a.ssevalue, _MM_SHUFFLE(0, 1, 2, 3));
 		__m128 baba = _mm_shuffle_ps(b.ssevalue, b.ssevalue, _MM_SHUFFLE(0, 1, 0, 1));
 		__m128 dcdc = _mm_shuffle_ps(b.ssevalue, b.ssevalue, _MM_SHUFFLE(2, 3, 2, 3));
-
+		
 		__m128 ZnXWY = _mm_hsub_ps(_mm_mul_ps(a.ssevalue, baba), _mm_mul_ps(wzyx, dcdc));
 		__m128 XZYnW = _mm_hadd_ps(_mm_mul_ps(a.ssevalue, dcdc), _mm_mul_ps(wzyx, baba));
 		__m128 XZWY = _mm_addsub_ps(_mm_shuffle_ps(XZYnW, ZnXWY, _MM_SHUFFLE(3, 2, 1, 0)), _mm_shuffle_ps(ZnXWY, XZYnW, _MM_SHUFFLE(2, 3, 0, 1)));
@@ -622,16 +624,16 @@ extern "C" {
 
 #define SMALL_NUMBER		(1.e-8f)
 
-	inline mat44 mat44TransformInverse(const mat44 * inM)
+	inline mat44 mat44TransformInverse(const mat44 inM)
 	{
 		mat44 r;
 
 		// transpose 3x3, we know m03 = m13 = m23 = 0
-		__m128 t0 = VecShuffle_0101(inM->mVec[0], inM->mVec[1]); // 00, 01, 10, 11
-		__m128 t1 = VecShuffle_2323(inM->mVec[0], inM->mVec[1]); // 02, 03, 12, 13
-		r.mVec[0] = VecShuffle(t0, inM->mVec[2], 0, 2, 0, 3); // 00, 10, 20, 23(=0)
-		r.mVec[1] = VecShuffle(t0, inM->mVec[2], 1, 3, 1, 3); // 01, 11, 21, 23(=0)
-		r.mVec[2] = VecShuffle(t1, inM->mVec[2], 0, 2, 2, 3); // 02, 12, 22, 23(=0)
+		__m128 t0 = VecShuffle_0101(inM.mVec[0], inM.mVec[1]); // 00, 01, 10, 11
+		__m128 t1 = VecShuffle_2323(inM.mVec[0], inM.mVec[1]); // 02, 03, 12, 13
+		r.mVec[0] = VecShuffle(t0, inM.mVec[2], 0, 2, 0, 3); // 00, 10, 20, 23(=0)
+		r.mVec[1] = VecShuffle(t0, inM.mVec[2], 1, 3, 1, 3); // 01, 11, 21, 23(=0)
+		r.mVec[2] = VecShuffle(t1, inM.mVec[2], 0, 2, 2, 3); // 02, 12, 22, 23(=0)
 
 		// (SizeSqr(mVec[0]), SizeSqr(mVec[1]), SizeSqr(mVec[2]), 0)
 		__m128 sizeSqr;
@@ -647,29 +649,29 @@ extern "C" {
 		r.mVec[2] = _mm_mul_ps(r.mVec[2], rSizeSqr);
 
 		// last line
-		r.mVec[3] = _mm_mul_ps(r.mVec[0], VecSwizzle1(inM->mVec[3], 0));
-		r.mVec[3] = _mm_add_ps(r.mVec[3], _mm_mul_ps(r.mVec[1], VecSwizzle1(inM->mVec[3], 1)));
-		r.mVec[3] = _mm_add_ps(r.mVec[3], _mm_mul_ps(r.mVec[2], VecSwizzle1(inM->mVec[3], 2)));
+		r.mVec[3] = _mm_mul_ps(r.mVec[0], VecSwizzle1(inM.mVec[3], 0));
+		r.mVec[3] = _mm_add_ps(r.mVec[3], _mm_mul_ps(r.mVec[1], VecSwizzle1(inM.mVec[3], 1)));
+		r.mVec[3] = _mm_add_ps(r.mVec[3], _mm_mul_ps(r.mVec[2], VecSwizzle1(inM.mVec[3], 2)));
 		r.mVec[3] = _mm_sub_ps(_mm_setr_ps(0.f, 0.f, 0.f, 1.f), r.mVec[3]);
 
 		return r;
 	}
 
-	inline mat44 mat44GeneralInverse(const mat44 * inM)
+	inline mat44 mat44GeneralInverse(const mat44 inM)
 	{
 		// use block matrix method
 		// A is a matrix, then i(A) or iA means inverse of A, A# (or A_ in code) means adjugate of A, |A| (or detA in code) is determinant, tr(A) is trace
 
 		// sub matrices
-		__m128 A = VecShuffle_0101(inM->mVec[0], inM->mVec[1]);
-		__m128 B = VecShuffle_2323(inM->mVec[0], inM->mVec[1]);
-		__m128 C = VecShuffle_0101(inM->mVec[2], inM->mVec[3]);
-		__m128 D = VecShuffle_2323(inM->mVec[2], inM->mVec[3]);
+		__m128 A = VecShuffle_0101(inM.mVec[0], inM.mVec[1]);
+		__m128 B = VecShuffle_2323(inM.mVec[0], inM.mVec[1]);
+		__m128 C = VecShuffle_0101(inM.mVec[2], inM.mVec[3]);
+		__m128 D = VecShuffle_2323(inM.mVec[2], inM.mVec[3]);
 
-		__m128 detA = _mm_set1_ps(inM->m[0][0] * inM->m[1][1] - inM->m[0][1] * inM->m[1][0]);
-		__m128 detB = _mm_set1_ps(inM->m[0][2] * inM->m[1][3] - inM->m[0][3] * inM->m[1][2]);
-		__m128 detC = _mm_set1_ps(inM->m[2][0] * inM->m[3][1] - inM->m[2][1] * inM->m[3][0]);
-		__m128 detD = _mm_set1_ps(inM->m[2][2] * inM->m[3][3] - inM->m[2][3] * inM->m[3][2]);
+		__m128 detA = _mm_set1_ps(inM.m[0][0] * inM.m[1][1] - inM.m[0][1] * inM.m[1][0]);
+		__m128 detB = _mm_set1_ps(inM.m[0][2] * inM.m[1][3] - inM.m[0][3] * inM.m[1][2]);
+		__m128 detC = _mm_set1_ps(inM.m[2][0] * inM.m[3][1] - inM.m[2][1] * inM.m[3][0]);
+		__m128 detD = _mm_set1_ps(inM.m[2][2] * inM.m[3][3] - inM.m[2][3] * inM.m[3][2]);
 
 		// let iM = 1/|M| * | X  Y |
 		//                  | Z  W |

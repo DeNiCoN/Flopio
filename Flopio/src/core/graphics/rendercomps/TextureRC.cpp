@@ -1,5 +1,6 @@
 #include "TextureRC.h"
 #include "../../Engine.h"
+#include <glad/glad.h>
 #include "../../resourse/loaders/TextureResourceLoader.h"
 
 namespace engine
@@ -32,7 +33,7 @@ namespace engine
 			glGenBuffers(1, &textureHandleBO);
 			glGenBuffers(1, &VBO);
 			glGenBuffers(1, &EBO);
-
+			
 			glBindVertexArray(VAO);
 
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -90,7 +91,7 @@ namespace engine
 		mat44 rotate, translate;
 		rotate = mat44RotateByZ(parent->getAngle());
 		translate = mat44Translate(parent->getPosition());
-		model = mat44Multiply(&translate, &mat44Multiply(&rotate, &mat44Scale(width, height, 1)));
+		model = mat44Multiply(translate, mat44Multiply(rotate, mat44Scale(width, height, 1)));
 	}
 
 	void TextureRC::setDimensions(float width, float height)
@@ -114,8 +115,8 @@ namespace engine
 		auto transformBufferPtr = reinterpret_cast<mat44*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		glBindBuffer(GL_ARRAY_BUFFER, textureHandleBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(__int64)*count, NULL, GL_DYNAMIC_DRAW);
-		auto textureHandleBufferPtr = reinterpret_cast<__int64*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLint64)*count, NULL, GL_DYNAMIC_DRAW);
+		auto textureHandleBufferPtr = reinterpret_cast<GLint64*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
 		size_t i = 0;
 		for (auto r : renderers)
@@ -133,7 +134,7 @@ namespace engine
 		
 		glBindVertexArray(VAO);
 		glUseProgram(shaderProgramId);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*) scene.getProjectionView());
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*)&scene.getProjectionView());
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
 		glBindVertexArray(0);
 	}

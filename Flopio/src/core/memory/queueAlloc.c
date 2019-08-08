@@ -93,4 +93,5 @@ int queueFree(QueueAllocator* alloc)
 	}
 
 	alloc->head += *((size_t*)alloc->head);
+	return 1;
 }

@@ -1,8 +1,8 @@
-#include <ctype.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static unsigned __int32 seed[] = { 5946 , 751614 , 801223 , 1120847 };
+static uint32_t seed[] = { 5946 , 751614 , 801223 , 1120847 };
 
 void seedUsingRandXorshift128(unsigned int seed1) 
 {
@@ -21,9 +21,9 @@ void seedXorshift128(int x, int y, int z, int w)
 	seed[3] = w;
 }
 
-unsigned __int32 xorshift128() 
+uint32_t xorshift128() 
 {
-	unsigned __int32 s, t = seed[3];
+	uint32_t s, t = seed[3];
 	t ^= t << 11;
 	t ^= t >> 8;
 	seed[3] = seed[2]; seed[2] = seed[1]; seed[1] = s = seed[0];
@@ -33,9 +33,9 @@ unsigned __int32 xorshift128()
 	return t;
 }
 
-unsigned __int32 xorshift128Limit(int upperLimit)
+uint32_t xorshift128Limit(int upperLimit)
 {
-	unsigned __int32 s, t = seed[3];
+	uint32_t s, t = seed[3];
 	t ^= t << 11;
 	t ^= t >> 8;
 	seed[3] = seed[2]; seed[2] = seed[1]; seed[1] = s = seed[0];

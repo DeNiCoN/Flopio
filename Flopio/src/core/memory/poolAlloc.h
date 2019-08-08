@@ -1,5 +1,6 @@
 #pragma once
-#include <ctype.h>
+#include <stddef.h>
+#include <stdint.h>
 #define MIN_POOL_OBJECT_SIZE_BYTES sizeof(int)
 
 #ifdef __cplusplus

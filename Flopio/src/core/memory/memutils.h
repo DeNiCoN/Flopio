@@ -1,5 +1,5 @@
 #pragma once
-#include <ctype.h>
+#include <stdint.h>
 
 #define ALIGN_POINTER(ptr, align) ((void*)((uintptr_t)ptr & (align - 1)))
 //#define NULL (void*)0

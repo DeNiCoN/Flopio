@@ -8,7 +8,7 @@ namespace engine
 	protected:
 		mat44 projection;
 	public:
-		const mat44* getProjection() const { return &projection; }
+		const mat44& getProjection() const { return projection; }
 		virtual void VResize(int width, int height) = 0;
 		virtual ~Viewport() {};
 	};

@@ -1,12 +1,12 @@
 #pragma once
-#include <ctype.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-	unsigned __int32 xorshift128();
-	unsigned __int32 xorshift128Limit(int upperLimit);
+	uint32_t xorshift128();
+	uint32_t xorshift128Limit(int upperLimit);
 
 	void seedUsingRandXorshift128(unsigned int seed1);
 	void seedXorshift128(int x, int y, int z, int w);

@@ -1,4 +1,3 @@
-#include <ctype.h>
 #include "linearAlloc.h"
 #include "memutils.h"
 #include <stdio.h>

@@ -1,6 +1,6 @@
 #include "stackAlloc.h"
 #include "memutils.h"
-#include <ctype.h>
+#include <stdint.h>
 #define STACK_HEADER_SIZE_BYTES sizeof(size_t)
 
 
@@ -20,7 +20,7 @@ void* stackAlloc(StackAllocator* alloc, size_t size) {
 	size_t prevSP = alloc->stackPointer;
 	alloc->stackPointer += size + STACK_HEADER_SIZE_BYTES;
 	void* headerPtr = alloc->buffer + (prevSP + size);
-	*(unsigned __int32*) headerPtr = (unsigned __int32)size;
+	*(uint32_t*) headerPtr = (uint32_t)size;
 	return (void*) (alloc->buffer + prevSP);
 }
 
