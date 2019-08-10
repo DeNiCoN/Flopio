@@ -192,10 +192,10 @@ target_include_directories(flopio PUBLIC
 	${OPENGL_INCLUDE_DIRS}
 	"libs/include"
 )
-
-set (GLFW_BUILD_DOCS OFF)
-set (GLFW_BUILD_EXAMPLES OFF)
-set (GLFW_BUILD_TESTS OFF)
+SET(GLFW_BUILD_DOCS OFF CACHE BOOL "Build the GLFW documentation" FORCE)
+SET(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "Build the GLFW example programs" FORCE)
+SET(GLFW_BUILD_TESTS OFF CACHE BOOL "Build the GLFW test programs" FORCE)
+SET(GLFW_INSTALL OFF CACHE BOOL "Generate installation target" FORCE)
 add_subdirectory("libs/lib/glfw")
 
 target_link_libraries(flopio glfw
