@@ -93,6 +93,8 @@ add_executable(flopio
 	"Flopio/src/core/gamebasis/ActorFactory.h"
 	"Flopio/src/core/gamebasis/App.h"
 	"Flopio/src/core/gamebasis/DelayProcess.h"
+	"Flopio/src/core/gamebasis/events/MouseEventData.h"
+	"Flopio/src/core/gamebasis/events/WindowResizeEventData.h"
 	"Flopio/src/core/gamebasis/PhysicsComponent.h"
 	"Flopio/src/core/gamebasis/Process.h"
 	"Flopio/src/core/gamebasis/ProcessManager.h"

@@ -1,3 +1,4 @@
+#pragma once
 #include "../memory/queueAlloc.h"
 #include <string>
 #include <cstring>
@@ -5,6 +6,7 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <iostream>
 
 namespace engine
 {
@@ -38,11 +40,11 @@ namespace engine
 		void removeCallback(const char* eventName, std::function<void(Event&)> callback);
 		void processPending();
 		template <class T>
-		T& newEvent(const char* name)
+		T& newEvent(const char* name, T&& move)
 		{
 			static_assert(std::is_base_of_v<EventData, T> && "Type need to inherit from EventData");
 			Event* eventp = (Event*)queueAllocAligned(&allocator, sizeof(Event) + sizeof(T), alignof(Event) < alignof(T) ? alignof(T) : alignof(Event));
-			T* eventData = new ((T*)(eventp + 1)) T();
+			T* eventData = new ((T*)(eventp + 1)) T(move);
 			new (eventp) Event(name, *eventData);
 
 			return *eventData;

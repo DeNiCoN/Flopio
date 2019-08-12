@@ -6,9 +6,10 @@
 #include <GLFW/glfw3.h>
 #include "../graphics/Scene.h"
 #include "EventManager.h"
+#include "../graphics/viewports/Viewport.h"
+#include "../graphics/viewports/ScreenViewport.h"
 
 namespace engine {
-
 	class AppConfig 
 	{
 	public:
@@ -28,21 +29,24 @@ namespace engine {
 
 	class App
 	{
-		friend void VOnResizeWrapper(GLFWwindow* window, int width, int height);
+		friend void resize_callback(GLFWwindow* window, int width, int height);
 		friend bool appInit(App &app, const AppConfig &config);
+		friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); 
+		friend void drop_callback(GLFWwindow* window, int count, const char** paths); 
 	public:
-		App(unsigned int RCSizeInMB, unsigned int EMSizeInMB) : resourceCache(RCSizeInMB), eventManager(EMSizeInMB) {}
 		ProcessManager processManager;
 		ResourceCache resourceCache;
 		EventManager eventManager;
+		App(unsigned int RCSizeInMB, unsigned int EMSizeInMB) : resourceCache(RCSizeInMB), eventManager(EMSizeInMB), viewport(sv) {}
 	protected:
+		ScreenViewport sv;
+		Viewport& viewport;
+		GLFWwindow *glfwWindowHandle;
+		Scene root;
 		virtual void VOnInit() {}
 		virtual void VOnExit() {}
 		virtual void VOnUpdate(const double delta) = 0;
 		virtual void VOnRender(const double ndelta) = 0;
-		virtual void VOnResize(GLFWwindow* window, int width, int height) {}
-		GLFWwindow *glfwWindowHandle;
-		Scene root;
 		double secondsPerUpdate = 1.0 / 60.0;
 	};
 

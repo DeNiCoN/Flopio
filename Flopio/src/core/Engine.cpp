@@ -1,8 +1,11 @@
 #include "Engine.h"
+#include "gamebasis/events/WindowResizeEventData.h"
+#include "gamebasis/events/MouseEventData.h"
 #include <iostream>
 #include <fstream>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
 
 namespace engine {
 
@@ -28,9 +31,15 @@ namespace engine {
 		logger << description << "\n";
 	}
 
-	void VOnResizeWrapper(GLFWwindow* window, int width, int height) 
+	void resize_callback(GLFWwindow* window, int width, int height) 
 	{ 
-		currentApp->VOnResize(window, width, height);
+		currentApp->viewport.VResize(width, height);
+		currentApp->eventManager.newEvent<WindowResizeEventData>("WindowResize", { width, height });
+	}
+
+	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		currentApp->eventManager.newEvent<MouseScrollEventData>("MouseScroll", { xoffset, yoffset });
 	}
 
 	bool appInit(App &app, const AppConfig &config) 
@@ -58,42 +67,44 @@ namespace engine {
 		logger << "Glfw initialized\n";
 		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		//*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
+		//*glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		//*glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-		glfwWindowHint(GLFW_SAMPLES, 16);
+		//*glfwWindowHint(GLFW_SAMPLES, 16);
 		
 		GLFWwindow *window = glfwCreateWindow(config.width, config.height, config.appTitle.c_str(), config.fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (window == NULL)
 			return false;
 		glfwMakeContextCurrent(window);
-		glfwSetWindowSizeCallback(window, VOnResizeWrapper);
+		glfwSetWindowSizeCallback(window, resize_callback);
+		glfwSetScrollCallback(window, scroll_callback);
 		glfwSwapInterval(0);
 
 		app.glfwWindowHandle = window;
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			logger << "Failed to initialize GLAD\n";
-			return false;
-		}
+		//*if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		//*{
+			//*logger << "Failed to initialize GLAD\n";
+			//*return false;
+		//*}
 		logger << "Glad initialized\n";
 		//glEnable(GL_DEBUG_OUTPUT);
 		//glDebugMessageCallback(GLErrorCallback, 0);
 
-		if (!GLAD_GL_ARB_bindless_texture)
-		{
-			logger << "Bindless textures not supported\n";
-			return false;
-		}
+		//*if (!GLAD_GL_ARB_bindless_texture)
+		//*{
+			//*logger << "Bindless textures not supported\n";
+			//*return false;
+		//*}
 		
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_MULTISAMPLE);
+		//*glEnable(GL_DEPTH_TEST);
+		//*glEnable(GL_MULTISAMPLE);
 		//glEnable(GL_SAMPLE_SHADING);
 		//glMinSampleShading(1.f);
-		
+		std::cout << "Enter app init\n";
 		app.VOnInit();
+		std::cout << "App initialized\n";
 		int fps = 0;
 		double second = 0.0;
 		double currentTime;
@@ -101,7 +112,7 @@ namespace engine {
 		double delay = 0.0;
 		double lastTime = glfwGetTime();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		while (!glfwWindowShouldClose(window))
 		{
 			currentTime = glfwGetTime();
@@ -116,8 +127,8 @@ namespace engine {
 			}
 
 			app.VOnRender(delay / app.secondsPerUpdate);
-			glfwSwapBuffers(window);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//*glfwSwapBuffers(window);
+			//*glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			fps++;
 			if (second >= 1.0)
