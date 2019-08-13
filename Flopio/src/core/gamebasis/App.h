@@ -33,6 +33,7 @@ namespace engine {
 		friend bool appInit(App &app, const AppConfig &config);
 		friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); 
 		friend void drop_callback(GLFWwindow* window, int count, const char** paths); 
+		friend void mouse_click_callback(GLFWwindow*, int, int, int);
 	public:
 		ProcessManager processManager;
 		ResourceCache resourceCache;

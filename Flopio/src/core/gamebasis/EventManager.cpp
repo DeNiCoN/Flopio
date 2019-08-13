@@ -23,7 +23,7 @@ namespace engine
 	{
 		while (Event* e = (Event*)queueAllocGetFirst(&allocator))
 		{
-			std::cout << e->getName();
+			std::cout << e->getName() << "\n";
 			for (auto callback : callbacks[e->getHashed()])
 			{
 				callback(*e);

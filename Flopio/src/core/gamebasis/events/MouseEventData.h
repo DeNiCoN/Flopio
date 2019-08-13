@@ -9,7 +9,16 @@ namespace engine
 	public:
 		const vec2 windowCoordinates;
 	        const vec2 worldCoordinates;
-		MouseClickEventData(const vec2 windowCoordinates, const vec2 worldCoordinates) : windowCoordinates(windowCoordinates), worldCoordinates(worldCoordinates) {}
+		const int button;
+		const int action;
+		const int mods;
+		MouseClickEventData(const vec2 windowCoordinates,
+			       	const vec2 worldCoordinates,
+				const int button, const int action,
+				const int mods):
+			windowCoordinates(windowCoordinates),
+		       	worldCoordinates(worldCoordinates),
+	       		button(button), action(action), mods(mods) {}
 	};
 	
 	class MouseScrollEventData : public EventData

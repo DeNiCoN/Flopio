@@ -31,6 +31,17 @@ namespace engine {
 		logger << description << "\n";
 	}
 
+	void mouse_click_callback(GLFWwindow* window, int button, int action, int mode)
+	{
+		int width, height;
+		double xpos, ypos;
+		glfwGetWindowSize(window, &width, &height);
+		glfwGetCursorPos(window, &xpos, &ypos);
+		vec4 pos = vec4CreateSse(xpos - width / 2, height / 2 - ypos, 1, 1);
+		pos.ssevalue = sseVecMat44Multiply(pos.ssevalue, mat44TransformInverse(currentApp->root.camera.getView()));
+		vec2 pos2 = { pos.x, pos.y };
+		currentApp->eventManager.newEvent<MouseClickEventData>("MouseClick", { { static_cast<float>(xpos), static_cast<float>(ypos) }, pos2, button, action, mode });
+	}
 	void resize_callback(GLFWwindow* window, int width, int height) 
 	{ 
 		currentApp->viewport.VResize(width, height);
@@ -79,6 +90,7 @@ namespace engine {
 		glfwMakeContextCurrent(window);
 		glfwSetWindowSizeCallback(window, resize_callback);
 		glfwSetScrollCallback(window, scroll_callback);
+		glfwSetMouseButtonCallback(window, mouse_click_callback);
 		glfwSwapInterval(0);
 
 		app.glfwWindowHandle = window;
