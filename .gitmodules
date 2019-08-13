@@ -1,0 +1,18 @@
+[submodule "Dependencies/glfw"]
+	path = Dependencies/glfw
+	url = https://github.com/glfw/glfw
+[submodule "Dependencies/glad"]
+	path = Dependencies/glad
+	url = https://github.com/Dav1dde/glad
+[submodule "Dependencies/tinyxml2"]
+	path = Dependencies/tinyxml2
+	url = https://github.com/leethomason/tinyxml2
+[submodule "Dependencies/Box2D"]
+	path = Dependencies/Box2D
+	url = https://github.com/erincatto/Box2D
+[submodule "Dependencies/stb"]
+	path = Dependencies/stb
+	url = https://github.com/nothings/stb
+[submodule "Dependencies/imgui"]
+	path = Dependencies/imgui
+	url = https://github.com/ocornut/imgui

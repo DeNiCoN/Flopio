@@ -2,8 +2,8 @@
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include <imgui/examples/imgui_impl_glfw.h>
+#include <imgui/examples/imgui_impl_opengl3.h>
 #include "../core/Engine.h"
 #include "../core/graphics/rendercomps/TextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
