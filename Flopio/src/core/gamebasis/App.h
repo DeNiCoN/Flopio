@@ -2,6 +2,7 @@
 #include "ProcessManager.h"
 #include "../resourse/ResourceCache.h"
 #include <string>
+#include <utility>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../graphics/Scene.h"
@@ -19,7 +20,7 @@ namespace engine {
 			std::string logFileName = "lastestLog.txt")
 			: width(width), height(height),
 			fullscreen(fullscreen), 
-			appTitle(appTitle), logFileName(logFileName) {}
+			appTitle(std::move(appTitle)), logFileName(std::move(logFileName)) {}
 		std::string logFileName;
 		std::string appTitle;
 		unsigned int height;

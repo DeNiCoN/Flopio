@@ -12,7 +12,7 @@ namespace engine
 	{
 	private:
 		mat44 view;
-		vec2 position = { 0, 0 };
+		vec2 position = { {0, 0} };
 		float angle = 0;
 		float scale = 1;
 		void updateView();

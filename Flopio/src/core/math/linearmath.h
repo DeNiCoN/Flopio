@@ -97,11 +97,11 @@ extern "C" {
 		} mat44;
 
 	S_INLINE vec2 vec2Create(float x, float y) {
-		return { x, y };
+		return {{x, y}};
 	}
 
 	S_INLINE vec3 vec3Create(float x, float y, float z) {
-		return { x, y , z };
+		return { {x, y, z} };
 	}
 
 	S_INLINE vec4 vec4CreateSse(float x, float y, float z, float w) {
@@ -111,8 +111,8 @@ extern "C" {
 	}
 
 	S_INLINE vec4 vec4Create(float x, float y, float z, float w) {
-		return { x, y, z, w };
-	}
+        return { {x, y, z, w} };
+    }
 
 	S_INLINE vec2 vec2Neg(vec2 a)
 	{
@@ -585,7 +585,7 @@ extern "C" {
 		tmp = quatMultiply(a, tmp);
 		quat conjugate = quatConjugateSse(a);
 		tmp = quatMultiply(tmp, conjugate);
-		vec3 c = { tmp.x, tmp.y, tmp.z };
+		vec3 c = { {tmp.x, tmp.y, tmp.z} };
 		return c;
 	}
 
@@ -596,7 +596,7 @@ extern "C" {
 		tmp = quatMultiply(a, tmp);
 		quat conjugate = quatConjugateSse(a);
 		tmp = quatMultiply(tmp, conjugate);
-		vec3 c = { tmp.x, tmp.y, tmp.z };
+		vec3 c = { {tmp.x, tmp.y, tmp.z} };
 		return c;
 	}
 

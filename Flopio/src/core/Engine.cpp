@@ -12,7 +12,7 @@ namespace engine {
 	App *currentApp;
 	Logger logger;
 	LinearAllocator oneFrame;
-	char* oneFrameBuffer;
+	char oneFrameBuffer[1024 * 1024 * 1];
 	
 	void GLAPIENTRY GLErrorCallback(GLenum source,
 			GLenum type,
@@ -39,9 +39,10 @@ namespace engine {
 		glfwGetCursorPos(window, &xpos, &ypos);
 		vec4 pos = vec4CreateSse(xpos - width / 2, height / 2 - ypos, 1, 1);
 		pos.ssevalue = sseVecMat44Multiply(pos.ssevalue, mat44TransformInverse(currentApp->root.camera.getView()));
-		vec2 pos2 = { pos.x, pos.y };
-		currentApp->eventManager.newEvent<MouseClickEventData>("MouseClick", { { static_cast<float>(xpos), static_cast<float>(ypos) }, pos2, button, action, mode });
+		vec2 pos2 = { {pos.x, pos.y} };
+		currentApp->eventManager.newEvent<MouseClickEventData>("MouseClick", { { {static_cast<float>(xpos), static_cast<float>(ypos)} }, pos2, button, action, mode });
 	}
+
 	void resize_callback(GLFWwindow* window, int width, int height) 
 	{ 
 		currentApp->viewport.VResize(width, height);
@@ -66,13 +67,12 @@ namespace engine {
 			return false;
 		}
 
-		oneFrameBuffer = (char*) malloc(1024 * 1024 * 1);
 		linAllocInit(&oneFrame, oneFrameBuffer, 1024 * 1024 * 1);
 
 		stbi_set_flip_vertically_on_load(true);
 		
 		glfwSetErrorCallback(glfwErrorCallback);
-
+		
 		if (!glfwInit())
 			return false;
 		logger << "Glfw initialized\n";
@@ -153,8 +153,6 @@ namespace engine {
 			glfwPollEvents();
 		}
 		app.VOnExit();
-
-		free(oneFrameBuffer);
 
 		glfwTerminate();
 		return 0;

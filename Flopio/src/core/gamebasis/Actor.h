@@ -33,7 +33,7 @@ namespace engine
 		Actor* parent;
 		unsigned int id;
 	public:
-		virtual ~Component() {};
+		virtual ~Component() = default;;
 		bool hasParent() { return parent; }
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;
@@ -55,7 +55,7 @@ namespace engine
 	private:
 		static std::map<ThreeResourceTuple, unsigned int> shaderPrograms;
 	public:
-		virtual ~RenderComponent() {};
+		~RenderComponent() override = default;;
 		static std::map<ThreeResourceTuple, unsigned int> getShaderProgramsMap() { return shaderPrograms; }
 		static unsigned int shaderInit(Resource* vertex, Resource* geometry, Resource* fragment);
 		static unsigned int shaderInitFromXML(const tinyxml2::XMLElement * pData);
@@ -84,5 +84,5 @@ namespace engine
 		void postInit() { for (auto comp : components) comp->VPostInit(); }
 		void update(const double delta) { for (auto comp : components) comp->VUpdate(delta); }
 	};
-	typedef std::shared_ptr<Actor> SharedActor;
+	using SharedActor = std::shared_ptr<Actor>;
 }

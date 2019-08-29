@@ -13,7 +13,7 @@ namespace engine
 	class EventData
 	{
 	public:
-		virtual ~EventData() {}
+		virtual ~EventData() = default;
 	};
 
 	class Event
@@ -43,7 +43,7 @@ namespace engine
 		T& newEvent(const char* name, T&& move)
 		{
 			static_assert(std::is_base_of_v<EventData, T> && "Type need to inherit from EventData");
-			Event* eventp = (Event*)queueAllocAligned(&allocator, sizeof(Event) + sizeof(T), alignof(Event) < alignof(T) ? alignof(T) : alignof(Event));
+			auto* eventp = (Event*)queueAllocAligned(&allocator, sizeof(Event) + sizeof(T), alignof(Event) < alignof(T) ? alignof(T) : alignof(Event));
 			T* eventData = new ((T*)(eventp + 1)) T(move);
 			new (eventp) Event(name, *eventData);
 

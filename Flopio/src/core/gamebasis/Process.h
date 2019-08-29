@@ -4,8 +4,8 @@
 namespace engine {
 
 	class Process;
-	typedef std::shared_ptr<Process> SharedProcessPtr;
-	typedef std::weak_ptr<Process> WeakProcessPtr;
+	using SharedProcessPtr = std::shared_ptr<Process>;
+	using WeakProcessPtr = std::weak_ptr<Process>;
 
 	enum ProcessState
 	{
@@ -44,7 +44,7 @@ namespace engine {
 		bool isDead() { return state == ENDED || state == FAILED || state == ABORTED; }
 		bool isRunning() { return state == RUNNING; }
 		bool isPaused() { return state == PAUSED; }
-		virtual ~Process() {};
+		virtual ~Process() = default;;
 	protected:
 		virtual void VOnInit() { state = RUNNING; }
 		virtual void VOnUpdate(double delta) = 0;

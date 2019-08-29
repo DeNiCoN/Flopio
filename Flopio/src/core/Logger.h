@@ -2,11 +2,12 @@
 #include <iostream>
 #include <vector>
 namespace engine {
+
 	class Logger {
 	private:
 		std::vector<std::ostream*> outputVector;
 	public:
-		Logger() {};
+		Logger() = default;;
 		~Logger();
 		Logger(std::ostream* stream);
 		Logger(std::vector<std::ostream*> out);

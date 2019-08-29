@@ -1,6 +1,5 @@
 #include "Flopio.h"
 
-#define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include <imgui/imgui.h>
 #include <imgui/examples/imgui_impl_glfw.h>
 #include <imgui/examples/imgui_impl_opengl3.h>
@@ -27,7 +26,7 @@ namespace game
 
 	void drop_callback(GLFWwindow* window, int count, const char** paths)
 	{
-		((Flopio *)currentApp)->dropCallback(window, count, paths);
+		static_cast<Flopio *>(currentApp)->dropCallback(window, count, paths);
 	}
 
 	void Flopio::VOnUpdate(const double delta)
@@ -134,7 +133,7 @@ namespace game
 
 		eventManager.registerCallback("MouseScroll",
 			[&](Event& e) {
-				MouseScrollEventData& data = (MouseScrollEventData&) e.getData();
+				auto data = static_cast<const MouseScrollEventData&>(e.getData());
 				root.camera.set(root.camera.getPosition(), root.camera.getAngle(), root.camera.getScale() + root.camera.getScale()*data.yoffset*0.1f);
 			});
 
@@ -154,7 +153,6 @@ namespace game
 	void Flopio::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 	{
 		root.camera.set(root.camera.getPosition(), root.camera.getAngle(), root.camera.getScale() + root.camera.getScale()*yoffset*0.1f);
-		int i = xoffset;
 		eventManager.newEvent<EventData>("test",{}); 
 	}
 
@@ -176,8 +174,8 @@ namespace game
 			std::string pathString = path.string();
 			pathString.replace(pathString.find_last_of(std::filesystem::path::preferred_separator), 1, &Resource::separator);
 			Resource res(pathString);
-			std::shared_ptr<DirectoryResourceFile> resFile(new DirectoryResourceFile (pathString.substr(0, res.getSeparatorPos())));
-			resourceCache.addFile(resFile);
+			std::shared_ptr<DirectoryResourceFile> resFile2(new DirectoryResourceFile (pathString.substr(0, res.getSeparatorPos())));
+			resourceCache.addFile(resFile2);
 			if (SharedActor newActor = actorFactory.createActor(res, &pos3, &angle))
 			{
 				root.addActor(newActor);
@@ -192,7 +190,7 @@ namespace game
 		float angle = cam.getAngle();
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_W) == GLFW_PRESS)
 		{
-			cam.set(vec2Add(cam.getPosition(), vec2Scale({ -sinf(angle), cosf(angle) }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
+			cam.set(vec2Add(cam.getPosition(), vec2Scale({ {-sinf(angle), cosf(angle)} }, speed * (float)delta * (1 / cam.getScale()))), cam.getAngle(), cam.getScale());
 		}
 		if (glfwGetKey(glfwWindowHandle, GLFW_KEY_S) == GLFW_PRESS)
 		{

@@ -15,7 +15,7 @@ namespace engine
 			name = fileName;
 			std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
 		}
-		virtual ~ResourceFile() {};
+		virtual ~ResourceFile() = default;;
 		virtual void VReload() = 0;
 		virtual bool VOpen() = 0;
 		virtual int VGetRawResourceSize(const Resource &r) = 0;

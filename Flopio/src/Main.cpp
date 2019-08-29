@@ -1,4 +1,3 @@
-#define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include "core/Engine.h"
 #include "core/resourse/ResourceCache.h"
 #include "game/Flopio.h"
