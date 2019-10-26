@@ -8,7 +8,6 @@
 #include <GLFW/glfw3.h>
 
 namespace engine {
-
 	extern App *currentApp;
 	extern Logger logger;
 	extern LinearAllocator oneFrame;

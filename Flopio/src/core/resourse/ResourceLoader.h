@@ -13,5 +13,6 @@ namespace engine
 		virtual unsigned int VGetLoadedSize(char* rawBuffer, unsigned int rawBufSize) = 0;
 		virtual unsigned int VGetExtraDataSize() { return 0; }; //Resource loader allocates additional memory for extra data
 		virtual bool VLoad(char* rawBuffer, unsigned int rawBufSize, std::shared_ptr<ResourceHandle> resHandle) = 0;
+    virtual ~ResourceLoader() = default;
 	};
 }

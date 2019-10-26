@@ -8,8 +8,8 @@ using namespace game;
 
 int main()
 {
-	Flopio app;
-	AppConfig config;
-	//config.fullscreen = true;
-	return appInit(app, config);
+    Flopio app;
+    AppConfig config;
+    //config.fullscreen = true;
+    return appInit(app, config);
 }

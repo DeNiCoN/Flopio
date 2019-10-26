@@ -85,7 +85,7 @@ namespace engine {
 		//*glfwWindowHint(GLFW_SAMPLES, 16);
 		
 		GLFWwindow *window = glfwCreateWindow(config.width, config.height, config.appTitle.c_str(), config.fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
-		if (window == NULL)
+    if (window == NULL)
 			return false;
 		glfwMakeContextCurrent(window);
 		glfwSetWindowSizeCallback(window, resize_callback);

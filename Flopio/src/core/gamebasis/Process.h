@@ -44,7 +44,7 @@ namespace engine {
 		bool isDead() { return state == ENDED || state == FAILED || state == ABORTED; }
 		bool isRunning() { return state == RUNNING; }
 		bool isPaused() { return state == PAUSED; }
-		virtual ~Process() = default;;
+		virtual ~Process() = default;
 	protected:
 		virtual void VOnInit() { state = RUNNING; }
 		virtual void VOnUpdate(double delta) = 0;
