@@ -1,6 +1,6 @@
 #include "ResourceCache.h"
 #include "files/DirectoryResourceFile.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 #include "../Engine.h"
 #include <iostream>
 

@@ -1,6 +1,6 @@
 #include "FragmentShaderResourceLoader.h"
 #include "../../Engine.h"
-#include "../../utils.h"
+#include "../../utils/utils.h"
 
 namespace engine
 {

@@ -17,11 +17,11 @@ namespace engine
 			initialized = true;
 			Component::registerRender(Component::getId(name));
 
-			glGenVertexArrays(1, &VAO);
+			//*glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
 			glGenBuffers(1, &EBO);
 
-			glBindVertexArray(VAO);
+			//*glBindVertexArray(VAO);
 
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
@@ -49,7 +49,7 @@ namespace engine
 
 	void CustomShaderTextureRC::render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay)
 	{
-		glBindVertexArray(VAO);
+      //*glBindVertexArray(VAO);
 		unsigned int pspid = 0;
 		for (auto r : renderers)
 		{
@@ -67,6 +67,6 @@ namespace engine
 			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-		glBindVertexArray(0);
+		//*glBindVertexArray(0);
 	}
 }

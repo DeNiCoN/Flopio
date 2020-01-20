@@ -14,9 +14,9 @@ namespace engine
 		delete[] allocator.buffer;
 	}
 
-	void EventManager::registerCallback(const char* eventName, std::function<void(Event&)> callback)
+	void EventManager::registerCallback(const HashedString& eventName, std::function<void(Event&)> callback)
 	{
-		callbacks[hash(eventName, strlen(eventName))].push_back(callback);
+		callbacks[eventName.getHashed()].push_back(callback);
 	}
 
 	void EventManager::processPending()
