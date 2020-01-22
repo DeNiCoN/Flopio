@@ -4,7 +4,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-
 namespace engine
 {
 
@@ -50,7 +49,7 @@ namespace engine
 			{
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-				glGenerateMipmap(GL_TEXTURE_2D);
+				//*glGenerateMipmap(GL_TEXTURE_2D);
 			}
 			else
 			{

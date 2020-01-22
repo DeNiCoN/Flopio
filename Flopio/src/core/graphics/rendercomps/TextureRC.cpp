@@ -28,13 +28,13 @@ namespace engine
 			initialized = true;
 			Component::registerRender(Component::getId(name));
 
-			glGenVertexArrays(1, &VAO);
+			//*glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &transformBO);
 			glGenBuffers(1, &textureHandleBO);
 			glGenBuffers(1, &VBO);
 			glGenBuffers(1, &EBO);
 			
-			glBindVertexArray(VAO);
+			//*glBindVertexArray(VAO);
 
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
@@ -45,7 +45,7 @@ namespace engine
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, textureHandleBO);
-			glVertexAttribLPointer(1, 1, GL_UNSIGNED_INT64_ARB, 0, (void*)0);
+			//*glVertexAttribLPointer(1, 1, GL_UNSIGNED_INT64_ARB, 0, (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, transformBO);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)0);
@@ -53,11 +53,11 @@ namespace engine
 			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)32);
 			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * 4, (void*)48);
 
-			glVertexAttribDivisor(1, 1);
-			glVertexAttribDivisor(2, 1);
-			glVertexAttribDivisor(3, 1);
-			glVertexAttribDivisor(4, 1);
-			glVertexAttribDivisor(5, 1);
+			//*glVertexAttribDivisor(1, 1);
+			//*glVertexAttribDivisor(2, 1);
+			//*glVertexAttribDivisor(3, 1);
+			//*glVertexAttribDivisor(4, 1);
+			//*glVertexAttribDivisor(5, 1);
 
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
@@ -67,7 +67,7 @@ namespace engine
 			glEnableVertexAttribArray(5);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
+			//*glBindVertexArray(0);
 
 			if (!(shaderProgramId = shaderInit(&vertex, nullptr, &fragment)))
 			{
@@ -132,11 +132,11 @@ namespace engine
 		glBindBuffer(GL_ARRAY_BUFFER, transformBO);
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		
-		glBindVertexArray(VAO);
+		//*glBindVertexArray(VAO);
 		glUseProgram(shaderProgramId);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "projectionView"), 1, GL_FALSE, (GLfloat*)&scene.getProjectionView());
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
-		glBindVertexArray(0);
+		//*glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, count);
+		//*glBindVertexArray(0);
 	}
 
 	bool TextureRC::VInit(const tinyxml2::XMLElement * pData)

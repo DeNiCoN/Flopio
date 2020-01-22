@@ -5,12 +5,12 @@
 
 namespace engine
 {
-	class ResourceFile 
+	class ResourceFile
 	{
 	protected:
 		std::string name;
 	public:
-		ResourceFile(std::string fileName) 
+		ResourceFile(std::string fileName)
 		{
 			name = fileName;
 		}

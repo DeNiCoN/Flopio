@@ -21,11 +21,11 @@ namespace engine {
 			: width(width), height(height),
 			fullscreen(fullscreen), 
 			appTitle(std::move(appTitle)), logFileName(std::move(logFileName)) {}
-		std::string logFileName;
-		std::string appTitle;
-		unsigned int height;
-		unsigned int width;
-		bool fullscreen;
+    unsigned int width;
+    unsigned int height;
+    bool fullscreen;
+    std::string appTitle;
+    std::string logFileName;
 	};
 
 	class App
@@ -39,7 +39,9 @@ namespace engine {
 		ProcessManager processManager;
 		ResourceCache resourceCache;
 		EventManager eventManager;
-		App(unsigned int RCSizeInMB, unsigned int EMSizeInMB) : resourceCache(RCSizeInMB), eventManager(EMSizeInMB), viewport(sv) {}
+		App(unsigned int RCSizeInMB, unsigned int EMSizeInMB)
+      : resourceCache(RCSizeInMB), eventManager(EMSizeInMB), viewport(sv) {}
+    virtual ~App() = default;
 	protected:
 		ScreenViewport sv;
 		Viewport& viewport;
@@ -51,5 +53,4 @@ namespace engine {
 		virtual void VOnRender(const double ndelta) = 0;
 		double secondsPerUpdate = 1.0 / 60.0;
 	};
-
 }

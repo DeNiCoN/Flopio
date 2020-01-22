@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../utils.h"
+#include "../utils/utils.h"
 #include <memory>
 #include <map>
 #include <tuple>
@@ -33,7 +33,7 @@ namespace engine
 		Actor* parent;
 		unsigned int id;
 	public:
-		virtual ~Component() = default;;
+		virtual ~Component() = default;
 		bool hasParent() { return parent; }
 		virtual const char* getName() const = 0;
 		virtual bool VInit(const tinyxml2::XMLElement * pData) = 0;

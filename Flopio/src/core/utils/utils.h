@@ -60,3 +60,9 @@ constexpr unsigned int hash(const char * key, unsigned int len)
 
 	return h;
 }
+
+constexpr unsigned int hash(const char * key)
+{
+	unsigned int len = std::char_traits<char>::length(key);
+	return hash(key, len);
+}
