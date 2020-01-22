@@ -115,7 +115,7 @@ namespace engine {
 		//	return false;
 		//}
 
-		glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
 		//glEnable(GL_SAMPLE_SHADING);
 		//glMinSampleShading(1.f);

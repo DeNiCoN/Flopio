@@ -17,11 +17,11 @@ namespace engine
 			initialized = true;
 			Component::registerRender(Component::getId(name));
 
-			//*glGenVertexArrays(1, &VAO);
+			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
 			glGenBuffers(1, &EBO);
 
-			//*glBindVertexArray(VAO);
+			glBindVertexArray(VAO);
 
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(rect), rect, GL_STATIC_DRAW);
@@ -43,18 +43,21 @@ namespace engine
 
 		shaderProgramId = shaderInitFromXML(pData->FirstChildElement("shader"));
 		if (!shaderProgramId)
+		{
+			std::cout << "shader failded to initialize\n";
 			return false;
+		}
 		return true;
 	}
 
 	void CustomShaderTextureRC::render(std::vector<std::shared_ptr<RenderComponent>>& renderers, Scene& scene, const double ndelay)
 	{
-      //*glBindVertexArray(VAO);
+		glBindVertexArray(VAO);
 		unsigned int pspid = 0;
 		for (auto r : renderers)
 		{
 			auto component = std::static_pointer_cast<CustomShaderTextureRC>(r);
-			auto textureExtra = std::static_pointer_cast<TextureExtraData>(currentApp->resourceCache.getHandle(*component->texture)->getExtra());
+			auto textureExtra = std::static_pointer_cast<TextureExtraData>(component->texture->getExtra());
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, textureExtra->getTextureId());
 			unsigned int id = component->shaderProgramId;
@@ -67,6 +70,6 @@ namespace engine
 			glUniformMatrix4fv(glGetUniformLocation(id, "model"), 1, GL_FALSE, (GLfloat*)&component->model);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-		//*glBindVertexArray(0);
+		glBindVertexArray(0);
 	}
 }

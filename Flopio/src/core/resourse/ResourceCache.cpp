@@ -69,7 +69,7 @@ namespace engine {
 		std::shared_ptr<ResourceHandle> handle;
 		std::shared_ptr<ResourceLoader> loader;
 		std::shared_ptr<ResourceFile> file;
-		//std::cout << "load " << resource->getName() << "\n";
+		//std::cout << "load " << resource.getName() << "\n";
 		for (std::shared_ptr<ResourceLoader> l : loaders) 
 		{
 			int size;
@@ -114,13 +114,13 @@ namespace engine {
 			return std::shared_ptr<ResourceHandle>();
 		}
 		char *rawBuffer = new char[rawSize + 1];
-		rawBuffer[rawSize] = '\0';
 
-
+		if (!rawBuffer)
 		{
 			logger << "ResourceCache out of memory while loading " << resource.getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
 		}
+		rawBuffer[rawSize] = '\0';
 
 		if (file->VGetRawResource(resource, rawBuffer) == -1)
 		{

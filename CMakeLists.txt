@@ -83,7 +83,7 @@ add_executable(flopio
 	"Dependencies/imgui/imgui_demo.cpp"
 	"Dependencies/imgui/imgui_draw.cpp"
 	"Dependencies/imgui/examples/imgui_impl_glfw.cpp"
-	"Dependencies/imgui/examples/imgui_impl_opengl2.cpp"
+	"Dependencies/imgui/examples/imgui_impl_opengl3.cpp"
 	"Dependencies/imgui/imgui_widgets.cpp"
 	"Dependencies/tinyxml2/tinyxml2.cpp"
 
@@ -124,7 +124,7 @@ add_executable(flopio
 	"Flopio/src/core/resourse/ResourceHandle.h"
 	"Flopio/src/core/resourse/ResourceLoader.h"
 	"Flopio/src/core/utils/utils.h"
-  "Flopio/src/core/utils/Benchmark.h"
+    "Flopio/src/core/utils/Benchmark.h"
 	"Flopio/src/game/Flopio.h"
 	"Dependencies/Box2D/Box2D/Box2D.h"
 	"Dependencies/Box2D/Box2D/Collision/b2BroadPhase.h"
@@ -178,7 +178,7 @@ add_executable(flopio
 	"Dependencies/imgui/imconfig.h"
 	"Dependencies/imgui/imgui.h"
 	"Dependencies/imgui/examples/imgui_impl_glfw.h"
-	"Dependencies/imgui/examples/imgui_impl_opengl2.h"
+	"Dependencies/imgui/examples/imgui_impl_opengl3.h"
 	"Dependencies/imgui/imgui_internal.h"
 	"Dependencies/imgui/imstb_rectpack.h"
 	"Dependencies/imgui/imstb_textedit.h"
@@ -188,7 +188,7 @@ add_executable(flopio
 )
 
 SET(GLAD_PROFILE "core" CACHE STRING "OpenGL profile" FORCE)
-SET(GLAD_API "gl=2.0" CACHE STRING "API type/version pairs, like \"gl=3.2,gles=\", no version means latest" FORCE) 
+SET(GLAD_API "gl=4.5" CACHE STRING "API type/version pairs, like \"gl=3.2,gles=\", no version means latest" FORCE)
 SET(GLAD_EXTENSIONS "GL_ARB_bindless_texture" CACHE STRING "Path to extensions file or comma separated list of extensions, if missing all extensions are included" FORCE)
 add_subdirectory("Dependencies/glad")
 

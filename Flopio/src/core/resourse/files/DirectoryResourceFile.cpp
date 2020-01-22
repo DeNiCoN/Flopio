@@ -24,7 +24,6 @@ namespace engine
 				if (!p.is_directory())
 				{
 					std::string path = p.path().filename().string();
-					std::transform(path.begin(), path.end(), path.begin(), (int(*)(int)) std::tolower);
 					filesMap[path] = p.file_size();
 				}
 			}
@@ -48,12 +47,14 @@ namespace engine
 
 	int DirectoryResourceFile::VGetRawResourceSize(const Resource &r) 
 	{
+		std::cout << r.getName() << "\n";
 		return filesMap[r.getName().substr(r.getSeparatorPos() + 1)];
 	}
 
 	int DirectoryResourceFile::VGetRawResource(const Resource &r, char *buffer)
 	{
 		std::ifstream file;
+		std::cout << name << "/" << r.getName().substr(r.getSeparatorPos() + 1) << "\n";
 		file.open(name + "/" + r.getName().substr(r.getSeparatorPos() + 1), std::ifstream::in | std::ifstream::binary);
 		if (file.fail())
 			return -1;

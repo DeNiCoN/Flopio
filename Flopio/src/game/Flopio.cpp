@@ -2,10 +2,10 @@
 
 #include <imgui/imgui.h>
 #include <imgui/examples/imgui_impl_glfw.h>
-//*#include <imgui/examples/imgui_impl_opengl3.h>
-#include <imgui/examples/imgui_impl_opengl2.h>
+#include <imgui/examples/imgui_impl_opengl3.h>
 #include "../core/Engine.h"
 #include "../core/graphics/rendercomps/TextureRC.h"
+#include "../core/graphics/rendercomps/CustomShaderTextureRC.h"
 #include "../core/resourse/files/DirectoryResourceFile.h"
 #include "../core/resourse/loaders/FragmentShaderResourceLoader.h"
 #include "../core/resourse/loaders/VertexShaderResourceLoader.h"
@@ -163,7 +163,9 @@ namespace game
 		resourceCache.addLoader(std::shared_ptr<XmlResourceLoader>(&xmlLoader, [](XmlResourceLoader*) {}));
 
 		TextureRC::init();
+		CustomShaderTextureRC::init();
 		Scene::registerRenderer(Component::getId(TextureRC::name), &TextureRC::render);
+		Scene::registerRenderer(Component::getId(CustomShaderTextureRC::name), &CustomShaderTextureRC::render);
 
 		//std::sort(root.actors.begin(), root.actors.end(), [](SharedActor f, SharedActor l)
 		//{
@@ -210,7 +212,7 @@ namespace game
 			std::filesystem::path path(paths[i]);
 
 			std::string pathString = path.string();
-			pathString.replace(pathString.find_last_of(std::filesystem::path::preferred_separator), 1, &Resource::separator);
+			pathString.replace(pathString.find_last_of(std::filesystem::path::preferred_separator), 1, 1, Resource::separator);
 			Resource res(pathString);
 			std::shared_ptr<DirectoryResourceFile> resFile2(new DirectoryResourceFile (pathString.substr(0, res.getSeparatorPos())));
 			resourceCache.addFile(resFile2);

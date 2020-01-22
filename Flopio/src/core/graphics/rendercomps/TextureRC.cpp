@@ -143,9 +143,10 @@ namespace engine
 	{
 		this->width = pData->FloatAttribute("width", 64.f);
 		this->height = pData->FloatAttribute("height", 64.f);
-		const char* textureName = pData->Attribute("texture", "EngineResources|notexture.jpg");
-
+		const char* textureName = pData->Attribute("texture");
 		Resource textureResource(textureName);
+		std::cout << textureResource.getName();
+
 		texture = currentApp->resourceCache.getHandle(textureResource);
 
 		if (!texture)
