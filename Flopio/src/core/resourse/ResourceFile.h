@@ -13,7 +13,6 @@ namespace engine
 		ResourceFile(std::string fileName) 
 		{
 			name = fileName;
-			std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
 		}
 		virtual ~ResourceFile() = default;;
 		virtual void VReload() = 0;

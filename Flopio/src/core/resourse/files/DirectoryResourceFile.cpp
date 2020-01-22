@@ -5,6 +5,7 @@
 #include <fstream>
 #include <algorithm>
 #include <cctype>
+#include <iostream>
 
 namespace engine
 {
@@ -14,7 +15,9 @@ namespace engine
 		if (std::filesystem::exists(name))
 		{
 			if (!std::filesystem::is_directory(name))
+			{
 				return false;
+			}
 			int i = 0;
 			for (auto p : std::filesystem::directory_iterator(name))
 			{

@@ -27,7 +27,6 @@ namespace engine
 	Resource::Resource(const std::string &resName)
 	{
 		name = resName;
-		std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
 		hashed = hash(name.c_str(), name.length());
 		size_t pos = name.find(separator, 0);
 		if (pos == std::string::npos)

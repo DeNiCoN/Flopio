@@ -116,7 +116,7 @@ namespace engine {
 		char *rawBuffer = new char[rawSize + 1];
 		rawBuffer[rawSize] = '\0';
 
-		if (rawBuffer == NULL)
+
 		{
 			logger << "ResourceCache out of memory while loading " << resource.getName() << "\n";
 			return std::shared_ptr<ResourceHandle>();
@@ -190,10 +190,16 @@ namespace engine {
 	void ResourceCache::addFile(std::shared_ptr<ResourceFile> file) 
 	{
 		if(std::find(files.begin(), files.end(), file) == files.end())
+		{
 			if (file->VOpen())
+			{
 				files.push_back(file);
+			}
 			else
+			{
 				logger << "failed to open file " << file->getName() << "\n";
+			}
+		}
 	}
 
 	void ResourceCache::clearResources()
